@@ -15,3 +15,4 @@ Test suite for pw2wannier90.x program of Quantum ESPRESSO.
 
 
 TODO: Add readme on cases which are covered. (better: use code coverage tool)
+TODO: Test libaray test, add note on library compilation
