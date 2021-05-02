@@ -1,0 +1,30 @@
+ &control
+    calculation='nscf'
+    restart_mode='from_scratch',
+    pseudo_dir = '../pseudo/',
+    outdir='./temp'
+    prefix='Fe'
+ /
+ &system
+    ibrav = 3, celldm(1) =5.4235, nat= 1, ntyp= 1,
+    ecutwfc =30.0, nspin = 2, nbnd= 14, ecutrho=180.0
+    starting_magnetization = -1, nosym=.true.
+    occupations='smearing', smearing='cold', degauss=0.02
+ /
+ &electrons
+    conv_thr = 1.0e-8
+ /
+ATOMIC_SPECIES
+ Fe 55.85 Fe.pbe-n-kjpaw_psl.1.0.0.UPF
+ATOMIC_POSITIONS crystal
+ Fe 0.2 0.3 -0.1
+K_POINTS crystal
+8
+  0.00000000  0.00000000  0.00000000  1.250000e-01
+  0.00000000  0.00000000  0.50000000  1.250000e-01
+  0.00000000  0.50000000  0.00000000  1.250000e-01
+  0.00000000  0.50000000  0.50000000  1.250000e-01
+  0.50000000  0.00000000  0.00000000  1.250000e-01
+  0.50000000  0.00000000  0.50000000  1.250000e-01
+  0.50000000  0.50000000  0.00000000  1.250000e-01
+  0.50000000  0.50000000  0.50000000  1.250000e-01

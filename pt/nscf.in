@@ -1,0 +1,44 @@
+ &CONTROL
+                 calculation = 'nscf'
+                restart_mode = 'restart'
+                      outdir = './temp/'
+                  pseudo_dir = '../pseudo/'
+                      prefix = 'Pt'
+                  wf_collect = .true.
+                   verbosity = 'high'
+ /
+ &SYSTEM
+                       ibrav = 2
+                           a = 3.92
+                         nat = 1
+                        ntyp = 1
+                        nbnd = 40
+                     ecutwfc = 30
+                     ecutrho = 240
+                 occupations = 'smearing'
+                    smearing = 'mv'
+                     degauss = 0.002
+                    noncolin = .true.
+                    lspinorb = .true.
+                       nosym = .true.
+ /
+ &ELECTRONS
+                    conv_thr = 1.0D-8
+ /
+
+ATOMIC_SPECIES
+   Pt    195.07800  Pt.rel-pbe-n-kjpaw_psl.0.1.UPF
+
+ATOMIC_POSITIONS {bohr}
+Pt      0.0000000   0.0000000   0.0000000
+
+K_POINTS crystal
+8
+  0.00000000  0.00000000  0.00000000  1.250000e-01
+  0.00000000  0.00000000  0.25000000  1.250000e-01
+  0.00000000  0.00000000  0.50000000  1.250000e-01
+  0.00000000  0.00000000  0.75000000  1.250000e-01
+  0.00000000  0.50000000  0.00000000  1.250000e-01
+  0.00000000  0.50000000  0.25000000  1.250000e-01
+  0.00000000  0.50000000  0.50000000  1.250000e-01
+  0.00000000  0.50000000  0.75000000  1.250000e-01

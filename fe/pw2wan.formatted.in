@@ -1,0 +1,19 @@
+&inputpp
+   outdir = './temp'
+   prefix = 'Fe'
+   seedname = 'Fe'
+   write_eig = .false.
+   write_mmn = .false.
+   write_amn = .false.
+   write_spn = .true.
+   write_uHu = .true.
+   write_uIu = .true.
+   write_sHu = .true.
+   write_sIu = .true.
+
+   spn_formatted = .true.
+   uHu_formatted = .true.
+   uIu_formatted = .true.
+   sHu_formatted = .true.
+   sIu_formatted = .true.
+/

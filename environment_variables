@@ -1,0 +1,21 @@
+# Program paths
+export QE_REF="/group2/jmlim/program/qe-dev/bin"          # Path with old (unmodified) QE
+export QE_TEST="/group2/jmlim/dipole/q-e/bin"             # Path with new (modified) QE
+export WANN="/group2/jmlim/program/wannier90/wannier90.x"
+
+# Run commands for SCF, NSCF, Wannier90
+export RUN_PARA_PREFIX="srun -n 16 --partition=fast"
+export RUN_PARA_SUFFIX_NO_POOL="-nk 1"
+export RUN_PARA_SUFFIX_POOL="-nk 4"
+export RUN_SERIAL_PREFIX="srun -n 1 --partition=fast"
+export RUN_SERIAL_SUFFIX=""
+
+# Run commands for testing
+export RUN_PREFIX="srun -n 16 --partition=fast"
+export RUN_SUFFIX_NO_POOL="-nk 1"
+export RUN_SUFFIX_POOL="-nk 4"
+
+# If true, rerun SCF, NSCF, and pw2wannier calculation for reference data
+export GENERATE_REFERENCE=true
+#export GENERATE_REFERENCE=false
+

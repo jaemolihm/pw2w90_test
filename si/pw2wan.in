@@ -1,0 +1,9 @@
+&inputpp
+  outdir     =  './temp'
+  prefix     =  'si'
+  seedname   =  'si'
+  write_amn  =  .true.
+  write_mmn  =  .true.
+  write_uHu  =  .true.
+  write_uIu  =  .true.
+/

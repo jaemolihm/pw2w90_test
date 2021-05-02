@@ -1,0 +1,13 @@
+&inputpp
+  outdir     =  './temp'
+  prefix     =  'si'
+  seedname   =  'si'
+  write_amn  = .true.
+  write_mmn  = .false.
+  write_unk  = .false.
+  ! SCDM keywords
+  scdm_proj         = true
+  scdm_entanglement = erfc
+  scdm_mu           = 10
+  scdm_sigma        =  4
+/
