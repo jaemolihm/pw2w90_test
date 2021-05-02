@@ -13,6 +13,10 @@ if [ $GENERATE_REFERENCE == "true" ]; then
     $RUN_PARA_PREFIX $QE_REF/pw.x $RUN_PARA_SUFFIX_POOL -in nscf.in > nscf.out
     $RUN_SERIAL_PREFIX $WANN -pp $PREFIX
     # pw2wannier90 with reference program
+    $RUN_PARA_PREFIX $QE_REF/pw2wannier90.x $RUN_PARA_SUFFIX_NO_POOL -in pw2wan.formatted.in > reference/pw2wan.formatted.out
+    for tag in spn uHu uIu sHu sIu; do
+        mv $PREFIX.$tag $PREFIX.$tag.formatted
+    done
     $RUN_PARA_PREFIX $QE_REF/pw2wannier90.x $RUN_PARA_SUFFIX_NO_POOL -in pw2wan.in > reference/pw2wan.out
     cp $PREFIX.* reference/
 fi
