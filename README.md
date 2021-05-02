@@ -12,3 +12,6 @@ Test suite for pw2wannier90.x program of Quantum ESPRESSO.
 
 ### Notes
 * Requires python3 and python3 modules fortio and termcolor.
+
+
+TODO: Add readme on cases which are covered. (better: use code coverage tool)
