@@ -14,5 +14,14 @@ Test suite for pw2wannier90.x program of Quantum ESPRESSO.
 * Requires python3 and python3 modules fortio and termcolor.
 
 
+### Library mode
+* To run the library mode tests, both the reference (`QE_REF`) and test (`QE_TEST`) QE should be linked to the wannier library. (The instructions below are taken and modified based on https://gitlab.com/QEF/q-e/-/blob/develop/PP/examples/WAN90_example/README)
+  1. Type `make lib` in the Wannier90 root directory.
+  2. In the QE root directory, run `./configure` and modify `make.inc` as follows:
+    * Add `-D__WANLIB` to the `MANUAL_DFLAGS` variable
+    * Add a new variable `WANLIB` to specify location of Wannier library: `WANLIB = -L/path/wannier90 -lwannier`
+    * Add `$(WANLIB)` to the `QELIBS` variable: `QELIBS = $(MBD_LIBS) ... $(WANLIB)`
+  3. Compile QE
+* I had to change `character(len=*)` in line 83 of `wannier_lib.F90` to `character(len=3)` to make QE run. I do not understand why this change is needed...
+
 TODO: Add readme on cases which are covered. (better: use code coverage tool)
-TODO: Test libaray test, add note on library compilation
