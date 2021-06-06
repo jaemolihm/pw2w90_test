@@ -6,8 +6,8 @@
   write_mmn  = .false.
   write_unk  = .false.
   ! SCDM keywords
-  scdm_proj         = true
-  scdm_entanglement = gaussian
+  scdm_proj         = .true.
+  scdm_entanglement = 'gaussian'
   scdm_mu           = 12.5
   scdm_sigma        =  2
 /

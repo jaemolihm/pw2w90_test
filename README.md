@@ -25,3 +25,23 @@ Test suite for pw2wannier90.x program of Quantum ESPRESSO.
 * I had to change `character(len=*)` in line 83 of `wannier_lib.F90` to `character(len=3)` to make QE run. I do not understand why this change is needed...
 
 TODO: Add readme on cases which are covered. (better: use code coverage tool)
+
+
+I cound not run library mode with gcc (even after the change noted above) due to the error:
+```
+Program received signal SIGSEGV: Segmentation fault - invalid memory reference.
+
+Backtrace for this error:
+#0  0x7f081d03e2ed in ???
+#1  0x7f081d03d503 in ???
+#2  0x7f081c49bf1f in ???
+#3  0x7f081c5ebcf4 in ???
+#4  0x55714363e11a in wannier_setup_
+  at ../wannier_lib.F90:114
+#5  0x55714308213b in setup_nnkp_
+  at /home/jmlihm/program/qe-dev-gcc/PP/src/pw2wannier90.f90:605
+#6  0x5571430a6e4d in pw2wannier90
+  at /home/jmlihm/program/qe-dev-gcc/PP/src/pw2wannier90.f90:470
+#7  0x55714306f48e in main
+  at /home/jmlihm/program/qe-dev-gcc/PP/src/pw2wannier90.f90:102
+```

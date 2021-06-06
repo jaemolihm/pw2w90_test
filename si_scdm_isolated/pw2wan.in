@@ -6,6 +6,6 @@
   write_mmn  = .false.
   write_unk  = .false.
   ! SCDM keywords
-  scdm_proj         = true
-  scdm_entanglement = isolated
+  scdm_proj         = .true.
+  scdm_entanglement = 'isolated'
 /
