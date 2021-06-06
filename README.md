@@ -10,10 +10,6 @@ Test suite for pw2wannier90.x program of Quantum ESPRESSO.
   * Specific tests can be run by passing the folder names (e.g. `./run_tests.sh fe gaas`)
   * SCDM tests can be run by calling `./run_tests.sh scdm`)
 
-### Notes
-* Requires python3 and python3 modules fortio and termcolor.
-
-
 ### Library mode
 * To run the library mode tests, both the reference (`QE_REF`) and test (`QE_TEST`) QE should be linked to the wannier library. (The instructions below are taken and modified based on https://gitlab.com/QEF/q-e/-/blob/develop/PP/examples/WAN90_example/README)
   1. Type `make lib` in the Wannier90 root directory.
@@ -25,17 +21,18 @@ Test suite for pw2wannier90.x program of Quantum ESPRESSO.
 * I had to change `character(len=*)` in line 83 of `wannier_lib.F90` to `character(len=3)` to make QE run. I do not understand why this change is needed...
 
 ### Code coverage
-* Code coverage can be viewed from the file `coverage/output/index.html`.
+* Code coverage can be viewed from the file [in this link](https://raw.githack.com/jaemolihm/pw2w90_test/master/coverage/output/index.html)
+  * The source HTML file is `coverage/output/index.html`.
 * To compute the coverage, follow these steps. Note that you should use GNU compilers.
   1. Add `-fprofile-arcs -ftest-coverage` to the compilation command and add `-lgcov --coverage` to the linking command (only for `pw2wannier90`). Compile the program.
   2. Run tests.
   3. Go to directory `coverage` and run `./create_coverage.sh`.
   4. Inspect `output/index.html`.
 
-TODO: Add readme on cases which are covered. (better: use code coverage tool)
 
-
-I cound not run library mode with gcc (even after the change noted above) due to the error:
+### Notes
+* Requires python3 and python3 modules fortio and termcolor.
+* I cound not run library mode with gcc (even after the change noted above) due to the error:
 ```
 Program received signal SIGSEGV: Segmentation fault - invalid memory reference.
 
