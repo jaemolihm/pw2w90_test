@@ -24,6 +24,14 @@ Test suite for pw2wannier90.x program of Quantum ESPRESSO.
   3. Compile QE
 * I had to change `character(len=*)` in line 83 of `wannier_lib.F90` to `character(len=3)` to make QE run. I do not understand why this change is needed...
 
+### Code coverage
+* Code coverage can be viewed from the file `coverage/output/index.html`.
+* To compute the coverage, follow these steps. Note that you should use GNU compilers.
+  1. Add `-fprofile-arcs -ftest-coverage` to the compilation command and add `-lgcov --coverage` to the linking command (only for `pw2wannier90`). Compile the program.
+  2. Run tests.
+  3. Go to directory `coverage` and run `./create_coverage.sh`.
+  4. Inspect `output/index.html`.
+
 TODO: Add readme on cases which are covered. (better: use code coverage tool)
 
 
