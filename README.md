@@ -21,7 +21,7 @@ Test suite for pw2wannier90.x program of Quantum ESPRESSO.
 * I had to change `character(len=*)` in line 83 of `wannier_lib.F90` to `character(len=3)` to make QE run. I do not understand why this change is needed...
 
 ### Code coverage
-* Code coverage can be viewed from the file [in this link](https://raw.githack.com/jaemolihm/pw2w90_test/master/coverage/output/index.html)
+* Code coverage can be viewed from the file [in this link](https://raw.githack.com/jaemolihm/pw2w90_test/master/coverage/output/src/pw2wannier90.f90.gcov.html)
   * The source HTML file is `coverage/output/index.html`.
 * To compute the coverage, follow these steps. Note that you should use GNU compilers.
   1. Add `-fprofile-arcs -ftest-coverage` to the compilation command and add `-lgcov --coverage` to the linking command (only for `pw2wannier90`). Compile the program.
