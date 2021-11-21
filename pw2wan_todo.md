@@ -1,0 +1,12 @@
+- [ ] systematic exclude_bands
+- [ ] complete pool parallelization
+  - [x] write_unkg
+  - [ ] write_dmn
+  - [ ] write_unk
+- [ ] Modularize progress
+- [ ] merge scdm colin and noncolin
+- [ ] remove unused variables
+- [ ] complete coverage
+  - [ ] gamma_only + LSDA
+- [ ] rebase to master
+- [ ] Mention my name in header ("Jae-Mo Lihm - k-point (pool) parallelization, refactoring")
