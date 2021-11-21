@@ -13,6 +13,8 @@ __pycache__
 */*.u?u.formatted
 */*.s?u.formatted
 */*.unkg
+*/*.dmn
+*/*.sym
 */*.out
 */*.wout
 */*.nnkp

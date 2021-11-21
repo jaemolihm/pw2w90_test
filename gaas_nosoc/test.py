@@ -7,7 +7,7 @@ from mod_test_pw2wan import *
 
 prefix = "GaAs"
 
-tag_list = ["amn", "eig", "mmn"]
+tag_list = ["amn", "eig", "mmn", "sym", "dmn"]
 test_pw2wan(prefix, tag_list)
 
 # a = read_amn(f"{prefix}.amn")

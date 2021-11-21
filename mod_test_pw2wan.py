@@ -22,6 +22,10 @@ def read_ints(f):
 def read_floats(f):
     return [float(x) for x in f.readline().split()]
 
+def txt_to_cmplx(line):
+    data = [float(x) for x in line.strip().strip("(").strip(")").split(",")]
+    return data[0] + 1j * data[1]
+
 
 def read_amn(filename, scdm=False):
     with open(filename, "r") as f:
@@ -160,6 +164,57 @@ def read_unkg(filename):
     unkg = unkg[np.lexsort((unkg[:,0], unkg[:,2], unkg[:,3], unkg[:,4]))][:, 2:]
     return unkg
 
+def read_dmn(filename):
+    with open(filename, "r") as f:
+        f.readline()
+        nbnd, nsym, nir, nk = read_ints(f)
+        f.readline()
+        ik2ir = []
+        for line in f:
+            if len(line.strip()) == 0: break
+            ik2ir += [int(x) for x in line.split()]
+
+        ir2ik = []
+        for line in f:
+            if len(line.strip()) == 0: break
+            ir2ik += [int(x) for x in line.split()]
+
+        iks2k = []
+        for ir in range(nir):
+            iks2k += [[]]
+            for line in f:
+                if len(line.strip()) == 0: break
+                iks2k[-1] += [int(x) for x in line.split()]
+
+        # count lines until blank, and it is num_wann^2
+        data_tmp = []
+        for i in range((2*nbnd)**2+1):
+            line = f.readline().strip()
+            if len(line) == 0: break
+            data_tmp += [txt_to_cmplx(line)]
+        num_wann = int(np.sqrt(i + 1))
+        assert i == num_wann**2
+        assert num_wann > 0
+
+        dmn = np.zeros((nir, nsym, num_wann, num_wann), dtype=complex)
+        dmn[0, 0, :, :] = np.array(data_tmp).reshape((num_wann, num_wann))
+        for ir in range(nir):
+            for isym in range(nsym):
+                if (ir, isym) == (0, 0): continue
+                for iw in range(num_wann):
+                    for jw in range(num_wann):
+                        dmn[ir, isym, iw, jw] = txt_to_cmplx(f.readline())
+                f.readline()
+
+        Dmn = np.zeros((nir, nsym, nbnd, nbnd), dtype=complex)
+        for ir in range(nir):
+            for isym in range(nsym):
+                for i in range(nbnd):
+                    for j in range(nbnd):
+                        Dmn[ir, isym, i, j] = txt_to_cmplx(f.readline())
+                f.readline()
+
+    return dmn, Dmn, ik2ir, ir2ik, iks2k
 
 def read_pw2wan_file(filename, tag, amn_scdm=False):
     # TODO: dmn
@@ -183,6 +238,10 @@ def read_pw2wan_file(filename, tag, amn_scdm=False):
         return read_sXu(filename, formatted=True)
     elif tag == "unkg":
         return read_unkg(filename)
+    elif tag == "sym":
+        return np.loadtxt(filename, skiprows=1)
+    elif tag == "dmn":
+        return read_dmn(filename)
     else:
         raise NotImplementedError(f"tag {tag} not implemented")
 
@@ -196,6 +255,22 @@ def test_pw2wan(prefix, tag_list, verbose=False, amn_scdm=False):
         if tag == "mmn":
             ref, inds_ref = ref
             new, inds_new = new
+
+        if tag == "dmn":
+            ref1, ref2, ref_ik2ir, ref_ir2ik, ref_iks2k = ref
+            new1, new2, new_ik2ir, new_ir2ik, new_iks2k = new
+            for ref, new, name in zip([ref1, ref2], [new1, new2], ["dmn", "Dmn"]):
+                if verbose:
+                    print(f"Tag {tag}, {name}")
+                    print(f"Shape {ref.shape}")
+                    print(f"Value {np.linalg.norm(ref)}")
+                    print(f"Error {np.linalg.norm(ref - new)}")
+                assert ref.shape == new.shape, f"{prefix}: {tag} {name} shape"
+                assert np.allclose(ref, new, atol=1E-9), f"{prefix}: {tag} {name} value"
+            assert ref_ik2ir == new_ik2ir, "ik2ir"
+            assert ref_ir2ik == new_ir2ik, "ir2ik"
+            assert ref_iks2k == new_iks2k, "iks2k"
+            continue
 
         if verbose:
             print(f"Tag {tag}")
