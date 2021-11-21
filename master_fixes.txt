@@ -1,0 +1,40 @@
+Fixes done on upstream QE to make it run
+
+diff --git a/PP/src/pw2wannier90.f90 b/PP/src/pw2wannier90.f90
+index 46d35a34f..9e170f770 100644
+--- a/PP/src/pw2wannier90.f90
++++ b/PP/src/pw2wannier90.f90
+@@ -4823,6 +4823,7 @@ SUBROUTINE write_parity
+    USE gvect,                ONLY : g, ngm
+    USE cell_base,            ONLY : at
+    USE constants,            ONLY : eps6
++   USE lsda_mod,             ONLY : isk
+ 
+    IMPLICIT NONE
+    !
+@@ -4844,19 +4845,15 @@ SUBROUTINE write_parity
+    !
+    IF (.not. gamma_only) THEN
+       DO ik=ikstart,ikstop
+-         IF ( (xk(1,ik)/= 0.d0) .or. (xk(2,ik)/= 0.d0) .or. (xk(3,ik)/= 0.d0) ) THEN
+-            IF (ik == ikstop) CALL errore('write_parity',&
+-                 ' parity calculation may only be performed at the gamma point.',1)
++         IF ( (xk(1,ik)/= 0.d0) .or. (xk(2,ik)/= 0.d0) .or. (xk(3,ik)/= 0.d0) &
++              .or. (ispinw /= 0 .and. isk(ik) /= ispinw) ) THEN
+             CYCLE
+          ELSE
+-            ! NP: spin unpolarized or "up" component of spin
+-            IF (ispinw == 0 .or. ispinw == 1) THEN
+-               kgamma=ik
+-            ELSE ! NP: "down" component
+-               kgamma=ik+1
+-            ENDIF
++            kgamma=ik
+             exit
+          ENDIF
++         IF (ik == ikstop) CALL errore('write_parity',&
++              ' parity calculation may only be performed at the gamma point.',1)
+       ENDDO
+    ELSE
+       ! NP: spin unpolarized or "up" component of spin
+
