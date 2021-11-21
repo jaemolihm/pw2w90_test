@@ -7,7 +7,7 @@ from mod_test_pw2wan import *
 
 prefix = "si"
 
-tag_list = ["amn", "eig", "mmn", "uHu", "uIu"]
+tag_list = ["amn", "eig", "mmn", "uHu", "uIu", "unkg"]
 
 test_pw2wan(prefix, tag_list)
 

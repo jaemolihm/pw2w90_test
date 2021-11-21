@@ -147,6 +147,19 @@ def read_sXu(filename, formatted):
     f.close()
     return sxu
 
+def read_unkg(filename):
+    with open(filename, "r") as f:
+        num_G = read_ints(f)[0]
+        assert num_G == 32
+    unkg = np.loadtxt(filename, skiprows=1)
+    nbnd = unkg.shape[0] // 32
+    assert np.all(unkg[:, 0].astype(int) == np.repeat(np.arange(1, nbnd+1), 32))
+    assert np.all(unkg[:, 1].astype(int) == np.tile(np.arange(1, 32+1), nbnd))
+    # sort unkg according to (iband, Gx, Gy, Gz) because the G vectors can be in any order
+    # remove iband and iG from data
+    unkg = unkg[np.lexsort((unkg[:,0], unkg[:,2], unkg[:,3], unkg[:,4]))][:, 2:]
+    return unkg
+
 
 def read_pw2wan_file(filename, tag, amn_scdm=False):
     # TODO: dmn
@@ -168,6 +181,8 @@ def read_pw2wan_file(filename, tag, amn_scdm=False):
         return read_sXu(filename, formatted=False)
     elif tag == "sHu.formatted" or tag == "sIu.formatted":
         return read_sXu(filename, formatted=True)
+    elif tag == "unkg":
+        return read_unkg(filename)
     else:
         raise NotImplementedError(f"tag {tag} not implemented")
 

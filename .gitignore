@@ -12,6 +12,7 @@ __pycache__
 */*.spn.formatted
 */*.u?u.formatted
 */*.s?u.formatted
+*/*.unkg
 */*.out
 */*.wout
 */*.nnkp

@@ -6,4 +6,5 @@
   write_mmn  =  .true.
   write_uHu  =  .true.
   write_uIu  =  .true.
+  write_unkg =  .true.
 /

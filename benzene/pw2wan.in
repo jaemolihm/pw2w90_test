@@ -6,4 +6,5 @@
    write_mmn = .true.
    write_amn = .true.
    wan_mode = 'standalone'
+   write_unkg = .true.
 /

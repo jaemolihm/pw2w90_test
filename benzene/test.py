@@ -7,7 +7,7 @@ from mod_test_pw2wan import *
 
 prefix = "benzene"
 
-tag_list = ["amn", "eig", "mmn"]
+tag_list = ["amn", "eig", "mmn", "unkg"]
 
 test_pw2wan(prefix, tag_list)
 

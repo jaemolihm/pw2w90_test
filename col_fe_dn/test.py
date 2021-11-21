@@ -8,7 +8,7 @@ from mod_test_pw2wan import *
 prefix = "collinear_Fe"
 
 tag_list = ["amn", "eig", "mmn"]
-tag_list += ["uIu", "uHu"]
+tag_list += ["uIu", "uHu", "unkg"]
 
 test_pw2wan(prefix, tag_list)
 
