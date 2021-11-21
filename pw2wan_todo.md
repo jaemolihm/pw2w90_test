@@ -7,6 +7,7 @@
 - [ ] merge scdm colin and noncolin
 - [ ] remove unused variables
 - [ ] complete coverage
+  - [x] dmn
   - [ ] gamma_only + LSDA
 - [ ] rebase to master
-- [ ] Mention my name in header ("Jae-Mo Lihm - k-point (pool) parallelization, refactoring")
+- [ ] Mention change header ("Jae-Mo Lihm - k-point (pool) parallelization, refactoring")
