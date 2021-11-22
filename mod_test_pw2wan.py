@@ -284,3 +284,41 @@ def test_pw2wan(prefix, tag_list, verbose=False, amn_scdm=False):
             assert np.allclose(inds_ref, inds_new), f"{prefix}: mmn indices"
 
     print(colored('PASSED', 'green'), f": {prefix} test")
+
+
+def read_unk(filename, formatted, noncolin):
+    if noncolin:
+        raise NotImplementedError
+    if formatted:
+        with open(filename, "r") as f:
+            nr1, nr2, nr3, ik, nbnd = read_ints(f)
+        data = np.loadtxt(filename, skiprows=1).reshape(nbnd, nr1*nr2*nr3, 2)
+        unk = data[:, :, 0] + 1j * data[:, :, 1]
+    else:
+        f = FortranFile(filename, mode='r', auto_endian=True, check_file=True)
+        nr1, nr2, nr3, ik, nbnd = f.read_record(dtype=np.int32)
+        unk = np.zeros((nbnd, nr1*nr2*nr3), dtype=np.complex128)
+        for ib in range(nbnd):
+            unk[ib, :] = f.read_record(dtype=np.complex128)
+    return unk, ik
+
+def test_unk(nk, lsda, formatted, noncolin, verbose=False, folder="."):
+    for ik in range(1, nk+1):
+        if lsda:
+            raise NotImplementedError
+        else:
+            ref, ik_ = read_unk(f"reference/{folder}/UNK{ik:05d}.1", formatted, noncolin)
+            assert ik_ == ik, f"UNK: wrong ik for ref data. need {ik}, got {ik_}"
+
+            new, ik_ = read_unk(f"{folder}/UNK{ik:05d}.1", formatted, noncolin)
+            assert ik_ == ik, f"UNK: wrong ik for new data. need {ik}, got {ik_}"
+
+        if verbose:
+            print(f"UNK, {folder}, ik = {ik}")
+            print(f"Shape {ref.shape}")
+            print(f"Value {np.linalg.norm(ref)}")
+            print(f"Error {np.linalg.norm(ref - new)}")
+
+        assert ref.shape == new.shape, f"UNK: {folder}, ik={ik} shape"
+        assert np.allclose(ref, new, atol=1E-9), f"UNK: {folder}, ik={ik} value"
+    print(colored('PASSED', 'green'), f": {folder} test")
