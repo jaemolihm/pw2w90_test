@@ -1,13 +1,14 @@
 - [ ] systematic exclude_bands
 - [ ] complete pool parallelization
   - [x] write_unkg
-  - [ ] write_dmn
+  - [x] write_dmn
   - [ ] write_unk
 - [ ] Modularize progress
-- [ ] merge scdm colin and noncolin
+- [x] merge scdm colin and noncolin
 - [ ] remove unused variables
 - [ ] complete coverage
   - [x] dmn
   - [ ] gamma_only + LSDA
+  - [ ] dmn + LSDA (?)
 - [ ] rebase to master
 - [ ] Mention change header ("Jae-Mo Lihm - k-point (pool) parallelization, refactoring")
