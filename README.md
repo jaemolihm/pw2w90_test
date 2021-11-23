@@ -21,13 +21,16 @@ Test suite for pw2wannier90.x program of Quantum ESPRESSO.
 * I had to change `character(len=*)` in line 83 of `wannier_lib.F90` to `character(len=3)` to make QE run. I do not understand why this change is needed...
 
 ### Code coverage
-* Code coverage can be viewed from the file [in this link](https://raw.githack.com/jaemolihm/pw2w90_test/master/coverage/output/src/pw2wannier90.f90.gcov.html)
-  * The source HTML file is `coverage/output/index.html`.
 * To compute the coverage, follow these steps. Note that you should use GNU compilers.
   1. Add `-fprofile-arcs -ftest-coverage` to the compilation command and add `-lgcov --coverage` to the linking command (only for `pw2wannier90`). Compile the program.
   2. Run tests.
+    * To obtain coverage for reference QE, one needs to set `GENERATE_REFERENCE=true`
   3. Go to directory `coverage` and run `./create_coverage.sh`.
   4. Inspect `output/index.html`.
+* Code coverage for my refactoring of pw2wannier90.x (https://gitlab.com/jmlihm/q-e/-/tree/pw2wan) is available here.
+  * [ref QE](https://raw.githack.com/jaemolihm/pw2w90_test/master/coverage/output_ref/src/pw2wannier90.f90.gcov.html) (QE develop branch as of 2021.11.23)
+  * [new QE](https://raw.githack.com/jaemolihm/pw2w90_test/master/coverage/output/src/pw2wannier90.f90.gcov.html) (my refactoring of pw2wannier90.x (https://gitlab.com/jmlihm/q-e/-/tree/pw2wan))
+  * The source HTML file is `coverage/output/index.html` and `coverage/output_ref/index.html`.
 
 
 ### Notes
