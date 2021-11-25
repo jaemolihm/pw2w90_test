@@ -11,6 +11,9 @@
   - [ ] gamma_only + LSDA
   - [ ] dmn + LSDA (?)
   - [x] write_unk : noncolin, reduce_unk, wvfn_formatted, LSDA
+  - [ ] read_sym for dmn
+  - [ ] mixing uspp and ncpp
+  - [ ] noncolin but not soc
 - [ ] rebase to master
 - [ ] Mention change header ("Jae-Mo Lihm - k-point (pool) parallelization, refactoring")
 - [ ] Test without MPI compilation
