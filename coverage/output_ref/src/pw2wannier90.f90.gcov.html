@@ -31,13 +31,13 @@
             <td class="headerValue">coverage_ref.info</td>
             <td></td>
             <td class="headerItem">Lines:</td>
-            <td class="headerCovTableEntry">2372</td>
+            <td class="headerCovTableEntry">2394</td>
             <td class="headerCovTableEntry">2838</td>
-            <td class="headerCovTableEntryMed">83.6 %</td>
+            <td class="headerCovTableEntryMed">84.4 %</td>
           </tr>
           <tr>
             <td class="headerItem">Date:</td>
-            <td class="headerValue">2021-11-23 20:56:58</td>
+            <td class="headerValue">2021-11-25 13:01:29</td>
             <td></td>
             <td class="headerItem">Functions:</td>
             <td class="headerCovTableEntry">29</td>
@@ -157,11 +157,11 @@
 <span class="lineNum">      95 </span>            : 
 <a name="96"><span class="lineNum">      96 </span>            : </a>
 <span class="lineNum">      97 </span>            : !------------------------------------------------------------------------
-<span class="lineNum">      98 </span><span class="lineCov">         84 : PROGRAM pw2wannier90</span>
+<span class="lineNum">      98 </span><span class="lineCov">        204 : PROGRAM pw2wannier90</span>
 <span class="lineNum">      99 </span>            :   ! This is the interface to the Wannier90 code: see http://www.wannier.org
 <a name="100"><span class="lineNum">     100 </span>            :   !------------------------------------------------------------------------</a>
 <span class="lineNum">     101 </span>            :   !
-<span class="lineNum">     102 </span><span class="lineCov">         84 :   USE io_global,  ONLY : stdout, ionode, ionode_id</span>
+<span class="lineNum">     102 </span><span class="lineCov">        204 :   USE io_global,  ONLY : stdout, ionode, ionode_id</span>
 <span class="lineNum">     103 </span>            :   USE mp_global,  ONLY : mp_startup
 <span class="lineNum">     104 </span>            :   USE mp_pools,   ONLY : npool
 <span class="lineNum">     105 </span>            :   USE mp_bands,   ONLY : nbgrp
@@ -203,122 +203,122 @@
 <span class="lineNum">     141 </span>            :   ! initialise environment
 <span class="lineNum">     142 </span>            :   !
 <span class="lineNum">     143 </span>            : #if defined(__MPI)
-<span class="lineNum">     144 </span><span class="lineCov">         84 :   CALL mp_startup ( )</span>
+<span class="lineNum">     144 </span><span class="lineCov">        204 :   CALL mp_startup ( )</span>
 <span class="lineNum">     145 </span>            : #endif
 <span class="lineNum">     146 </span>            :   !! not sure if this should be called also in 'library' mode or not !!
-<span class="lineNum">     147 </span><span class="lineCov">         84 :   CALL environment_start ( 'PW2WANNIER' )</span>
+<span class="lineNum">     147 </span><span class="lineCov">        204 :   CALL environment_start ( 'PW2WANNIER' )</span>
 <span class="lineNum">     148 </span>            :   !
-<span class="lineNum">     149 </span><span class="lineCov">         84 :   CALL start_clock( 'init_pw2wan' )</span>
+<span class="lineNum">     149 </span><span class="lineCov">        204 :   CALL start_clock( 'init_pw2wan' )</span>
 <span class="lineNum">     150 </span>            :   !
 <span class="lineNum">     151 </span>            :   ! Read input on i/o node and broadcast to the rest
 <span class="lineNum">     152 </span>            :   !
-<span class="lineNum">     153 </span><span class="lineCov">         84 :   ios = 0</span>
-<span class="lineNum">     154 </span><span class="lineCov">         84 :   IF(ionode) THEN</span>
+<span class="lineNum">     153 </span><span class="lineCov">        204 :   ios = 0</span>
+<span class="lineNum">     154 </span><span class="lineCov">        204 :   IF(ionode) THEN</span>
 <span class="lineNum">     155 </span>            :      !
 <span class="lineNum">     156 </span>            :      ! Check to see if we are reading from a file
 <span class="lineNum">     157 </span>            :      !
-<span class="lineNum">     158 </span><span class="lineCov">         21 :      CALL input_from_file()</span>
+<span class="lineNum">     158 </span><span class="lineCov">         51 :      CALL input_from_file()</span>
 <span class="lineNum">     159 </span>            :      !
 <span class="lineNum">     160 </span>            :      !   set default values for variables in namelist
 <span class="lineNum">     161 </span>            :      !
-<span class="lineNum">     162 </span><span class="lineCov">         21 :      CALL get_environment_variable( 'ESPRESSO_TMPDIR', outdir )</span>
-<span class="lineNum">     163 </span><span class="lineCov">         21 :      IF ( trim( outdir ) == ' ' ) outdir = './'</span>
-<span class="lineNum">     164 </span><span class="lineCov">         21 :      prefix = ' '</span>
-<span class="lineNum">     165 </span><span class="lineCov">         21 :      seedname = 'wannier'</span>
-<span class="lineNum">     166 </span><span class="lineCov">         21 :      spin_component = 'none'</span>
-<span class="lineNum">     167 </span><span class="lineCov">         21 :      wan_mode = 'standalone'</span>
-<span class="lineNum">     168 </span><span class="lineCov">         21 :      wvfn_formatted = .false.</span>
-<span class="lineNum">     169 </span><span class="lineCov">         21 :      spn_formatted=.false.</span>
-<span class="lineNum">     170 </span><span class="lineCov">         21 :      uHu_formatted=.false.</span>
-<span class="lineNum">     171 </span><span class="lineCov">         21 :      uIu_formatted=.false.</span>
-<span class="lineNum">     172 </span><span class="lineCov">         21 :      write_unk = .false.</span>
-<span class="lineNum">     173 </span><span class="lineCov">         21 :      write_amn = .true.</span>
-<span class="lineNum">     174 </span><span class="lineCov">         21 :      write_mmn = .true.</span>
-<span class="lineNum">     175 </span><span class="lineCov">         21 :      write_spn = .false.</span>
-<span class="lineNum">     176 </span><span class="lineCov">         21 :      write_eig = .true.</span>
+<span class="lineNum">     162 </span><span class="lineCov">         51 :      CALL get_environment_variable( 'ESPRESSO_TMPDIR', outdir )</span>
+<span class="lineNum">     163 </span><span class="lineCov">         51 :      IF ( trim( outdir ) == ' ' ) outdir = './'</span>
+<span class="lineNum">     164 </span><span class="lineCov">         51 :      prefix = ' '</span>
+<span class="lineNum">     165 </span><span class="lineCov">         51 :      seedname = 'wannier'</span>
+<span class="lineNum">     166 </span><span class="lineCov">         51 :      spin_component = 'none'</span>
+<span class="lineNum">     167 </span><span class="lineCov">         51 :      wan_mode = 'standalone'</span>
+<span class="lineNum">     168 </span><span class="lineCov">         51 :      wvfn_formatted = .false.</span>
+<span class="lineNum">     169 </span><span class="lineCov">         51 :      spn_formatted=.false.</span>
+<span class="lineNum">     170 </span><span class="lineCov">         51 :      uHu_formatted=.false.</span>
+<span class="lineNum">     171 </span><span class="lineCov">         51 :      uIu_formatted=.false.</span>
+<span class="lineNum">     172 </span><span class="lineCov">         51 :      write_unk = .false.</span>
+<span class="lineNum">     173 </span><span class="lineCov">         51 :      write_amn = .true.</span>
+<span class="lineNum">     174 </span><span class="lineCov">         51 :      write_mmn = .true.</span>
+<span class="lineNum">     175 </span><span class="lineCov">         51 :      write_spn = .false.</span>
+<span class="lineNum">     176 </span><span class="lineCov">         51 :      write_eig = .true.</span>
 <span class="lineNum">     177 </span>            :      ! begin change Lopez, Thonhauser, Souza
-<span class="lineNum">     178 </span><span class="lineCov">         21 :      write_uhu = .false.</span>
-<span class="lineNum">     179 </span><span class="lineCov">         21 :      write_uIu = .false. !ivo</span>
+<span class="lineNum">     178 </span><span class="lineCov">         51 :      write_uhu = .false.</span>
+<span class="lineNum">     179 </span><span class="lineCov">         51 :      write_uIu = .false. !ivo</span>
 <span class="lineNum">     180 </span>            :      ! end change Lopez, Thonhauser, Souza
 <span class="lineNum">     181 </span>            :      ! shc
-<span class="lineNum">     182 </span><span class="lineCov">         21 :      write_sHu = .false.</span>
-<span class="lineNum">     183 </span><span class="lineCov">         21 :      write_sIu = .false.</span>
-<span class="lineNum">     184 </span><span class="lineCov">         21 :      sHu_formatted=.false.</span>
-<span class="lineNum">     185 </span><span class="lineCov">         21 :      sIu_formatted=.false.</span>
+<span class="lineNum">     182 </span><span class="lineCov">         51 :      write_sHu = .false.</span>
+<span class="lineNum">     183 </span><span class="lineCov">         51 :      write_sIu = .false.</span>
+<span class="lineNum">     184 </span><span class="lineCov">         51 :      sHu_formatted=.false.</span>
+<span class="lineNum">     185 </span><span class="lineCov">         51 :      sIu_formatted=.false.</span>
 <span class="lineNum">     186 </span>            :      ! end shc
-<span class="lineNum">     187 </span><span class="lineCov">         21 :      reduce_unk= .false.</span>
-<span class="lineNum">     188 </span><span class="lineCov">         21 :      write_unkg= .false.</span>
-<span class="lineNum">     189 </span><span class="lineCov">         21 :      write_dmn = .false. !YN:</span>
-<span class="lineNum">     190 </span><span class="lineCov">         21 :      read_sym  = .false. !YN:</span>
-<span class="lineNum">     191 </span><span class="lineCov">         21 :      scdm_proj = .false.</span>
-<span class="lineNum">     192 </span><span class="lineCov">         21 :      scdm_entanglement = 'isolated'</span>
-<span class="lineNum">     193 </span><span class="lineCov">         21 :      scdm_mu = 0.0_dp</span>
-<span class="lineNum">     194 </span><span class="lineCov">         21 :      scdm_sigma = 1.0_dp</span>
+<span class="lineNum">     187 </span><span class="lineCov">         51 :      reduce_unk= .false.</span>
+<span class="lineNum">     188 </span><span class="lineCov">         51 :      write_unkg= .false.</span>
+<span class="lineNum">     189 </span><span class="lineCov">         51 :      write_dmn = .false. !YN:</span>
+<span class="lineNum">     190 </span><span class="lineCov">         51 :      read_sym  = .false. !YN:</span>
+<span class="lineNum">     191 </span><span class="lineCov">         51 :      scdm_proj = .false.</span>
+<span class="lineNum">     192 </span><span class="lineCov">         51 :      scdm_entanglement = 'isolated'</span>
+<span class="lineNum">     193 </span><span class="lineCov">         51 :      scdm_mu = 0.0_dp</span>
+<span class="lineNum">     194 </span><span class="lineCov">         51 :      scdm_sigma = 1.0_dp</span>
 <span class="lineNum">     195 </span>            :      !
 <span class="lineNum">     196 </span>            :      !     reading the namelist inputpp
 <span class="lineNum">     197 </span>            :      !
-<span class="lineNum">     198 </span><span class="lineCov">         21 :      READ (5, inputpp, iostat=ios)</span>
+<span class="lineNum">     198 </span><span class="lineCov">         51 :      READ (5, inputpp, iostat=ios)</span>
 <span class="lineNum">     199 </span>            :      !
 <span class="lineNum">     200 </span>            :      !     Check of namelist variables
 <span class="lineNum">     201 </span>            :      !
-<span class="lineNum">     202 </span><span class="lineCov">         21 :      tmp_dir = trimcheck(outdir)</span>
+<span class="lineNum">     202 </span><span class="lineCov">         51 :      tmp_dir = trimcheck(outdir)</span>
 <span class="lineNum">     203 </span>            :      ! back to all nodes
 <span class="lineNum">     204 </span>            :   ENDIF
 <span class="lineNum">     205 </span>            :   !
-<span class="lineNum">     206 </span><span class="lineCov">         84 :   CALL mp_bcast(ios,ionode_id, world_comm)</span>
-<span class="lineNum">     207 </span><span class="lineCov">         84 :   IF (ios /= 0) CALL errore( 'pw2wannier90', 'reading inputpp namelist', abs(ios))</span>
+<span class="lineNum">     206 </span><span class="lineCov">        204 :   CALL mp_bcast(ios,ionode_id, world_comm)</span>
+<span class="lineNum">     207 </span><span class="lineCov">        204 :   IF (ios /= 0) CALL errore( 'pw2wannier90', 'reading inputpp namelist', abs(ios))</span>
 <span class="lineNum">     208 </span>            :   !
 <span class="lineNum">     209 </span>            :   ! broadcast input variable to all nodes
 <span class="lineNum">     210 </span>            :   !
-<span class="lineNum">     211 </span><span class="lineCov">         84 :   CALL mp_bcast(outdir,ionode_id, world_comm)</span>
-<span class="lineNum">     212 </span><span class="lineCov">         84 :   CALL mp_bcast(tmp_dir,ionode_id, world_comm)</span>
-<span class="lineNum">     213 </span><span class="lineCov">         84 :   CALL mp_bcast(prefix,ionode_id, world_comm)</span>
-<span class="lineNum">     214 </span><span class="lineCov">         84 :   CALL mp_bcast(seedname,ionode_id, world_comm)</span>
-<span class="lineNum">     215 </span><span class="lineCov">         84 :   CALL mp_bcast(spin_component,ionode_id, world_comm)</span>
-<span class="lineNum">     216 </span><span class="lineCov">         84 :   CALL mp_bcast(wan_mode,ionode_id, world_comm)</span>
-<span class="lineNum">     217 </span><span class="lineCov">         84 :   CALL mp_bcast(wvfn_formatted,ionode_id, world_comm)</span>
-<span class="lineNum">     218 </span><span class="lineCov">         84 :   CALL mp_bcast(write_unk,ionode_id, world_comm)</span>
-<span class="lineNum">     219 </span><span class="lineCov">         84 :   CALL mp_bcast(write_amn,ionode_id, world_comm)</span>
-<span class="lineNum">     220 </span><span class="lineCov">         84 :   CALL mp_bcast(write_mmn,ionode_id, world_comm)</span>
-<span class="lineNum">     221 </span><span class="lineCov">         84 :   CALL mp_bcast(write_eig,ionode_id, world_comm)</span>
+<span class="lineNum">     211 </span><span class="lineCov">        204 :   CALL mp_bcast(outdir,ionode_id, world_comm)</span>
+<span class="lineNum">     212 </span><span class="lineCov">        204 :   CALL mp_bcast(tmp_dir,ionode_id, world_comm)</span>
+<span class="lineNum">     213 </span><span class="lineCov">        204 :   CALL mp_bcast(prefix,ionode_id, world_comm)</span>
+<span class="lineNum">     214 </span><span class="lineCov">        204 :   CALL mp_bcast(seedname,ionode_id, world_comm)</span>
+<span class="lineNum">     215 </span><span class="lineCov">        204 :   CALL mp_bcast(spin_component,ionode_id, world_comm)</span>
+<span class="lineNum">     216 </span><span class="lineCov">        204 :   CALL mp_bcast(wan_mode,ionode_id, world_comm)</span>
+<span class="lineNum">     217 </span><span class="lineCov">        204 :   CALL mp_bcast(wvfn_formatted,ionode_id, world_comm)</span>
+<span class="lineNum">     218 </span><span class="lineCov">        204 :   CALL mp_bcast(write_unk,ionode_id, world_comm)</span>
+<span class="lineNum">     219 </span><span class="lineCov">        204 :   CALL mp_bcast(write_amn,ionode_id, world_comm)</span>
+<span class="lineNum">     220 </span><span class="lineCov">        204 :   CALL mp_bcast(write_mmn,ionode_id, world_comm)</span>
+<span class="lineNum">     221 </span><span class="lineCov">        204 :   CALL mp_bcast(write_eig,ionode_id, world_comm)</span>
 <span class="lineNum">     222 </span>            :   ! begin change Lopez, Thonhauser, Souza
-<span class="lineNum">     223 </span><span class="lineCov">         84 :   CALL mp_bcast(write_uhu,ionode_id, world_comm)</span>
-<span class="lineNum">     224 </span><span class="lineCov">         84 :   CALL mp_bcast(write_uIu,ionode_id, world_comm) !ivo</span>
+<span class="lineNum">     223 </span><span class="lineCov">        204 :   CALL mp_bcast(write_uhu,ionode_id, world_comm)</span>
+<span class="lineNum">     224 </span><span class="lineCov">        204 :   CALL mp_bcast(write_uIu,ionode_id, world_comm) !ivo</span>
 <span class="lineNum">     225 </span>            :   ! end change Lopez, Thonhauser, Souza
 <span class="lineNum">     226 </span>            :   ! shc
-<span class="lineNum">     227 </span><span class="lineCov">         84 :   CALL mp_bcast(write_sHu,ionode_id, world_comm)</span>
-<span class="lineNum">     228 </span><span class="lineCov">         84 :   CALL mp_bcast(write_sIu,ionode_id, world_comm)</span>
+<span class="lineNum">     227 </span><span class="lineCov">        204 :   CALL mp_bcast(write_sHu,ionode_id, world_comm)</span>
+<span class="lineNum">     228 </span><span class="lineCov">        204 :   CALL mp_bcast(write_sIu,ionode_id, world_comm)</span>
 <span class="lineNum">     229 </span>            :   ! end shc
-<span class="lineNum">     230 </span><span class="lineCov">         84 :   CALL mp_bcast(write_spn,ionode_id, world_comm)</span>
-<span class="lineNum">     231 </span><span class="lineCov">         84 :   CALL mp_bcast(reduce_unk,ionode_id, world_comm)</span>
-<span class="lineNum">     232 </span><span class="lineCov">         84 :   CALL mp_bcast(write_unkg,ionode_id, world_comm)</span>
-<span class="lineNum">     233 </span><span class="lineCov">         84 :   CALL mp_bcast(write_dmn,ionode_id, world_comm)</span>
-<span class="lineNum">     234 </span><span class="lineCov">         84 :   CALL mp_bcast(read_sym,ionode_id, world_comm)</span>
-<span class="lineNum">     235 </span><span class="lineCov">         84 :   CALL mp_bcast(scdm_proj,ionode_id, world_comm)</span>
-<span class="lineNum">     236 </span><span class="lineCov">         84 :   CALL mp_bcast(scdm_entanglement,ionode_id, world_comm)</span>
-<span class="lineNum">     237 </span><span class="lineCov">         84 :   CALL mp_bcast(scdm_mu,ionode_id, world_comm)</span>
-<span class="lineNum">     238 </span><span class="lineCov">         84 :   CALL mp_bcast(scdm_sigma,ionode_id, world_comm)</span>
+<span class="lineNum">     230 </span><span class="lineCov">        204 :   CALL mp_bcast(write_spn,ionode_id, world_comm)</span>
+<span class="lineNum">     231 </span><span class="lineCov">        204 :   CALL mp_bcast(reduce_unk,ionode_id, world_comm)</span>
+<span class="lineNum">     232 </span><span class="lineCov">        204 :   CALL mp_bcast(write_unkg,ionode_id, world_comm)</span>
+<span class="lineNum">     233 </span><span class="lineCov">        204 :   CALL mp_bcast(write_dmn,ionode_id, world_comm)</span>
+<span class="lineNum">     234 </span><span class="lineCov">        204 :   CALL mp_bcast(read_sym,ionode_id, world_comm)</span>
+<span class="lineNum">     235 </span><span class="lineCov">        204 :   CALL mp_bcast(scdm_proj,ionode_id, world_comm)</span>
+<span class="lineNum">     236 </span><span class="lineCov">        204 :   CALL mp_bcast(scdm_entanglement,ionode_id, world_comm)</span>
+<span class="lineNum">     237 </span><span class="lineCov">        204 :   CALL mp_bcast(scdm_mu,ionode_id, world_comm)</span>
+<span class="lineNum">     238 </span><span class="lineCov">        204 :   CALL mp_bcast(scdm_sigma,ionode_id, world_comm)</span>
 <span class="lineNum">     239 </span>            :   !
 <span class="lineNum">     240 </span>            :   ! Check: kpoint distribution with pools not implemented
 <span class="lineNum">     241 </span>            :   !
-<span class="lineNum">     242 </span><span class="lineCov">         84 :   IF (npool &gt; 1) CALL errore('pw2wannier90', 'pools not implemented', npool)</span>
+<span class="lineNum">     242 </span><span class="lineCov">        204 :   IF (npool &gt; 1) CALL errore('pw2wannier90', 'pools not implemented', npool)</span>
 <span class="lineNum">     243 </span>            :   !
 <span class="lineNum">     244 </span>            :   ! Check: bands distribution not implemented
-<span class="lineNum">     245 </span><span class="lineCov">         84 :   IF (nbgrp &gt; 1) CALL errore('pw2wannier90', 'bands (-nb) not implemented', nbgrp)</span>
+<span class="lineNum">     245 </span><span class="lineCov">        204 :   IF (nbgrp &gt; 1) CALL errore('pw2wannier90', 'bands (-nb) not implemented', nbgrp)</span>
 <span class="lineNum">     246 </span>            :   !
 <span class="lineNum">     247 </span>            :   !   Now allocate space for pwscf variables, read and check them.
 <span class="lineNum">     248 </span>            :   !
-<span class="lineNum">     249 </span><span class="lineCov">         84 :   logwann = .true.</span>
-<span class="lineNum">     250 </span><span class="lineCov">         84 :   WRITE(stdout,*)</span>
-<span class="lineNum">     251 </span><span class="lineCov">         84 :   WRITE(stdout,*) ' Reading nscf_save data'</span>
-<span class="lineNum">     252 </span><span class="lineCov">         84 :   CALL read_file</span>
-<span class="lineNum">     253 </span><span class="lineCov">         84 :   WRITE(stdout,*)</span>
+<span class="lineNum">     249 </span><span class="lineCov">        204 :   logwann = .true.</span>
+<span class="lineNum">     250 </span><span class="lineCov">        204 :   WRITE(stdout,*)</span>
+<span class="lineNum">     251 </span><span class="lineCov">        204 :   WRITE(stdout,*) ' Reading nscf_save data'</span>
+<span class="lineNum">     252 </span><span class="lineCov">        204 :   CALL read_file</span>
+<span class="lineNum">     253 </span><span class="lineCov">        204 :   WRITE(stdout,*)</span>
 <span class="lineNum">     254 </span>            :   !
-<span class="lineNum">     255 </span><span class="lineCov">         84 :   IF (noncolin.and.gamma_only) CALL errore('pw2wannier90',&amp;</span>
+<span class="lineNum">     255 </span><span class="lineCov">        204 :   IF (noncolin.and.gamma_only) CALL errore('pw2wannier90',&amp;</span>
 <span class="lineNum">     256 </span><span class="lineNoCov">          0 :        'Non-collinear and gamma_only not implemented',1)</span>
-<span class="lineNum">     257 </span><span class="lineCov">         84 :   IF (gamma_only.and.scdm_proj) CALL errore('pw2wannier90',&amp;</span>
+<span class="lineNum">     257 </span><span class="lineCov">        204 :   IF (gamma_only.and.scdm_proj) CALL errore('pw2wannier90',&amp;</span>
 <span class="lineNum">     258 </span><span class="lineNoCov">          0 :        'Gamma_only and SCDM not implemented',1)</span>
-<span class="lineNum">     259 </span><span class="lineCov">         84 :   IF (scdm_proj) then</span>
+<span class="lineNum">     259 </span><span class="lineCov">        204 :   IF (scdm_proj) then</span>
 <span class="lineNum">     260 </span>            :     IF ((trim(scdm_entanglement) /= 'isolated') .AND. &amp;
 <span class="lineNum">     261 </span><span class="lineCov">         24 :         (trim(scdm_entanglement) /= 'erfc') .AND. &amp;</span>
 <span class="lineNum">     262 </span>            :         (trim(scdm_entanglement) /= 'gaussian')) then
@@ -327,53 +327,53 @@
 <span class="lineNum">     265 </span><span class="lineNoCov">          0 :                     //'Valid options are: isolated, erfc and gaussian')</span>
 <span class="lineNum">     266 </span>            :     ENDIF
 <span class="lineNum">     267 </span>            :   ENDIF
-<span class="lineNum">     268 </span><span class="lineCov">         84 :   IF (scdm_sigma &lt;= 0._dp) &amp;</span>
+<span class="lineNum">     268 </span><span class="lineCov">        204 :   IF (scdm_sigma &lt;= 0._dp) &amp;</span>
 <span class="lineNum">     269 </span><span class="lineNoCov">          0 :     call errore('pw2wannier90','Sigma in the SCDM method must be positive.')</span>
 <span class="lineNum">     270 </span>            :   !
-<span class="lineNum">     271 </span><span class="lineCov">         92 :   SELECT CASE ( trim( spin_component ) )</span>
+<span class="lineNum">     271 </span><span class="lineCov">        224 :   SELECT CASE ( trim( spin_component ) )</span>
 <span class="lineNum">     272 </span>            :   CASE ( 'up' )
-<span class="lineNum">     273 </span><span class="lineCov">          8 :      WRITE(stdout,*) ' Spin CASE ( up )'</span>
-<span class="lineNum">     274 </span><span class="lineCov">          8 :      ispinw  = 1</span>
-<span class="lineNum">     275 </span><span class="lineCov">          8 :      ikstart = 1</span>
-<span class="lineNum">     276 </span><span class="lineCov">          8 :      ikstop  = nkstot/2</span>
-<span class="lineNum">     277 </span><span class="lineCov">          8 :      iknum   = nkstot/2</span>
+<span class="lineNum">     273 </span><span class="lineCov">         20 :      WRITE(stdout,*) ' Spin CASE ( up )'</span>
+<span class="lineNum">     274 </span><span class="lineCov">         20 :      ispinw  = 1</span>
+<span class="lineNum">     275 </span><span class="lineCov">         20 :      ikstart = 1</span>
+<span class="lineNum">     276 </span><span class="lineCov">         20 :      ikstop  = nkstot/2</span>
+<span class="lineNum">     277 </span><span class="lineCov">         20 :      iknum   = nkstot/2</span>
 <span class="lineNum">     278 </span>            :   CASE ( 'down' )
-<span class="lineNum">     279 </span><span class="lineCov">          8 :      WRITE(stdout,*) ' Spin CASE ( down )'</span>
-<span class="lineNum">     280 </span><span class="lineCov">          8 :      ispinw = 2</span>
-<span class="lineNum">     281 </span><span class="lineCov">          8 :      ikstart = nkstot/2 + 1</span>
-<span class="lineNum">     282 </span><span class="lineCov">          8 :      ikstop  = nkstot</span>
-<span class="lineNum">     283 </span><span class="lineCov">          8 :      iknum   = nkstot/2</span>
+<span class="lineNum">     279 </span><span class="lineCov">         20 :      WRITE(stdout,*) ' Spin CASE ( down )'</span>
+<span class="lineNum">     280 </span><span class="lineCov">         20 :      ispinw = 2</span>
+<span class="lineNum">     281 </span><span class="lineCov">         20 :      ikstart = nkstot/2 + 1</span>
+<span class="lineNum">     282 </span><span class="lineCov">         20 :      ikstop  = nkstot</span>
+<span class="lineNum">     283 </span><span class="lineCov">         20 :      iknum   = nkstot/2</span>
 <span class="lineNum">     284 </span>            :   CASE DEFAULT
-<span class="lineNum">     285 </span><span class="lineCov">         68 :      IF(noncolin) THEN</span>
-<span class="lineNum">     286 </span><span class="lineCov">         20 :         WRITE(stdout,*) ' Spin CASE ( non-collinear )'</span>
+<span class="lineNum">     285 </span><span class="lineCov">        164 :      IF(noncolin) THEN</span>
+<span class="lineNum">     286 </span><span class="lineCov">        100 :         WRITE(stdout,*) ' Spin CASE ( non-collinear )'</span>
 <span class="lineNum">     287 </span>            :      ELSE
-<span class="lineNum">     288 </span><span class="lineCov">         48 :         WRITE(stdout,*) ' Spin CASE ( default = unpolarized )'</span>
+<span class="lineNum">     288 </span><span class="lineCov">         64 :         WRITE(stdout,*) ' Spin CASE ( default = unpolarized )'</span>
 <span class="lineNum">     289 </span>            :      ENDIF
-<span class="lineNum">     290 </span><span class="lineCov">         68 :      ispinw = 0</span>
-<span class="lineNum">     291 </span><span class="lineCov">         68 :      ikstart = 1</span>
-<span class="lineNum">     292 </span><span class="lineCov">         68 :      ikstop  = nkstot</span>
-<span class="lineNum">     293 </span><span class="lineCov">        152 :      iknum   = nkstot</span>
+<span class="lineNum">     290 </span><span class="lineCov">        164 :      ispinw = 0</span>
+<span class="lineNum">     291 </span><span class="lineCov">        164 :      ikstart = 1</span>
+<span class="lineNum">     292 </span><span class="lineCov">        164 :      ikstop  = nkstot</span>
+<span class="lineNum">     293 </span><span class="lineCov">        368 :      iknum   = nkstot</span>
 <span class="lineNum">     294 </span>            :   END SELECT
 <span class="lineNum">     295 </span>            :   !
-<span class="lineNum">     296 </span><span class="lineCov">         84 :   CALL stop_clock( 'init_pw2wan' )</span>
+<span class="lineNum">     296 </span><span class="lineCov">        204 :   CALL stop_clock( 'init_pw2wan' )</span>
 <span class="lineNum">     297 </span>            :   !
-<span class="lineNum">     298 </span><span class="lineCov">         84 :   WRITE(stdout,*)</span>
-<span class="lineNum">     299 </span><span class="lineCov">         84 :   WRITE(stdout,*) ' Wannier mode is: ',wan_mode</span>
-<span class="lineNum">     300 </span><span class="lineCov">         84 :   WRITE(stdout,*)</span>
+<span class="lineNum">     298 </span><span class="lineCov">        204 :   WRITE(stdout,*)</span>
+<span class="lineNum">     299 </span><span class="lineCov">        204 :   WRITE(stdout,*) ' Wannier mode is: ',wan_mode</span>
+<span class="lineNum">     300 </span><span class="lineCov">        204 :   WRITE(stdout,*)</span>
 <span class="lineNum">     301 </span>            :   !
-<span class="lineNum">     302 </span><span class="lineCov">         84 :   IF(wan_mode=='standalone') THEN</span>
+<span class="lineNum">     302 </span><span class="lineCov">        204 :   IF(wan_mode=='standalone') THEN</span>
 <span class="lineNum">     303 </span>            :      !
-<span class="lineNum">     304 </span><span class="lineCov">         84 :      WRITE(stdout,*) ' -----------------'</span>
-<span class="lineNum">     305 </span><span class="lineCov">         84 :      WRITE(stdout,*) ' *** Reading nnkp '</span>
-<span class="lineNum">     306 </span><span class="lineCov">         84 :      WRITE(stdout,*) ' -----------------'</span>
-<span class="lineNum">     307 </span><span class="lineCov">         84 :      WRITE(stdout,*)</span>
-<span class="lineNum">     308 </span><span class="lineCov">         84 :      CALL read_nnkp</span>
-<span class="lineNum">     309 </span><span class="lineCov">         84 :      WRITE(stdout,*) ' Opening pp-files '</span>
-<span class="lineNum">     310 </span><span class="lineCov">         84 :      CALL openfil_pp</span>
-<span class="lineNum">     311 </span><span class="lineCov">         84 :      CALL ylm_expansion</span>
-<span class="lineNum">     312 </span><span class="lineCov">         84 :      WRITE(stdout,*)</span>
-<span class="lineNum">     313 </span><span class="lineCov">         84 :      WRITE(stdout,*)</span>
-<span class="lineNum">     314 </span><span class="lineCov">         84 :      if(write_dmn)then</span>
+<span class="lineNum">     304 </span><span class="lineCov">        204 :      WRITE(stdout,*) ' -----------------'</span>
+<span class="lineNum">     305 </span><span class="lineCov">        204 :      WRITE(stdout,*) ' *** Reading nnkp '</span>
+<span class="lineNum">     306 </span><span class="lineCov">        204 :      WRITE(stdout,*) ' -----------------'</span>
+<span class="lineNum">     307 </span><span class="lineCov">        204 :      WRITE(stdout,*)</span>
+<span class="lineNum">     308 </span><span class="lineCov">        204 :      CALL read_nnkp</span>
+<span class="lineNum">     309 </span><span class="lineCov">        204 :      WRITE(stdout,*) ' Opening pp-files '</span>
+<span class="lineNum">     310 </span><span class="lineCov">        204 :      CALL openfil_pp</span>
+<span class="lineNum">     311 </span><span class="lineCov">        204 :      CALL ylm_expansion</span>
+<span class="lineNum">     312 </span><span class="lineCov">        204 :      WRITE(stdout,*)</span>
+<span class="lineNum">     313 </span><span class="lineCov">        204 :      WRITE(stdout,*)</span>
+<span class="lineNum">     314 </span><span class="lineCov">        204 :      if(write_dmn)then</span>
 <span class="lineNum">     315 </span><span class="lineCov">          8 :         WRITE(stdout,*) ' ----------------'</span>
 <span class="lineNum">     316 </span><span class="lineCov">          8 :         WRITE(stdout,*) ' *** Compute DMN '</span>
 <span class="lineNum">     317 </span><span class="lineCov">          8 :         WRITE(stdout,*) ' ----------------'</span>
@@ -381,7 +381,7 @@
 <span class="lineNum">     319 </span><span class="lineCov">          8 :         CALL compute_dmn !YN:</span>
 <span class="lineNum">     320 </span><span class="lineCov">          8 :         WRITE(stdout,*)</span>
 <span class="lineNum">     321 </span>            :      end if
-<span class="lineNum">     322 </span><span class="lineCov">         84 :      IF(write_amn) THEN</span>
+<span class="lineNum">     322 </span><span class="lineCov">        204 :      IF(write_amn) THEN</span>
 <span class="lineNum">     323 </span><span class="lineCov">         60 :         IF(scdm_proj) THEN</span>
 <span class="lineNum">     324 </span><span class="lineCov">         24 :            WRITE(stdout,*) ' --------------------------'</span>
 <span class="lineNum">     325 </span><span class="lineCov">         24 :            WRITE(stdout,*) ' *** Compute  A with SCDM-k'</span>
@@ -401,12 +401,12 @@
 <span class="lineNum">     339 </span>            :         ENDIF
 <span class="lineNum">     340 </span><span class="lineCov">         60 :         WRITE(stdout,*)</span>
 <span class="lineNum">     341 </span>            :      ELSE
-<span class="lineNum">     342 </span><span class="lineCov">         24 :         WRITE(stdout,*) ' -----------------------------'</span>
-<span class="lineNum">     343 </span><span class="lineCov">         24 :         WRITE(stdout,*) ' *** A matrix is not computed '</span>
-<span class="lineNum">     344 </span><span class="lineCov">         24 :         WRITE(stdout,*) ' -----------------------------'</span>
-<span class="lineNum">     345 </span><span class="lineCov">         24 :         WRITE(stdout,*)</span>
+<span class="lineNum">     342 </span><span class="lineCov">        144 :         WRITE(stdout,*) ' -----------------------------'</span>
+<span class="lineNum">     343 </span><span class="lineCov">        144 :         WRITE(stdout,*) ' *** A matrix is not computed '</span>
+<span class="lineNum">     344 </span><span class="lineCov">        144 :         WRITE(stdout,*) ' -----------------------------'</span>
+<span class="lineNum">     345 </span><span class="lineCov">        144 :         WRITE(stdout,*)</span>
 <span class="lineNum">     346 </span>            :      ENDIF
-<span class="lineNum">     347 </span><span class="lineCov">         84 :      IF(write_mmn) THEN</span>
+<span class="lineNum">     347 </span><span class="lineCov">        204 :      IF(write_mmn) THEN</span>
 <span class="lineNum">     348 </span><span class="lineCov">         40 :         WRITE(stdout,*) ' ---------------'</span>
 <span class="lineNum">     349 </span><span class="lineCov">         40 :         WRITE(stdout,*) ' *** Compute  M '</span>
 <span class="lineNum">     350 </span><span class="lineCov">         40 :         WRITE(stdout,*) ' ---------------'</span>
@@ -414,13 +414,13 @@
 <span class="lineNum">     352 </span><span class="lineCov">         40 :         CALL compute_mmn</span>
 <span class="lineNum">     353 </span><span class="lineCov">         40 :         WRITE(stdout,*)</span>
 <span class="lineNum">     354 </span>            :      ELSE
-<span class="lineNum">     355 </span><span class="lineCov">         44 :         WRITE(stdout,*) ' -----------------------------'</span>
-<span class="lineNum">     356 </span><span class="lineCov">         44 :         WRITE(stdout,*) ' *** M matrix is not computed '</span>
-<span class="lineNum">     357 </span><span class="lineCov">         44 :         WRITE(stdout,*) ' -----------------------------'</span>
-<span class="lineNum">     358 </span><span class="lineCov">         44 :         WRITE(stdout,*)</span>
+<span class="lineNum">     355 </span><span class="lineCov">        164 :         WRITE(stdout,*) ' -----------------------------'</span>
+<span class="lineNum">     356 </span><span class="lineCov">        164 :         WRITE(stdout,*) ' *** M matrix is not computed '</span>
+<span class="lineNum">     357 </span><span class="lineCov">        164 :         WRITE(stdout,*) ' -----------------------------'</span>
+<span class="lineNum">     358 </span><span class="lineCov">        164 :         WRITE(stdout,*)</span>
 <span class="lineNum">     359 </span>            :      ENDIF
-<span class="lineNum">     360 </span><span class="lineCov">         84 :      if(noncolin) then</span>
-<span class="lineNum">     361 </span><span class="lineCov">         20 :         IF(write_spn) THEN</span>
+<span class="lineNum">     360 </span><span class="lineCov">        204 :      if(noncolin) then</span>
+<span class="lineNum">     361 </span><span class="lineCov">        100 :         IF(write_spn) THEN</span>
 <span class="lineNum">     362 </span><span class="lineCov">         16 :            WRITE(stdout,*) ' ------------------'</span>
 <span class="lineNum">     363 </span><span class="lineCov">         16 :            WRITE(stdout,*) ' *** Compute  Spin '</span>
 <span class="lineNum">     364 </span><span class="lineCov">         16 :            WRITE(stdout,*) ' ------------------'</span>
@@ -428,19 +428,19 @@
 <span class="lineNum">     366 </span><span class="lineCov">         16 :            CALL compute_spin</span>
 <span class="lineNum">     367 </span><span class="lineCov">         16 :            WRITE(stdout,*)</span>
 <span class="lineNum">     368 </span>            :         ELSE
-<span class="lineNum">     369 </span><span class="lineCov">          4 :            WRITE(stdout,*) ' --------------------------------'</span>
-<span class="lineNum">     370 </span><span class="lineCov">          4 :            WRITE(stdout,*) ' *** Spin matrix is not computed '</span>
-<span class="lineNum">     371 </span><span class="lineCov">          4 :            WRITE(stdout,*) ' --------------------------------'</span>
-<span class="lineNum">     372 </span><span class="lineCov">          4 :            WRITE(stdout,*)</span>
+<span class="lineNum">     369 </span><span class="lineCov">         84 :            WRITE(stdout,*) ' --------------------------------'</span>
+<span class="lineNum">     370 </span><span class="lineCov">         84 :            WRITE(stdout,*) ' *** Spin matrix is not computed '</span>
+<span class="lineNum">     371 </span><span class="lineCov">         84 :            WRITE(stdout,*) ' --------------------------------'</span>
+<span class="lineNum">     372 </span><span class="lineCov">         84 :            WRITE(stdout,*)</span>
 <span class="lineNum">     373 </span>            :         ENDIF
-<span class="lineNum">     374 </span><span class="lineCov">         64 :      elseif(write_spn) then</span>
+<span class="lineNum">     374 </span><span class="lineCov">        104 :      elseif(write_spn) then</span>
 <span class="lineNum">     375 </span><span class="lineNoCov">          0 :         write(stdout,*) ' -----------------------------------'</span>
 <span class="lineNum">     376 </span><span class="lineNoCov">          0 :         write(stdout,*) ' *** Non-collinear calculation is   '</span>
 <span class="lineNum">     377 </span><span class="lineNoCov">          0 :         write(stdout,*) '     required for spin              '</span>
 <span class="lineNum">     378 </span><span class="lineNoCov">          0 :         write(stdout,*) '     term  to be computed           '</span>
 <span class="lineNum">     379 </span><span class="lineNoCov">          0 :         write(stdout,*) ' -----------------------------------'</span>
 <span class="lineNum">     380 </span>            :      endif
-<span class="lineNum">     381 </span><span class="lineCov">         84 :      IF(write_uHu.or.write_uIu) THEN</span>
+<span class="lineNum">     381 </span><span class="lineCov">        204 :      IF(write_uHu.or.write_uIu) THEN</span>
 <span class="lineNum">     382 </span><span class="lineCov">         20 :         WRITE(stdout,*) ' ----------------'</span>
 <span class="lineNum">     383 </span><span class="lineCov">         20 :         WRITE(stdout,*) ' *** Compute Orb '</span>
 <span class="lineNum">     384 </span><span class="lineCov">         20 :         WRITE(stdout,*) ' ----------------'</span>
@@ -448,12 +448,12 @@
 <span class="lineNum">     386 </span><span class="lineCov">         20 :         CALL compute_orb</span>
 <span class="lineNum">     387 </span><span class="lineCov">         20 :         WRITE(stdout,*)</span>
 <span class="lineNum">     388 </span>            :      ELSE
-<span class="lineNum">     389 </span><span class="lineCov">         64 :         WRITE(stdout,*) ' -----------------------------------'</span>
-<span class="lineNum">     390 </span><span class="lineCov">         64 :         WRITE(stdout,*) ' *** Orbital terms are not computed '</span>
-<span class="lineNum">     391 </span><span class="lineCov">         64 :         WRITE(stdout,*) ' -----------------------------------'</span>
-<span class="lineNum">     392 </span><span class="lineCov">         64 :         WRITE(stdout,*)</span>
+<span class="lineNum">     389 </span><span class="lineCov">        184 :         WRITE(stdout,*) ' -----------------------------------'</span>
+<span class="lineNum">     390 </span><span class="lineCov">        184 :         WRITE(stdout,*) ' *** Orbital terms are not computed '</span>
+<span class="lineNum">     391 </span><span class="lineCov">        184 :         WRITE(stdout,*) ' -----------------------------------'</span>
+<span class="lineNum">     392 </span><span class="lineCov">        184 :         WRITE(stdout,*)</span>
 <span class="lineNum">     393 </span>            :      ENDIF
-<span class="lineNum">     394 </span><span class="lineCov">         84 :      IF(write_sHu.or.write_sIu) THEN</span>
+<span class="lineNum">     394 </span><span class="lineCov">        204 :      IF(write_sHu.or.write_sIu) THEN</span>
 <span class="lineNum">     395 </span><span class="lineCov">          8 :         WRITE(stdout,*) ' ----------------'</span>
 <span class="lineNum">     396 </span><span class="lineCov">          8 :         WRITE(stdout,*) ' *** Compute shc '</span>
 <span class="lineNum">     397 </span><span class="lineCov">          8 :         WRITE(stdout,*) ' ----------------'</span>
@@ -461,38 +461,38 @@
 <span class="lineNum">     399 </span><span class="lineCov">          8 :         CALL compute_shc</span>
 <span class="lineNum">     400 </span><span class="lineCov">          8 :         WRITE(stdout,*)</span>
 <span class="lineNum">     401 </span>            :      ELSE
-<span class="lineNum">     402 </span><span class="lineCov">         76 :         WRITE(stdout,*) ' -----------------------------------'</span>
-<span class="lineNum">     403 </span><span class="lineCov">         76 :         WRITE(stdout,*) ' *** SHC terms are not computed '</span>
-<span class="lineNum">     404 </span><span class="lineCov">         76 :         WRITE(stdout,*) ' -----------------------------------'</span>
-<span class="lineNum">     405 </span><span class="lineCov">         76 :         WRITE(stdout,*)</span>
+<span class="lineNum">     402 </span><span class="lineCov">        196 :         WRITE(stdout,*) ' -----------------------------------'</span>
+<span class="lineNum">     403 </span><span class="lineCov">        196 :         WRITE(stdout,*) ' *** SHC terms are not computed '</span>
+<span class="lineNum">     404 </span><span class="lineCov">        196 :         WRITE(stdout,*) ' -----------------------------------'</span>
+<span class="lineNum">     405 </span><span class="lineCov">        196 :         WRITE(stdout,*)</span>
 <span class="lineNum">     406 </span>            :      ENDIF
-<span class="lineNum">     407 </span><span class="lineCov">         84 :      IF(write_eig) THEN</span>
-<span class="lineNum">     408 </span><span class="lineCov">         76 :         WRITE(stdout,*) ' ----------------'</span>
-<span class="lineNum">     409 </span><span class="lineCov">         76 :         WRITE(stdout,*) ' *** Write bands '</span>
-<span class="lineNum">     410 </span><span class="lineCov">         76 :         WRITE(stdout,*) ' ----------------'</span>
-<span class="lineNum">     411 </span><span class="lineCov">         76 :         WRITE(stdout,*)</span>
-<span class="lineNum">     412 </span><span class="lineCov">         76 :      CALL write_band</span>
-<span class="lineNum">     413 </span><span class="lineCov">         76 :         WRITE(stdout,*)</span>
+<span class="lineNum">     407 </span><span class="lineCov">        204 :      IF(write_eig) THEN</span>
+<span class="lineNum">     408 </span><span class="lineCov">        196 :         WRITE(stdout,*) ' ----------------'</span>
+<span class="lineNum">     409 </span><span class="lineCov">        196 :         WRITE(stdout,*) ' *** Write bands '</span>
+<span class="lineNum">     410 </span><span class="lineCov">        196 :         WRITE(stdout,*) ' ----------------'</span>
+<span class="lineNum">     411 </span><span class="lineCov">        196 :         WRITE(stdout,*)</span>
+<span class="lineNum">     412 </span><span class="lineCov">        196 :      CALL write_band</span>
+<span class="lineNum">     413 </span><span class="lineCov">        196 :         WRITE(stdout,*)</span>
 <span class="lineNum">     414 </span>            :      ELSE
 <span class="lineNum">     415 </span><span class="lineCov">          8 :         WRITE(stdout,*) ' --------------------------'</span>
 <span class="lineNum">     416 </span><span class="lineCov">          8 :         WRITE(stdout,*) ' *** Bands are not written '</span>
 <span class="lineNum">     417 </span><span class="lineCov">          8 :         WRITE(stdout,*) ' --------------------------'</span>
 <span class="lineNum">     418 </span><span class="lineCov">          8 :         WRITE(stdout,*)</span>
 <span class="lineNum">     419 </span>            :      ENDIF
-<span class="lineNum">     420 </span><span class="lineCov">         84 :      IF(write_unk) THEN</span>
-<span class="lineNum">     421 </span><span class="lineCov">         16 :         WRITE(stdout,*) ' --------------------'</span>
-<span class="lineNum">     422 </span><span class="lineCov">         16 :         WRITE(stdout,*) ' *** Write plot info '</span>
-<span class="lineNum">     423 </span><span class="lineCov">         16 :         WRITE(stdout,*) ' --------------------'</span>
-<span class="lineNum">     424 </span><span class="lineCov">         16 :         WRITE(stdout,*)</span>
-<span class="lineNum">     425 </span><span class="lineCov">         16 :         CALL write_plot</span>
-<span class="lineNum">     426 </span><span class="lineCov">         16 :         WRITE(stdout,*)</span>
+<span class="lineNum">     420 </span><span class="lineCov">        204 :      IF(write_unk) THEN</span>
+<span class="lineNum">     421 </span><span class="lineCov">        136 :         WRITE(stdout,*) ' --------------------'</span>
+<span class="lineNum">     422 </span><span class="lineCov">        136 :         WRITE(stdout,*) ' *** Write plot info '</span>
+<span class="lineNum">     423 </span><span class="lineCov">        136 :         WRITE(stdout,*) ' --------------------'</span>
+<span class="lineNum">     424 </span><span class="lineCov">        136 :         WRITE(stdout,*)</span>
+<span class="lineNum">     425 </span><span class="lineCov">        136 :         CALL write_plot</span>
+<span class="lineNum">     426 </span><span class="lineCov">        136 :         WRITE(stdout,*)</span>
 <span class="lineNum">     427 </span>            :      ELSE
 <span class="lineNum">     428 </span><span class="lineCov">         68 :         WRITE(stdout,*) ' -----------------------------'</span>
 <span class="lineNum">     429 </span><span class="lineCov">         68 :         WRITE(stdout,*) ' *** Plot info is not printed '</span>
 <span class="lineNum">     430 </span><span class="lineCov">         68 :         WRITE(stdout,*) ' -----------------------------'</span>
 <span class="lineNum">     431 </span><span class="lineCov">         68 :         WRITE(stdout,*)</span>
 <span class="lineNum">     432 </span>            :      ENDIF
-<span class="lineNum">     433 </span><span class="lineCov">         84 :      IF(write_unkg) THEN</span>
+<span class="lineNum">     433 </span><span class="lineCov">        204 :      IF(write_unkg) THEN</span>
 <span class="lineNum">     434 </span><span class="lineCov">         16 :         WRITE(stdout,*) ' --------------------'</span>
 <span class="lineNum">     435 </span><span class="lineCov">         16 :         WRITE(stdout,*) ' *** Write parity info '</span>
 <span class="lineNum">     436 </span><span class="lineCov">         16 :         WRITE(stdout,*) ' --------------------'</span>
@@ -500,28 +500,28 @@
 <span class="lineNum">     438 </span><span class="lineCov">         16 :         CALL write_parity</span>
 <span class="lineNum">     439 </span><span class="lineCov">         16 :         WRITE(stdout,*)</span>
 <span class="lineNum">     440 </span>            :      ELSE
-<span class="lineNum">     441 </span><span class="lineCov">         68 :         WRITE(stdout,*) ' -----------------------------'</span>
-<span class="lineNum">     442 </span><span class="lineCov">         68 :         WRITE(stdout,*) ' *** Parity info is not printed '</span>
-<span class="lineNum">     443 </span><span class="lineCov">         68 :         WRITE(stdout,*) ' -----------------------------'</span>
-<span class="lineNum">     444 </span><span class="lineCov">         68 :         WRITE(stdout,*)</span>
+<span class="lineNum">     441 </span><span class="lineCov">        188 :         WRITE(stdout,*) ' -----------------------------'</span>
+<span class="lineNum">     442 </span><span class="lineCov">        188 :         WRITE(stdout,*) ' *** Parity info is not printed '</span>
+<span class="lineNum">     443 </span><span class="lineCov">        188 :         WRITE(stdout,*) ' -----------------------------'</span>
+<span class="lineNum">     444 </span><span class="lineCov">        188 :         WRITE(stdout,*)</span>
 <span class="lineNum">     445 </span>            :      ENDIF
-<span class="lineNum">     446 </span><span class="lineCov">         84 :      WRITE(stdout,*) ' ------------'</span>
-<span class="lineNum">     447 </span><span class="lineCov">         84 :      WRITE(stdout,*) ' *** Stop pp '</span>
-<span class="lineNum">     448 </span><span class="lineCov">         84 :      WRITE(stdout,*) ' ------------'</span>
-<span class="lineNum">     449 </span><span class="lineCov">         84 :      WRITE(stdout,*)</span>
+<span class="lineNum">     446 </span><span class="lineCov">        204 :      WRITE(stdout,*) ' ------------'</span>
+<span class="lineNum">     447 </span><span class="lineCov">        204 :      WRITE(stdout,*) ' *** Stop pp '</span>
+<span class="lineNum">     448 </span><span class="lineCov">        204 :      WRITE(stdout,*) ' ------------'</span>
+<span class="lineNum">     449 </span><span class="lineCov">        204 :      WRITE(stdout,*)</span>
 <span class="lineNum">     450 </span>            :      !
-<span class="lineNum">     451 </span><span class="lineCov">         84 :      IF ( ionode ) WRITE( stdout, *  )</span>
-<span class="lineNum">     452 </span><span class="lineCov">         84 :      CALL print_clock( 'init_pw2wan' )</span>
-<span class="lineNum">     453 </span><span class="lineCov">         84 :      if(write_dmn  )  CALL print_clock( 'compute_dmn'  )!YN:</span>
-<span class="lineNum">     454 </span><span class="lineCov">         84 :      IF(write_amn  )  CALL print_clock( 'compute_amn'  )</span>
-<span class="lineNum">     455 </span><span class="lineCov">         84 :      IF(write_mmn  )  CALL print_clock( 'compute_mmn'  )</span>
-<span class="lineNum">     456 </span><span class="lineCov">         84 :      IF(write_sHu .OR. write_sIu) CALL print_clock( 'compute_shc'  )</span>
-<span class="lineNum">     457 </span><span class="lineCov">         84 :      IF(write_unk  )  CALL print_clock( 'write_unk'    )</span>
-<span class="lineNum">     458 </span><span class="lineCov">         84 :      IF(write_unkg )  CALL print_clock( 'write_parity' )</span>
+<span class="lineNum">     451 </span><span class="lineCov">        204 :      IF ( ionode ) WRITE( stdout, *  )</span>
+<span class="lineNum">     452 </span><span class="lineCov">        204 :      CALL print_clock( 'init_pw2wan' )</span>
+<span class="lineNum">     453 </span><span class="lineCov">        204 :      if(write_dmn  )  CALL print_clock( 'compute_dmn'  )!YN:</span>
+<span class="lineNum">     454 </span><span class="lineCov">        204 :      IF(write_amn  )  CALL print_clock( 'compute_amn'  )</span>
+<span class="lineNum">     455 </span><span class="lineCov">        204 :      IF(write_mmn  )  CALL print_clock( 'compute_mmn'  )</span>
+<span class="lineNum">     456 </span><span class="lineCov">        204 :      IF(write_sHu .OR. write_sIu) CALL print_clock( 'compute_shc'  )</span>
+<span class="lineNum">     457 </span><span class="lineCov">        204 :      IF(write_unk  )  CALL print_clock( 'write_unk'    )</span>
+<span class="lineNum">     458 </span><span class="lineCov">        204 :      IF(write_unkg )  CALL print_clock( 'write_parity' )</span>
 <span class="lineNum">     459 </span>            :      ! not sure if this should be called also in 'library' mode or not !!
-<span class="lineNum">     460 </span><span class="lineCov">         84 :      CALL environment_end ( 'PW2WANNIER' )</span>
-<span class="lineNum">     461 </span><span class="lineCov">         84 :      IF ( ionode ) WRITE( stdout, *  )</span>
-<span class="lineNum">     462 </span><span class="lineCov">         84 :      CALL stop_pp</span>
+<span class="lineNum">     460 </span><span class="lineCov">        204 :      CALL environment_end ( 'PW2WANNIER' )</span>
+<span class="lineNum">     461 </span><span class="lineCov">        204 :      IF ( ionode ) WRITE( stdout, *  )</span>
+<span class="lineNum">     462 </span><span class="lineCov">        204 :      CALL stop_pp</span>
 <span class="lineNum">     463 </span>            :      !
 <span class="lineNum">     464 </span>            :   ENDIF
 <span class="lineNum">     465 </span>            :   !
@@ -864,7 +864,7 @@
 <span class="lineNum">     802 </span>            : END SUBROUTINE find_mp_grid
 <a name="803"><span class="lineNum">     803 </span>            : !-----------------------------------------------------------------------</a>
 <span class="lineNum">     804 </span>            : !
-<span class="lineNum">     805 </span><span class="lineCov">         84 : SUBROUTINE read_nnkp</span>
+<span class="lineNum">     805 </span><span class="lineCov">        204 : SUBROUTINE read_nnkp</span>
 <span class="lineNum">     806 </span>            :   !-----------------------------------------------------------------------
 <span class="lineNum">     807 </span>            :   !
 <span class="lineNum">     808 </span>            :   USE io_global, ONLY : stdout, ionode, ionode_id
@@ -887,94 +887,94 @@
 <span class="lineNum">     825 </span>            :   real(DP) :: g_(3), gg_
 <span class="lineNum">     826 </span>            :   INTEGER :: ik, ib, ig, ipol, iw, idum, indexb
 <span class="lineNum">     827 </span>            :   INTEGER numk, i, j
-<span class="lineNum">     828 </span><span class="lineCov">         84 :   INTEGER, ALLOCATABLE :: ig_check(:,:)</span>
+<span class="lineNum">     828 </span><span class="lineCov">        204 :   INTEGER, ALLOCATABLE :: ig_check(:,:)</span>
 <span class="lineNum">     829 </span>            :   real(DP) :: xx(3), xnorm, znorm, coseno
 <span class="lineNum">     830 </span>            :   LOGICAL :: have_nnkp,found
 <span class="lineNum">     831 </span>            :   INTEGER :: tmp_auto ! vv: Needed for the selection of projections with SCDM
 <span class="lineNum">     832 </span>            : 
-<span class="lineNum">     833 </span><span class="lineCov">         84 :   IF (ionode) THEN  ! Read nnkp file on ionode only</span>
+<span class="lineNum">     833 </span><span class="lineCov">        204 :   IF (ionode) THEN  ! Read nnkp file on ionode only</span>
 <span class="lineNum">     834 </span>            : 
-<span class="lineNum">     835 </span><span class="lineCov">         21 :      INQUIRE(file=trim(seedname)//&quot;.nnkp&quot;,exist=have_nnkp)</span>
-<span class="lineNum">     836 </span><span class="lineCov">         21 :      IF(.not. have_nnkp) THEN</span>
+<span class="lineNum">     835 </span><span class="lineCov">         51 :      INQUIRE(file=trim(seedname)//&quot;.nnkp&quot;,exist=have_nnkp)</span>
+<span class="lineNum">     836 </span><span class="lineCov">         51 :      IF(.not. have_nnkp) THEN</span>
 <span class="lineNum">     837 </span>            :         CALL errore( 'pw2wannier90', 'Could not find the file '&amp;
 <span class="lineNum">     838 </span><span class="lineNoCov">          0 :            &amp;//trim(seedname)//'.nnkp', 1 )</span>
 <span class="lineNum">     839 </span>            :      ENDIF
 <span class="lineNum">     840 </span>            : 
-<span class="lineNum">     841 </span><span class="lineCov">         21 :      iun_nnkp = find_free_unit()</span>
-<span class="lineNum">     842 </span><span class="lineCov">         21 :      OPEN (unit=iun_nnkp, file=trim(seedname)//&quot;.nnkp&quot;,form='formatted', status=&quot;old&quot;)</span>
+<span class="lineNum">     841 </span><span class="lineCov">         51 :      iun_nnkp = find_free_unit()</span>
+<span class="lineNum">     842 </span><span class="lineCov">         51 :      OPEN (unit=iun_nnkp, file=trim(seedname)//&quot;.nnkp&quot;,form='formatted', status=&quot;old&quot;)</span>
 <span class="lineNum">     843 </span>            : 
 <span class="lineNum">     844 </span>            :   ENDIF
 <span class="lineNum">     845 </span>            : 
-<span class="lineNum">     846 </span><span class="lineCov">         84 :   nnbx=0</span>
+<span class="lineNum">     846 </span><span class="lineCov">        204 :   nnbx=0</span>
 <span class="lineNum">     847 </span>            : 
 <span class="lineNum">     848 </span>            :   !   check the information from *.nnkp with the nscf_save data
-<span class="lineNum">     849 </span><span class="lineCov">         84 :   WRITE(stdout,*) ' Checking info from wannier.nnkp file'</span>
-<span class="lineNum">     850 </span><span class="lineCov">         84 :   WRITE(stdout,*)</span>
+<span class="lineNum">     849 </span><span class="lineCov">        204 :   WRITE(stdout,*) ' Checking info from wannier.nnkp file'</span>
+<span class="lineNum">     850 </span><span class="lineCov">        204 :   WRITE(stdout,*)</span>
 <span class="lineNum">     851 </span>            : 
-<span class="lineNum">     852 </span><span class="lineCov">         84 :   IF (ionode) THEN   ! read from ionode only</span>
+<span class="lineNum">     852 </span><span class="lineCov">        204 :   IF (ionode) THEN   ! read from ionode only</span>
 <span class="lineNum">     853 </span>            : 
-<span class="lineNum">     854 </span><span class="lineCov">         21 :      CALL scan_file_to('real_lattice',found)</span>
-<span class="lineNum">     855 </span><span class="lineCov">         21 :      if(.not.found) then</span>
+<span class="lineNum">     854 </span><span class="lineCov">         51 :      CALL scan_file_to('real_lattice',found)</span>
+<span class="lineNum">     855 </span><span class="lineCov">         51 :      if(.not.found) then</span>
 <span class="lineNum">     856 </span>            :         CALL errore( 'pw2wannier90', 'Could not find real_lattice block in '&amp;
 <span class="lineNum">     857 </span><span class="lineNoCov">          0 :            &amp;//trim(seedname)//'.nnkp', 1 )</span>
 <span class="lineNum">     858 </span>            :      endif
-<span class="lineNum">     859 </span><span class="lineCov">        147 :      DO j=1,3</span>
-<span class="lineNum">     860 </span><span class="lineCov">         63 :         READ(iun_nnkp,*) (rlatt(i,j),i=1,3)</span>
-<span class="lineNum">     861 </span><span class="lineCov">        273 :         DO i = 1,3</span>
-<span class="lineNum">     862 </span><span class="lineCov">        252 :            rlatt(i,j) = rlatt(i,j)/(alat*bohr)</span>
+<span class="lineNum">     859 </span><span class="lineCov">        357 :      DO j=1,3</span>
+<span class="lineNum">     860 </span><span class="lineCov">        153 :         READ(iun_nnkp,*) (rlatt(i,j),i=1,3)</span>
+<span class="lineNum">     861 </span><span class="lineCov">        663 :         DO i = 1,3</span>
+<span class="lineNum">     862 </span><span class="lineCov">        612 :            rlatt(i,j) = rlatt(i,j)/(alat*bohr)</span>
 <span class="lineNum">     863 </span>            :         ENDDO
 <span class="lineNum">     864 </span>            :      ENDDO
-<span class="lineNum">     865 </span><span class="lineCov">        147 :      DO j=1,3</span>
-<span class="lineNum">     866 </span><span class="lineCov">        273 :         DO i=1,3</span>
-<span class="lineNum">     867 </span><span class="lineCov">        252 :            IF(abs(rlatt(i,j)-at(i,j))&gt;eps6) THEN</span>
+<span class="lineNum">     865 </span><span class="lineCov">        357 :      DO j=1,3</span>
+<span class="lineNum">     866 </span><span class="lineCov">        663 :         DO i=1,3</span>
+<span class="lineNum">     867 </span><span class="lineCov">        612 :            IF(abs(rlatt(i,j)-at(i,j))&gt;eps6) THEN</span>
 <span class="lineNum">     868 </span><span class="lineNoCov">          0 :               WRITE(stdout,*)  ' Something wrong! '</span>
 <span class="lineNum">     869 </span><span class="lineNoCov">          0 :               WRITE(stdout,*)  ' rlatt(i,j) =',rlatt(i,j),  ' at(i,j)=',at(i,j)</span>
 <span class="lineNum">     870 </span><span class="lineNoCov">          0 :               CALL errore( 'pw2wannier90', 'Direct lattice mismatch', 3*j+i )</span>
 <span class="lineNum">     871 </span>            :            ENDIF
 <span class="lineNum">     872 </span>            :         ENDDO
 <span class="lineNum">     873 </span>            :      ENDDO
-<span class="lineNum">     874 </span><span class="lineCov">         21 :      WRITE(stdout,*) ' - Real lattice is ok'</span>
+<span class="lineNum">     874 </span><span class="lineCov">         51 :      WRITE(stdout,*) ' - Real lattice is ok'</span>
 <span class="lineNum">     875 </span>            : 
-<span class="lineNum">     876 </span><span class="lineCov">         21 :      CALL scan_file_to('recip_lattice',found)</span>
-<span class="lineNum">     877 </span><span class="lineCov">         21 :      if(.not.found) then</span>
+<span class="lineNum">     876 </span><span class="lineCov">         51 :      CALL scan_file_to('recip_lattice',found)</span>
+<span class="lineNum">     877 </span><span class="lineCov">         51 :      if(.not.found) then</span>
 <span class="lineNum">     878 </span>            :         CALL errore( 'pw2wannier90', 'Could not find recip_lattice block in '&amp;
 <span class="lineNum">     879 </span><span class="lineNoCov">          0 :            &amp;//trim(seedname)//'.nnkp', 1 )</span>
 <span class="lineNum">     880 </span>            :      endif
-<span class="lineNum">     881 </span><span class="lineCov">        147 :      DO j=1,3</span>
-<span class="lineNum">     882 </span><span class="lineCov">         63 :         READ(iun_nnkp,*) (glatt(i,j),i=1,3)</span>
-<span class="lineNum">     883 </span><span class="lineCov">        273 :         DO i = 1,3</span>
-<span class="lineNum">     884 </span><span class="lineCov">        252 :            glatt(i,j) = (alat*bohr)*glatt(i,j)/tpi</span>
+<span class="lineNum">     881 </span><span class="lineCov">        357 :      DO j=1,3</span>
+<span class="lineNum">     882 </span><span class="lineCov">        153 :         READ(iun_nnkp,*) (glatt(i,j),i=1,3)</span>
+<span class="lineNum">     883 </span><span class="lineCov">        663 :         DO i = 1,3</span>
+<span class="lineNum">     884 </span><span class="lineCov">        612 :            glatt(i,j) = (alat*bohr)*glatt(i,j)/tpi</span>
 <span class="lineNum">     885 </span>            :         ENDDO
 <span class="lineNum">     886 </span>            :      ENDDO
-<span class="lineNum">     887 </span><span class="lineCov">        147 :      DO j=1,3</span>
-<span class="lineNum">     888 </span><span class="lineCov">        273 :         DO i=1,3</span>
-<span class="lineNum">     889 </span><span class="lineCov">        252 :            IF(abs(glatt(i,j)-bg(i,j))&gt;eps6) THEN</span>
+<span class="lineNum">     887 </span><span class="lineCov">        357 :      DO j=1,3</span>
+<span class="lineNum">     888 </span><span class="lineCov">        663 :         DO i=1,3</span>
+<span class="lineNum">     889 </span><span class="lineCov">        612 :            IF(abs(glatt(i,j)-bg(i,j))&gt;eps6) THEN</span>
 <span class="lineNum">     890 </span><span class="lineNoCov">          0 :               WRITE(stdout,*)  ' Something wrong! '</span>
 <span class="lineNum">     891 </span><span class="lineNoCov">          0 :               WRITE(stdout,*)  ' glatt(i,j)=',glatt(i,j), ' bg(i,j)=',bg(i,j)</span>
 <span class="lineNum">     892 </span><span class="lineNoCov">          0 :               CALL errore( 'pw2wannier90', 'Reciprocal lattice mismatch', 3*j+i )</span>
 <span class="lineNum">     893 </span>            :            ENDIF
 <span class="lineNum">     894 </span>            :         ENDDO
 <span class="lineNum">     895 </span>            :      ENDDO
-<span class="lineNum">     896 </span><span class="lineCov">         21 :      WRITE(stdout,*) ' - Reciprocal lattice is ok'</span>
+<span class="lineNum">     896 </span><span class="lineCov">         51 :      WRITE(stdout,*) ' - Reciprocal lattice is ok'</span>
 <span class="lineNum">     897 </span>            : 
-<span class="lineNum">     898 </span><span class="lineCov">         21 :      CALL scan_file_to('kpoints',found)</span>
-<span class="lineNum">     899 </span><span class="lineCov">         21 :      if(.not.found) then</span>
+<span class="lineNum">     898 </span><span class="lineCov">         51 :      CALL scan_file_to('kpoints',found)</span>
+<span class="lineNum">     899 </span><span class="lineCov">         51 :      if(.not.found) then</span>
 <span class="lineNum">     900 </span>            :         CALL errore( 'pw2wannier90', 'Could not find kpoints block in '&amp;
 <span class="lineNum">     901 </span><span class="lineNoCov">          0 :            &amp;//trim(seedname)//'.nnkp', 1 )</span>
 <span class="lineNum">     902 </span>            :      endif
-<span class="lineNum">     903 </span><span class="lineCov">         21 :      READ(iun_nnkp,*) numk</span>
-<span class="lineNum">     904 </span><span class="lineCov">         21 :      IF(numk/=iknum) THEN</span>
+<span class="lineNum">     903 </span><span class="lineCov">         51 :      READ(iun_nnkp,*) numk</span>
+<span class="lineNum">     904 </span><span class="lineCov">         51 :      IF(numk/=iknum) THEN</span>
 <span class="lineNum">     905 </span><span class="lineNoCov">          0 :         WRITE(stdout,*)  ' Something wrong! '</span>
 <span class="lineNum">     906 </span><span class="lineNoCov">          0 :         WRITE(stdout,*)  ' numk=',numk, ' iknum=',iknum</span>
 <span class="lineNum">     907 </span><span class="lineNoCov">          0 :         CALL errore( 'pw2wannier90', 'Wrong number of k-points', numk)</span>
 <span class="lineNum">     908 </span>            :      ENDIF
-<span class="lineNum">     909 </span><span class="lineCov">         21 :      IF(regular_mesh) THEN</span>
-<span class="lineNum">     910 </span><span class="lineCov">        239 :         DO i=1,numk</span>
-<span class="lineNum">     911 </span><span class="lineCov">        218 :            READ(iun_nnkp,*) xx(1), xx(2), xx(3)</span>
-<span class="lineNum">     912 </span><span class="lineCov">        218 :            CALL cryst_to_cart( 1, xx, bg, 1 )</span>
+<span class="lineNum">     909 </span><span class="lineCov">         51 :      IF(regular_mesh) THEN</span>
+<span class="lineNum">     910 </span><span class="lineCov">        509 :         DO i=1,numk</span>
+<span class="lineNum">     911 </span><span class="lineCov">        458 :            READ(iun_nnkp,*) xx(1), xx(2), xx(3)</span>
+<span class="lineNum">     912 </span><span class="lineCov">        458 :            CALL cryst_to_cart( 1, xx, bg, 1 )</span>
 <span class="lineNum">     913 </span>            :            IF(abs(xx(1)-xk(1,i))&gt;eps6.or. &amp;
-<span class="lineNum">     914 </span><span class="lineCov">        218 :                 abs(xx(2)-xk(2,i))&gt;eps6.or. &amp;</span>
-<span class="lineNum">     915 </span><span class="lineCov">         21 :                 abs(xx(3)-xk(3,i))&gt;eps6) THEN</span>
+<span class="lineNum">     914 </span><span class="lineCov">        458 :                 abs(xx(2)-xk(2,i))&gt;eps6.or. &amp;</span>
+<span class="lineNum">     915 </span><span class="lineCov">         51 :                 abs(xx(3)-xk(3,i))&gt;eps6) THEN</span>
 <span class="lineNum">     916 </span><span class="lineNoCov">          0 :               WRITE(stdout,*)  ' Something wrong! '</span>
 <span class="lineNum">     917 </span><span class="lineNoCov">          0 :               WRITE(stdout,*) ' k-point ',i,' is wrong'</span>
 <span class="lineNum">     918 </span><span class="lineNoCov">          0 :               WRITE(stdout,*) xx(1), xx(2), xx(3)</span>
@@ -983,19 +983,19 @@
 <span class="lineNum">     921 </span>            :            ENDIF
 <span class="lineNum">     922 </span>            :         ENDDO
 <span class="lineNum">     923 </span>            :      ENDIF ! regular mesh check
-<span class="lineNum">     924 </span><span class="lineCov">         21 :      WRITE(stdout,*) ' - K-points are ok'</span>
+<span class="lineNum">     924 </span><span class="lineCov">         51 :      WRITE(stdout,*) ' - K-points are ok'</span>
 <span class="lineNum">     925 </span>            : 
 <span class="lineNum">     926 </span>            :   ENDIF ! ionode
 <span class="lineNum">     927 </span>            : 
 <span class="lineNum">     928 </span>            :   ! Broadcast
-<span class="lineNum">     929 </span><span class="lineCov">         84 :   CALL mp_bcast(rlatt,ionode_id, world_comm)</span>
-<span class="lineNum">     930 </span><span class="lineCov">         84 :   CALL mp_bcast(glatt,ionode_id, world_comm)</span>
+<span class="lineNum">     929 </span><span class="lineCov">        204 :   CALL mp_bcast(rlatt,ionode_id, world_comm)</span>
+<span class="lineNum">     930 </span><span class="lineCov">        204 :   CALL mp_bcast(glatt,ionode_id, world_comm)</span>
 <span class="lineNum">     931 </span>            : 
-<span class="lineNum">     932 </span><span class="lineCov">         84 :   IF (ionode) THEN   ! read from ionode only</span>
-<span class="lineNum">     933 </span><span class="lineCov">         21 :      if(noncolin) then</span>
-<span class="lineNum">     934 </span><span class="lineCov">          5 :         old_spinor_proj=.false.</span>
-<span class="lineNum">     935 </span><span class="lineCov">          5 :         CALL scan_file_to('spinor_projections',found)</span>
-<span class="lineNum">     936 </span><span class="lineCov">          5 :         if(.not.found) then</span>
+<span class="lineNum">     932 </span><span class="lineCov">        204 :   IF (ionode) THEN   ! read from ionode only</span>
+<span class="lineNum">     933 </span><span class="lineCov">         51 :      if(noncolin) then</span>
+<span class="lineNum">     934 </span><span class="lineCov">         25 :         old_spinor_proj=.false.</span>
+<span class="lineNum">     935 </span><span class="lineCov">         25 :         CALL scan_file_to('spinor_projections',found)</span>
+<span class="lineNum">     936 </span><span class="lineCov">         25 :         if(.not.found) then</span>
 <span class="lineNum">     937 </span>            :            !try old style projections
 <span class="lineNum">     938 </span><span class="lineNoCov">          0 :            CALL scan_file_to('projections',found)</span>
 <span class="lineNum">     939 </span><span class="lineNoCov">          0 :            if(found) then</span>
@@ -1006,21 +1006,21 @@
 <span class="lineNum">     944 </span>            :            endif
 <span class="lineNum">     945 </span>            :         end if
 <span class="lineNum">     946 </span>            :      else
-<span class="lineNum">     947 </span><span class="lineCov">         16 :         old_spinor_proj=.false.</span>
-<span class="lineNum">     948 </span><span class="lineCov">         16 :         CALL scan_file_to('projections',found)</span>
-<span class="lineNum">     949 </span><span class="lineCov">         16 :         if(.not.found) then</span>
+<span class="lineNum">     947 </span><span class="lineCov">         26 :         old_spinor_proj=.false.</span>
+<span class="lineNum">     948 </span><span class="lineCov">         26 :         CALL scan_file_to('projections',found)</span>
+<span class="lineNum">     949 </span><span class="lineCov">         26 :         if(.not.found) then</span>
 <span class="lineNum">     950 </span>            :            CALL errore( 'pw2wannier90', 'Could not find projections block in '&amp;
 <span class="lineNum">     951 </span><span class="lineNoCov">          0 :               &amp;//trim(seedname)//'.nnkp', 1 )</span>
 <span class="lineNum">     952 </span>            :         endif
 <span class="lineNum">     953 </span>            :      endif
-<span class="lineNum">     954 </span><span class="lineCov">         21 :      READ(iun_nnkp,*) n_proj</span>
+<span class="lineNum">     954 </span><span class="lineCov">         51 :      READ(iun_nnkp,*) n_proj</span>
 <span class="lineNum">     955 </span>            :   ENDIF
 <span class="lineNum">     956 </span>            : 
 <span class="lineNum">     957 </span>            :   ! Broadcast
-<span class="lineNum">     958 </span><span class="lineCov">         84 :   CALL mp_bcast(n_proj,ionode_id, world_comm)</span>
-<span class="lineNum">     959 </span><span class="lineCov">         84 :   CALL mp_bcast(old_spinor_proj,ionode_id, world_comm)</span>
+<span class="lineNum">     958 </span><span class="lineCov">        204 :   CALL mp_bcast(n_proj,ionode_id, world_comm)</span>
+<span class="lineNum">     959 </span><span class="lineCov">        204 :   CALL mp_bcast(old_spinor_proj,ionode_id, world_comm)</span>
 <span class="lineNum">     960 </span>            : 
-<span class="lineNum">     961 </span><span class="lineCov">         84 :   IF(old_spinor_proj)THEN</span>
+<span class="lineNum">     961 </span><span class="lineCov">        204 :   IF(old_spinor_proj)THEN</span>
 <span class="lineNum">     962 </span><span class="lineNoCov">          0 :   WRITE(stdout,'(//,&quot; ****** begin WARNING ****** &quot;,/)')</span>
 <span class="lineNum">     963 </span><span class="lineNoCov">          0 :   WRITE(stdout,'(&quot; The pw.x calculation was done with non-collinear spin &quot;)')</span>
 <span class="lineNum">     964 </span><span class="lineNoCov">          0 :   WRITE(stdout,'(&quot; but spinor = T was not specified in the wannier90 .win file!&quot;)')</span>
@@ -1033,51 +1033,51 @@
 <span class="lineNum">     971 </span>            : 
 <span class="lineNum">     972 </span>            :   ! It is not clear if the next instruction is required or not, it probably depend
 <span class="lineNum">     973 </span>            :   ! on the version of wannier90 that was used to generate the nnkp file:
-<span class="lineNum">     974 </span><span class="lineCov">         84 :   IF(old_spinor_proj) THEN</span>
+<span class="lineNum">     974 </span><span class="lineCov">        204 :   IF(old_spinor_proj) THEN</span>
 <span class="lineNum">     975 </span><span class="lineNoCov">          0 :      n_wannier=n_proj*2</span>
 <span class="lineNum">     976 </span>            :   ELSE
-<span class="lineNum">     977 </span><span class="lineCov">         84 :      n_wannier=n_proj</span>
+<span class="lineNum">     977 </span><span class="lineCov">        204 :      n_wannier=n_proj</span>
 <span class="lineNum">     978 </span>            :   ENDIF
 <span class="lineNum">     979 </span>            : 
 <span class="lineNum">     980 </span><span class="lineNoCov">          0 :   ALLOCATE( center_w(3,n_proj), alpha_w(n_proj), gf(npwx,n_proj), &amp;</span>
 <span class="lineNum">     981 </span><span class="lineNoCov">          0 :        l_w(n_proj), mr_w(n_proj), r_w(n_proj), &amp;</span>
-<span class="lineNum">     982 </span><span class="lineCov">        588 :        zaxis(3,n_proj), xaxis(3,n_proj), csph(16,n_proj) )</span>
-<span class="lineNum">     983 </span><span class="lineCov">         84 :   if(noncolin.and..not.old_spinor_proj) then</span>
-<span class="lineNum">     984 </span><span class="lineCov">         20 :      ALLOCATE( spin_eig(n_proj),spin_qaxis(3,n_proj) )</span>
+<span class="lineNum">     982 </span><span class="lineCov">       1428 :        zaxis(3,n_proj), xaxis(3,n_proj), csph(16,n_proj) )</span>
+<span class="lineNum">     983 </span><span class="lineCov">        204 :   if(noncolin.and..not.old_spinor_proj) then</span>
+<span class="lineNum">     984 </span><span class="lineCov">        100 :      ALLOCATE( spin_eig(n_proj),spin_qaxis(3,n_proj) )</span>
 <span class="lineNum">     985 </span>            :   endif
 <span class="lineNum">     986 </span>            : 
-<span class="lineNum">     987 </span><span class="lineCov">         84 :   IF (ionode) THEN   ! read from ionode only</span>
-<span class="lineNum">     988 </span><span class="lineCov">        393 :      DO iw=1,n_proj</span>
-<span class="lineNum">     989 </span><span class="lineCov">        186 :         READ(iun_nnkp,*) (center_w(i,iw), i=1,3), l_w(iw), mr_w(iw), r_w(iw)</span>
-<span class="lineNum">     990 </span><span class="lineCov">        186 :         READ(iun_nnkp,*) (zaxis(i,iw),i=1,3),(xaxis(i,iw),i=1,3),alpha_w(iw)</span>
+<span class="lineNum">     987 </span><span class="lineCov">        204 :   IF (ionode) THEN   ! read from ionode only</span>
+<span class="lineNum">     988 </span><span class="lineCov">        771 :      DO iw=1,n_proj</span>
+<span class="lineNum">     989 </span><span class="lineCov">        360 :         READ(iun_nnkp,*) (center_w(i,iw), i=1,3), l_w(iw), mr_w(iw), r_w(iw)</span>
+<span class="lineNum">     990 </span><span class="lineCov">        360 :         READ(iun_nnkp,*) (zaxis(i,iw),i=1,3),(xaxis(i,iw),i=1,3),alpha_w(iw)</span>
 <span class="lineNum">     991 </span>            :         xnorm = sqrt(xaxis(1,iw)*xaxis(1,iw) + xaxis(2,iw)*xaxis(2,iw) + &amp;
-<span class="lineNum">     992 </span><span class="lineCov">        186 :              xaxis(3,iw)*xaxis(3,iw))</span>
-<span class="lineNum">     993 </span><span class="lineCov">        186 :         IF (xnorm &lt; eps6) CALL errore ('read_nnkp',' |xaxis| &lt; eps ',1)</span>
+<span class="lineNum">     992 </span><span class="lineCov">        360 :              xaxis(3,iw)*xaxis(3,iw))</span>
+<span class="lineNum">     993 </span><span class="lineCov">        360 :         IF (xnorm &lt; eps6) CALL errore ('read_nnkp',' |xaxis| &lt; eps ',1)</span>
 <span class="lineNum">     994 </span>            :         znorm = sqrt(zaxis(1,iw)*zaxis(1,iw) + zaxis(2,iw)*zaxis(2,iw) + &amp;
-<span class="lineNum">     995 </span><span class="lineCov">        186 :              zaxis(3,iw)*zaxis(3,iw))</span>
-<span class="lineNum">     996 </span><span class="lineCov">        186 :         IF (znorm &lt; eps6) CALL errore ('read_nnkp',' |zaxis| &lt; eps ',1)</span>
+<span class="lineNum">     995 </span><span class="lineCov">        360 :              zaxis(3,iw)*zaxis(3,iw))</span>
+<span class="lineNum">     996 </span><span class="lineCov">        360 :         IF (znorm &lt; eps6) CALL errore ('read_nnkp',' |zaxis| &lt; eps ',1)</span>
 <span class="lineNum">     997 </span>            :         coseno = (xaxis(1,iw)*zaxis(1,iw) + xaxis(2,iw)*zaxis(2,iw) + &amp;
-<span class="lineNum">     998 </span><span class="lineCov">        186 :              xaxis(3,iw)*zaxis(3,iw))/xnorm/znorm</span>
-<span class="lineNum">     999 </span><span class="lineCov">        186 :         IF (abs(coseno) &gt; eps6) &amp;</span>
+<span class="lineNum">     998 </span><span class="lineCov">        360 :              xaxis(3,iw)*zaxis(3,iw))/xnorm/znorm</span>
+<span class="lineNum">     999 </span><span class="lineCov">        360 :         IF (abs(coseno) &gt; eps6) &amp;</span>
 <span class="lineNum">    1000 </span><span class="lineNoCov">          0 :              CALL errore('read_nnkp',' xaxis and zaxis are not orthogonal !',1)</span>
-<span class="lineNum">    1001 </span><span class="lineCov">        186 :         IF (alpha_w(iw) &lt; eps6) &amp;</span>
+<span class="lineNum">    1001 </span><span class="lineCov">        360 :         IF (alpha_w(iw) &lt; eps6) &amp;</span>
 <span class="lineNum">    1002 </span><span class="lineNoCov">          0 :              CALL errore('read_nnkp',' zona value must be positive', 1)</span>
 <span class="lineNum">    1003 </span>            :         ! convert wannier center in cartesian coordinates (in unit of alat)
-<span class="lineNum">    1004 </span><span class="lineCov">        186 :         CALL cryst_to_cart( 1, center_w(:,iw), at, 1 )</span>
-<span class="lineNum">    1005 </span><span class="lineCov">        207 :         if(noncolin.and..not.old_spinor_proj) then</span>
-<span class="lineNum">    1006 </span><span class="lineCov">         64 :            READ(iun_nnkp,*) spin_eig(iw),(spin_qaxis(i,iw),i=1,3)</span>
+<span class="lineNum">    1004 </span><span class="lineCov">        360 :         CALL cryst_to_cart( 1, center_w(:,iw), at, 1 )</span>
+<span class="lineNum">    1005 </span><span class="lineCov">        411 :         if(noncolin.and..not.old_spinor_proj) then</span>
+<span class="lineNum">    1006 </span><span class="lineCov">        184 :            READ(iun_nnkp,*) spin_eig(iw),(spin_qaxis(i,iw),i=1,3)</span>
 <span class="lineNum">    1007 </span>            :            xnorm = sqrt(spin_qaxis(1,iw)*spin_qaxis(1,iw) + spin_qaxis(2,iw)*spin_qaxis(2,iw) + &amp;
-<span class="lineNum">    1008 </span><span class="lineCov">         64 :              spin_qaxis(3,iw)*spin_qaxis(3,iw))</span>
-<span class="lineNum">    1009 </span><span class="lineCov">         64 :            IF (xnorm &lt; eps6) CALL errore ('read_nnkp',' |xaxis| &lt; eps ',1)</span>
-<span class="lineNum">    1010 </span><span class="lineCov">         64 :            spin_qaxis(:,iw)=spin_qaxis(:,iw)/xnorm</span>
+<span class="lineNum">    1008 </span><span class="lineCov">        184 :              spin_qaxis(3,iw)*spin_qaxis(3,iw))</span>
+<span class="lineNum">    1009 </span><span class="lineCov">        184 :            IF (xnorm &lt; eps6) CALL errore ('read_nnkp',' |xaxis| &lt; eps ',1)</span>
+<span class="lineNum">    1010 </span><span class="lineCov">        184 :            spin_qaxis(:,iw)=spin_qaxis(:,iw)/xnorm</span>
 <span class="lineNum">    1011 </span>            :         endif
 <span class="lineNum">    1012 </span>            :      ENDDO
 <span class="lineNum">    1013 </span>            :   ENDIF
 <span class="lineNum">    1014 </span>            : 
 <span class="lineNum">    1015 </span>            :   ! automatic projections
-<span class="lineNum">    1016 </span><span class="lineCov">         84 :   IF (ionode) THEN</span>
-<span class="lineNum">    1017 </span><span class="lineCov">         21 :      CALL scan_file_to('auto_projections',found)</span>
-<span class="lineNum">    1018 </span><span class="lineCov">         21 :      IF (found) THEN</span>
+<span class="lineNum">    1016 </span><span class="lineCov">        204 :   IF (ionode) THEN</span>
+<span class="lineNum">    1017 </span><span class="lineCov">         51 :      CALL scan_file_to('auto_projections',found)</span>
+<span class="lineNum">    1018 </span><span class="lineCov">         51 :      IF (found) THEN</span>
 <span class="lineNum">    1019 </span><span class="lineCov">          6 :         READ (iun_nnkp, *) n_wannier</span>
 <span class="lineNum">    1020 </span><span class="lineCov">          6 :         READ (iun_nnkp, *) tmp_auto</span>
 <span class="lineNum">    1021 </span>            : 
@@ -1099,7 +1099,7 @@
 <span class="lineNum">    1037 </span><span class="lineNoCov">          0 :                 &amp;//trim(seedname)//'.nnkp', 1 )</span>
 <span class="lineNum">    1038 </span>            :         ENDIF
 <span class="lineNum">    1039 </span>            :      ELSE
-<span class="lineNum">    1040 </span><span class="lineCov">         15 :         IF (scdm_proj) THEN</span>
+<span class="lineNum">    1040 </span><span class="lineCov">         45 :         IF (scdm_proj) THEN</span>
 <span class="lineNum">    1041 </span>            :            ! Fire an error whether or not a projections block is found
 <span class="lineNum">    1042 </span>            :            CALL errore( 'pw2wannier90', 'scdm_proj = T but cannot find an auto_projections block in '&amp;
 <span class="lineNum">    1043 </span><span class="lineNoCov">          0 :                 &amp;//trim(seedname)//'.nnkp', 1 )</span>
@@ -1108,129 +1108,129 @@
 <span class="lineNum">    1046 </span>            :   ENDIF
 <span class="lineNum">    1047 </span>            : 
 <span class="lineNum">    1048 </span>            :   ! Broadcast
-<span class="lineNum">    1049 </span><span class="lineCov">         84 :   CALL mp_bcast(n_wannier,ionode_id, world_comm)</span>
-<span class="lineNum">    1050 </span><span class="lineCov">         84 :   CALL mp_bcast(center_w,ionode_id, world_comm)</span>
-<span class="lineNum">    1051 </span><span class="lineCov">         84 :   CALL mp_bcast(l_w,ionode_id, world_comm)</span>
-<span class="lineNum">    1052 </span><span class="lineCov">         84 :   CALL mp_bcast(mr_w,ionode_id, world_comm)</span>
-<span class="lineNum">    1053 </span><span class="lineCov">         84 :   CALL mp_bcast(r_w,ionode_id, world_comm)</span>
-<span class="lineNum">    1054 </span><span class="lineCov">         84 :   CALL mp_bcast(zaxis,ionode_id, world_comm)</span>
-<span class="lineNum">    1055 </span><span class="lineCov">         84 :   CALL mp_bcast(xaxis,ionode_id, world_comm)</span>
-<span class="lineNum">    1056 </span><span class="lineCov">         84 :   CALL mp_bcast(alpha_w,ionode_id, world_comm)</span>
-<span class="lineNum">    1057 </span><span class="lineCov">         84 :   if(noncolin.and..not.old_spinor_proj) then</span>
-<span class="lineNum">    1058 </span><span class="lineCov">         20 :      CALL mp_bcast(spin_eig,ionode_id, world_comm)</span>
-<span class="lineNum">    1059 </span><span class="lineCov">         20 :      CALL mp_bcast(spin_qaxis,ionode_id, world_comm)</span>
+<span class="lineNum">    1049 </span><span class="lineCov">        204 :   CALL mp_bcast(n_wannier,ionode_id, world_comm)</span>
+<span class="lineNum">    1050 </span><span class="lineCov">        204 :   CALL mp_bcast(center_w,ionode_id, world_comm)</span>
+<span class="lineNum">    1051 </span><span class="lineCov">        204 :   CALL mp_bcast(l_w,ionode_id, world_comm)</span>
+<span class="lineNum">    1052 </span><span class="lineCov">        204 :   CALL mp_bcast(mr_w,ionode_id, world_comm)</span>
+<span class="lineNum">    1053 </span><span class="lineCov">        204 :   CALL mp_bcast(r_w,ionode_id, world_comm)</span>
+<span class="lineNum">    1054 </span><span class="lineCov">        204 :   CALL mp_bcast(zaxis,ionode_id, world_comm)</span>
+<span class="lineNum">    1055 </span><span class="lineCov">        204 :   CALL mp_bcast(xaxis,ionode_id, world_comm)</span>
+<span class="lineNum">    1056 </span><span class="lineCov">        204 :   CALL mp_bcast(alpha_w,ionode_id, world_comm)</span>
+<span class="lineNum">    1057 </span><span class="lineCov">        204 :   if(noncolin.and..not.old_spinor_proj) then</span>
+<span class="lineNum">    1058 </span><span class="lineCov">        100 :      CALL mp_bcast(spin_eig,ionode_id, world_comm)</span>
+<span class="lineNum">    1059 </span><span class="lineCov">        100 :      CALL mp_bcast(spin_qaxis,ionode_id, world_comm)</span>
 <span class="lineNum">    1060 </span>            :   end if
 <span class="lineNum">    1061 </span>            : 
-<span class="lineNum">    1062 </span><span class="lineCov">         84 :   WRITE(stdout,'(&quot;  - Number of wannier functions is ok (&quot;,i3,&quot;)&quot;)') n_wannier</span>
+<span class="lineNum">    1062 </span><span class="lineCov">        204 :   WRITE(stdout,'(&quot;  - Number of wannier functions is ok (&quot;,i3,&quot;)&quot;)') n_wannier</span>
 <span class="lineNum">    1063 </span>            : 
-<span class="lineNum">    1064 </span><span class="lineCov">         84 :   IF (.not. scdm_proj) WRITE(stdout,*) ' - All guiding functions are given '</span>
+<span class="lineNum">    1064 </span><span class="lineCov">        204 :   IF (.not. scdm_proj) WRITE(stdout,*) ' - All guiding functions are given '</span>
 <span class="lineNum">    1065 </span>            :   !
-<span class="lineNum">    1066 </span><span class="lineCov">         84 :   WRITE(stdout,*)</span>
-<span class="lineNum">    1067 </span><span class="lineCov">         84 :   WRITE(stdout,*) 'Projections:'</span>
-<span class="lineNum">    1068 </span><span class="lineCov">        828 :   DO iw=1,n_proj</span>
+<span class="lineNum">    1066 </span><span class="lineCov">        204 :   WRITE(stdout,*)</span>
+<span class="lineNum">    1067 </span><span class="lineCov">        204 :   WRITE(stdout,*) 'Projections:'</span>
+<span class="lineNum">    1068 </span><span class="lineCov">       1644 :   DO iw=1,n_proj</span>
 <span class="lineNum">    1069 </span>            :      WRITE(stdout,'(3f12.6,3i3,f12.6)') &amp;
-<span class="lineNum">    1070 </span><span class="lineCov">        828 :           center_w(1:3,iw),l_w(iw),mr_w(iw),r_w(iw),alpha_w(iw)</span>
+<span class="lineNum">    1070 </span><span class="lineCov">       1644 :           center_w(1:3,iw),l_w(iw),mr_w(iw),r_w(iw),alpha_w(iw)</span>
 <span class="lineNum">    1071 </span>            :   ENDDO
 <span class="lineNum">    1072 </span>            : 
-<span class="lineNum">    1073 </span><span class="lineCov">         84 :   IF (ionode) THEN   ! read from ionode only</span>
-<span class="lineNum">    1074 </span><span class="lineCov">         21 :      CALL scan_file_to('nnkpts',found)</span>
-<span class="lineNum">    1075 </span><span class="lineCov">         21 :      if(.not.found) then</span>
+<span class="lineNum">    1073 </span><span class="lineCov">        204 :   IF (ionode) THEN   ! read from ionode only</span>
+<span class="lineNum">    1074 </span><span class="lineCov">         51 :      CALL scan_file_to('nnkpts',found)</span>
+<span class="lineNum">    1075 </span><span class="lineCov">         51 :      if(.not.found) then</span>
 <span class="lineNum">    1076 </span>            :         CALL errore( 'pw2wannier90', 'Could not find nnkpts block in '&amp;
 <span class="lineNum">    1077 </span><span class="lineNoCov">          0 :            &amp;//trim(seedname)//'.nnkp', 1 )</span>
 <span class="lineNum">    1078 </span>            :      endif
-<span class="lineNum">    1079 </span><span class="lineCov">         21 :      READ (iun_nnkp,*) nnb</span>
+<span class="lineNum">    1079 </span><span class="lineCov">         51 :      READ (iun_nnkp,*) nnb</span>
 <span class="lineNum">    1080 </span>            :   ENDIF
 <span class="lineNum">    1081 </span>            : 
 <span class="lineNum">    1082 </span>            :   ! Broadcast
-<span class="lineNum">    1083 </span><span class="lineCov">         84 :   CALL mp_bcast(nnb,ionode_id, world_comm)</span>
+<span class="lineNum">    1083 </span><span class="lineCov">        204 :   CALL mp_bcast(nnb,ionode_id, world_comm)</span>
 <span class="lineNum">    1084 </span>            :   !
-<span class="lineNum">    1085 </span><span class="lineCov">         84 :   nnbx = max (nnbx, nnb )</span>
+<span class="lineNum">    1085 </span><span class="lineCov">        204 :   nnbx = max (nnbx, nnb )</span>
 <span class="lineNum">    1086 </span>            :   !
 <span class="lineNum">    1087 </span><span class="lineNoCov">          0 :   ALLOCATE ( kpb(iknum,nnbx), g_kpb(3,iknum,nnbx),&amp;</span>
-<span class="lineNum">    1088 </span><span class="lineCov">        252 :              ig_(iknum,nnbx), ig_check(iknum,nnbx) )</span>
-<span class="lineNum">    1089 </span><span class="lineCov">         84 :   ALLOCATE( zerophase(iknum,nnbx) )</span>
-<span class="lineNum">    1090 </span><span class="lineCov">        840 :   zerophase = .false.</span>
+<span class="lineNum">    1088 </span><span class="lineCov">        612 :              ig_(iknum,nnbx), ig_check(iknum,nnbx) )</span>
+<span class="lineNum">    1089 </span><span class="lineCov">        204 :   ALLOCATE( zerophase(iknum,nnbx) )</span>
+<span class="lineNum">    1090 </span><span class="lineCov">       2016 :   zerophase = .false.</span>
 <span class="lineNum">    1091 </span>            : 
 <span class="lineNum">    1092 </span>            :   !  read data about neighbours
-<span class="lineNum">    1093 </span><span class="lineCov">         84 :   WRITE(stdout,*)</span>
-<span class="lineNum">    1094 </span><span class="lineCov">         84 :   WRITE(stdout,*) ' Reading data about k-point neighbours '</span>
-<span class="lineNum">    1095 </span><span class="lineCov">         84 :   WRITE(stdout,*)</span>
+<span class="lineNum">    1093 </span><span class="lineCov">        204 :   WRITE(stdout,*)</span>
+<span class="lineNum">    1094 </span><span class="lineCov">        204 :   WRITE(stdout,*) ' Reading data about k-point neighbours '</span>
+<span class="lineNum">    1095 </span><span class="lineCov">        204 :   WRITE(stdout,*)</span>
 <span class="lineNum">    1096 </span>            : 
-<span class="lineNum">    1097 </span><span class="lineCov">         84 :   IF (ionode) THEN</span>
-<span class="lineNum">    1098 </span><span class="lineCov">        239 :      DO ik=1, iknum</span>
-<span class="lineNum">    1099 </span><span class="lineCov">       2186 :         DO ib = 1, nnb</span>
-<span class="lineNum">    1100 </span><span class="lineCov">       2165 :            READ(iun_nnkp,*) idum, kpb(ik,ib), (g_kpb(ipol,ik,ib), ipol =1,3)</span>
+<span class="lineNum">    1097 </span><span class="lineCov">        204 :   IF (ionode) THEN</span>
+<span class="lineNum">    1098 </span><span class="lineCov">        509 :      DO ik=1, iknum</span>
+<span class="lineNum">    1099 </span><span class="lineCov">       4568 :         DO ib = 1, nnb</span>
+<span class="lineNum">    1100 </span><span class="lineCov">       4517 :            READ(iun_nnkp,*) idum, kpb(ik,ib), (g_kpb(ipol,ik,ib), ipol =1,3)</span>
 <span class="lineNum">    1101 </span>            :         ENDDO
 <span class="lineNum">    1102 </span>            :      ENDDO
 <span class="lineNum">    1103 </span>            :   ENDIF
 <span class="lineNum">    1104 </span>            : 
 <span class="lineNum">    1105 </span>            :   ! Broadcast
-<span class="lineNum">    1106 </span><span class="lineCov">         84 :   CALL mp_bcast(kpb,ionode_id, world_comm)</span>
-<span class="lineNum">    1107 </span><span class="lineCov">         84 :   CALL mp_bcast(g_kpb,ionode_id, world_comm)</span>
+<span class="lineNum">    1106 </span><span class="lineCov">        204 :   CALL mp_bcast(kpb,ionode_id, world_comm)</span>
+<span class="lineNum">    1107 </span><span class="lineCov">        204 :   CALL mp_bcast(g_kpb,ionode_id, world_comm)</span>
 <span class="lineNum">    1108 </span>            : 
-<span class="lineNum">    1109 </span><span class="lineCov">        956 :   DO ik=1, iknum</span>
-<span class="lineNum">    1110 </span><span class="lineCov">       8744 :      DO ib = 1, nnb</span>
+<span class="lineNum">    1109 </span><span class="lineCov">       2036 :   DO ik=1, iknum</span>
+<span class="lineNum">    1110 </span><span class="lineCov">      18272 :      DO ib = 1, nnb</span>
 <span class="lineNum">    1111 </span>            :         IF ( (g_kpb(1,ik,ib).eq.0) .and.  &amp;
-<span class="lineNum">    1112 </span><span class="lineCov">       7788 :              (g_kpb(2,ik,ib).eq.0) .and.  &amp;</span>
-<span class="lineNum">    1113 </span><span class="lineCov">       3496 :              (g_kpb(3,ik,ib).eq.0) ) zerophase(ik,ib) = .true.</span>
-<span class="lineNum">    1114 </span><span class="lineCov">       7788 :         g_(:) = REAL( g_kpb(:,ik,ib) )</span>
-<span class="lineNum">    1115 </span><span class="lineCov">       7788 :         CALL cryst_to_cart (1, g_, bg, 1)</span>
-<span class="lineNum">    1116 </span><span class="lineCov">       7788 :         gg_ = g_(1)*g_(1) + g_(2)*g_(2) + g_(3)*g_(3)</span>
-<span class="lineNum">    1117 </span><span class="lineCov">       7788 :         ig_(ik,ib) = 0</span>
-<span class="lineNum">    1118 </span><span class="lineCov">       7788 :         ig = 1</span>
-<span class="lineNum">    1119 </span><span class="lineCov">      34036 :         DO WHILE  (gg(ig) &lt;= gg_ + eps6)</span>
+<span class="lineNum">    1112 </span><span class="lineCov">      16236 :              (g_kpb(2,ik,ib).eq.0) .and.  &amp;</span>
+<span class="lineNum">    1113 </span><span class="lineCov">       6856 :              (g_kpb(3,ik,ib).eq.0) ) zerophase(ik,ib) = .true.</span>
+<span class="lineNum">    1114 </span><span class="lineCov">      16236 :         g_(:) = REAL( g_kpb(:,ik,ib) )</span>
+<span class="lineNum">    1115 </span><span class="lineCov">      16236 :         CALL cryst_to_cart (1, g_, bg, 1)</span>
+<span class="lineNum">    1116 </span><span class="lineCov">      16236 :         gg_ = g_(1)*g_(1) + g_(2)*g_(2) + g_(3)*g_(3)</span>
+<span class="lineNum">    1117 </span><span class="lineCov">      16236 :         ig_(ik,ib) = 0</span>
+<span class="lineNum">    1118 </span><span class="lineCov">      16236 :         ig = 1</span>
+<span class="lineNum">    1119 </span><span class="lineCov">      72628 :         DO WHILE  (gg(ig) &lt;= gg_ + eps6)</span>
 <span class="lineNum">    1120 </span>            :            IF ( (abs(g(1,ig)-g_(1)) &lt; eps6) .and.  &amp;
-<span class="lineNum">    1121 </span><span class="lineCov">      12688 :                 (abs(g(2,ig)-g_(2)) &lt; eps6) .and.  &amp;</span>
-<span class="lineNum">    1122 </span><span class="lineCov">       1947 :                 (abs(g(3,ig)-g_(3)) &lt; eps6)  ) ig_(ik,ib) = ig</span>
-<span class="lineNum">    1123 </span><span class="lineCov">      20476 :            ig= ig +1</span>
+<span class="lineNum">    1121 </span><span class="lineCov">      27280 :                 (abs(g(2,ig)-g_(2)) &lt; eps6) .and.  &amp;</span>
+<span class="lineNum">    1122 </span><span class="lineCov">       4059 :                 (abs(g(3,ig)-g_(3)) &lt; eps6)  ) ig_(ik,ib) = ig</span>
+<span class="lineNum">    1123 </span><span class="lineCov">      43516 :            ig= ig +1</span>
 <span class="lineNum">    1124 </span>            :         ENDDO
 <span class="lineNum">    1125 </span>            :      ENDDO
 <span class="lineNum">    1126 </span>            :   ENDDO
-<span class="lineNum">    1127 </span><span class="lineCov">         84 :   ig_check(:,:) = ig_(:,:)</span>
-<span class="lineNum">    1128 </span><span class="lineCov">         84 :   CALL mp_sum( ig_check, intra_pool_comm )</span>
-<span class="lineNum">    1129 </span><span class="lineCov">        956 :   DO ik=1, iknum</span>
-<span class="lineNum">    1130 </span><span class="lineCov">       8744 :      DO ib = 1, nnb</span>
-<span class="lineNum">    1131 </span><span class="lineCov">       7788 :         IF (ig_check(ik,ib) ==0) &amp;</span>
+<span class="lineNum">    1127 </span><span class="lineCov">        204 :   ig_check(:,:) = ig_(:,:)</span>
+<span class="lineNum">    1128 </span><span class="lineCov">        204 :   CALL mp_sum( ig_check, intra_pool_comm )</span>
+<span class="lineNum">    1129 </span><span class="lineCov">       2036 :   DO ik=1, iknum</span>
+<span class="lineNum">    1130 </span><span class="lineCov">      18272 :      DO ib = 1, nnb</span>
+<span class="lineNum">    1131 </span><span class="lineCov">      16236 :         IF (ig_check(ik,ib) ==0) &amp;</span>
 <span class="lineNum">    1132 </span>            :           CALL errore('read_nnkp', &amp;
-<span class="lineNum">    1133 </span><span class="lineCov">        872 :                       ' g_kpb vector is not in the list of Gs', 100*ik+ib )</span>
+<span class="lineNum">    1133 </span><span class="lineCov">       1832 :                       ' g_kpb vector is not in the list of Gs', 100*ik+ib )</span>
 <span class="lineNum">    1134 </span>            :      ENDDO
 <span class="lineNum">    1135 </span>            :   ENDDO
-<span class="lineNum">    1136 </span><span class="lineCov">         84 :   DEALLOCATE (ig_check)</span>
+<span class="lineNum">    1136 </span><span class="lineCov">        204 :   DEALLOCATE (ig_check)</span>
 <span class="lineNum">    1137 </span>            : 
-<span class="lineNum">    1138 </span><span class="lineCov">         84 :   WRITE(stdout,*) ' All neighbours are found '</span>
-<span class="lineNum">    1139 </span><span class="lineCov">         84 :   WRITE(stdout,*)</span>
+<span class="lineNum">    1138 </span><span class="lineCov">        204 :   WRITE(stdout,*) ' All neighbours are found '</span>
+<span class="lineNum">    1139 </span><span class="lineCov">        204 :   WRITE(stdout,*)</span>
 <span class="lineNum">    1140 </span>            : 
-<span class="lineNum">    1141 </span><span class="lineCov">         84 :   ALLOCATE( excluded_band(nbnd) )</span>
+<span class="lineNum">    1141 </span><span class="lineCov">        204 :   ALLOCATE( excluded_band(nbnd) )</span>
 <span class="lineNum">    1142 </span>            : 
-<span class="lineNum">    1143 </span><span class="lineCov">         84 :   IF (ionode) THEN     ! read from ionode only</span>
-<span class="lineNum">    1144 </span><span class="lineCov">         21 :      CALL scan_file_to('exclude_bands',found)</span>
-<span class="lineNum">    1145 </span><span class="lineCov">         21 :      if(.not.found) then</span>
+<span class="lineNum">    1143 </span><span class="lineCov">        204 :   IF (ionode) THEN     ! read from ionode only</span>
+<span class="lineNum">    1144 </span><span class="lineCov">         51 :      CALL scan_file_to('exclude_bands',found)</span>
+<span class="lineNum">    1145 </span><span class="lineCov">         51 :      if(.not.found) then</span>
 <span class="lineNum">    1146 </span>            :         CALL errore( 'pw2wannier90', 'Could not find exclude_bands block in '&amp;
 <span class="lineNum">    1147 </span><span class="lineNoCov">          0 :            &amp;//trim(seedname)//'.nnkp', 1 )</span>
 <span class="lineNum">    1148 </span>            :      endif
-<span class="lineNum">    1149 </span><span class="lineCov">         21 :      READ (iun_nnkp,*) nexband</span>
-<span class="lineNum">    1150 </span><span class="lineCov">         21 :      excluded_band(1:nbnd)=.false.</span>
-<span class="lineNum">    1151 </span><span class="lineCov">         91 :      DO i=1,nexband</span>
-<span class="lineNum">    1152 </span><span class="lineCov">         70 :         READ(iun_nnkp,*) indexb</span>
-<span class="lineNum">    1153 </span><span class="lineCov">         70 :         IF (indexb&lt;1 .or. indexb&gt;nbnd) &amp;</span>
+<span class="lineNum">    1149 </span><span class="lineCov">         51 :      READ (iun_nnkp,*) nexband</span>
+<span class="lineNum">    1150 </span><span class="lineCov">         51 :      excluded_band(1:nbnd)=.false.</span>
+<span class="lineNum">    1151 </span><span class="lineCov">        481 :      DO i=1,nexband</span>
+<span class="lineNum">    1152 </span><span class="lineCov">        430 :         READ(iun_nnkp,*) indexb</span>
+<span class="lineNum">    1153 </span><span class="lineCov">        430 :         IF (indexb&lt;1 .or. indexb&gt;nbnd) &amp;</span>
 <span class="lineNum">    1154 </span><span class="lineNoCov">          0 :              CALL errore('read_nnkp',' wrong excluded band index ', 1)</span>
-<span class="lineNum">    1155 </span><span class="lineCov">         91 :         excluded_band(indexb)=.true.</span>
+<span class="lineNum">    1155 </span><span class="lineCov">        481 :         excluded_band(indexb)=.true.</span>
 <span class="lineNum">    1156 </span>            :      ENDDO
 <span class="lineNum">    1157 </span>            :   ENDIF
-<span class="lineNum">    1158 </span><span class="lineCov">         84 :   num_bands=nbnd-nexband</span>
+<span class="lineNum">    1158 </span><span class="lineCov">        204 :   num_bands=nbnd-nexband</span>
 <span class="lineNum">    1159 </span>            : 
 <span class="lineNum">    1160 </span>            :   ! Broadcast
-<span class="lineNum">    1161 </span><span class="lineCov">         84 :   CALL mp_bcast(nexband,ionode_id, world_comm)</span>
-<span class="lineNum">    1162 </span><span class="lineCov">         84 :   CALL mp_bcast(excluded_band,ionode_id, world_comm)</span>
-<span class="lineNum">    1163 </span><span class="lineCov">         84 :   CALL mp_bcast(num_bands,ionode_id, world_comm)</span>
+<span class="lineNum">    1161 </span><span class="lineCov">        204 :   CALL mp_bcast(nexband,ionode_id, world_comm)</span>
+<span class="lineNum">    1162 </span><span class="lineCov">        204 :   CALL mp_bcast(excluded_band,ionode_id, world_comm)</span>
+<span class="lineNum">    1163 </span><span class="lineCov">        204 :   CALL mp_bcast(num_bands,ionode_id, world_comm)</span>
 <span class="lineNum">    1164 </span>            : 
-<span class="lineNum">    1165 </span><span class="lineCov">         84 :   IF (ionode) CLOSE (iun_nnkp)   ! ionode only</span>
+<span class="lineNum">    1165 </span><span class="lineCov">        204 :   IF (ionode) CLOSE (iun_nnkp)   ! ionode only</span>
 <span class="lineNum">    1166 </span>            : 
-<span class="lineNum">    1167 </span><span class="lineCov">         84 :   RETURN</span>
+<span class="lineNum">    1167 </span><span class="lineCov">        204 :   RETURN</span>
 <span class="lineNum">    1168 </span>            : END SUBROUTINE read_nnkp
 <a name="1169"><span class="lineNum">    1169 </span>            : !</a>
 <span class="lineNum">    1170 </span>            : !-----------------------------------------------------------------------
-<span class="lineNum">    1171 </span><span class="lineCov">        147 : SUBROUTINE scan_file_to (keyword,found)</span>
+<span class="lineNum">    1171 </span><span class="lineCov">        357 : SUBROUTINE scan_file_to (keyword,found)</span>
 <span class="lineNum">    1172 </span>            :    !-----------------------------------------------------------------------
 <span class="lineNum">    1173 </span>            :    !
 <span class="lineNum">    1174 </span>            :    USE wannier, ONLY :iun_nnkp
@@ -1246,13 +1246,13 @@
 <span class="lineNum">    1184 </span>            : !   rewind (iun_nnkp)
 <span class="lineNum">    1185 </span>            : !
 <span class="lineNum">    1186 </span>            : 10 CONTINUE
-<span class="lineNum">    1187 </span><span class="lineCov">       2793 :    READ(iun_nnkp,*,end=20) line1, line2</span>
-<span class="lineNum">    1188 </span><span class="lineCov">       2763 :    IF(line1/='begin')  GOTO 10</span>
-<span class="lineNum">    1189 </span><span class="lineCov">        222 :    IF(line2/=keyword) GOTO 10</span>
-<span class="lineNum">    1190 </span><span class="lineCov">        132 :    found=.true.</span>
-<span class="lineNum">    1191 </span><span class="lineCov">        132 :    RETURN</span>
-<span class="lineNum">    1192 </span><span class="lineCov">         15 : 20 found=.false.</span>
-<span class="lineNum">    1193 </span><span class="lineCov">         15 :    rewind (iun_nnkp)</span>
+<span class="lineNum">    1187 </span><span class="lineCov">       6845 :    READ(iun_nnkp,*,end=20) line1, line2</span>
+<span class="lineNum">    1188 </span><span class="lineCov">       6755 :    IF(line1/='begin')  GOTO 10</span>
+<span class="lineNum">    1189 </span><span class="lineCov">        582 :    IF(line2/=keyword) GOTO 10</span>
+<span class="lineNum">    1190 </span><span class="lineCov">        312 :    found=.true.</span>
+<span class="lineNum">    1191 </span><span class="lineCov">        312 :    RETURN</span>
+<span class="lineNum">    1192 </span><span class="lineCov">         45 : 20 found=.false.</span>
+<span class="lineNum">    1193 </span><span class="lineCov">         45 :    rewind (iun_nnkp)</span>
 <span class="lineNum">    1194 </span>            : 
 <span class="lineNum">    1195 </span>            : END SUBROUTINE scan_file_to
 <a name="1196"><span class="lineNum">    1196 </span>            : !</a>
@@ -4563,7 +4563,7 @@
 <span class="lineNum">    4501 </span><span class="lineCov">        412 :    RETURN</span>
 <a name="4502"><span class="lineNum">    4502 </span>            : END SUBROUTINE generate_guiding_functions</a>
 <span class="lineNum">    4503 </span>            : 
-<span class="lineNum">    4504 </span><span class="lineCov">         76 : SUBROUTINE write_band</span>
+<span class="lineNum">    4504 </span><span class="lineCov">        196 : SUBROUTINE write_band</span>
 <span class="lineNum">    4505 </span>            :    USE io_global,  ONLY : stdout, ionode
 <span class="lineNum">    4506 </span>            :    USE wvfct, ONLY : nbnd, et
 <span class="lineNum">    4507 </span>            :    USE klist, ONLY : nkstot
@@ -4576,21 +4576,21 @@
 <span class="lineNum">    4514 </span>            :    !
 <span class="lineNum">    4515 </span>            :    INTEGER ik, ibnd, ibnd1, ikevc
 <span class="lineNum">    4516 </span>            : 
-<span class="lineNum">    4517 </span><span class="lineCov">         76 :    IF (wan_mode=='standalone') THEN</span>
-<span class="lineNum">    4518 </span><span class="lineCov">         76 :       iun_band = find_free_unit()</span>
-<span class="lineNum">    4519 </span><span class="lineCov">         76 :       IF (ionode) OPEN (unit=iun_band, file=trim(seedname)//&quot;.eig&quot;,form='formatted')</span>
+<span class="lineNum">    4517 </span><span class="lineCov">        196 :    IF (wan_mode=='standalone') THEN</span>
+<span class="lineNum">    4518 </span><span class="lineCov">        196 :       iun_band = find_free_unit()</span>
+<span class="lineNum">    4519 </span><span class="lineCov">        196 :       IF (ionode) OPEN (unit=iun_band, file=trim(seedname)//&quot;.eig&quot;,form='formatted')</span>
 <span class="lineNum">    4520 </span>            :    ENDIF
 <span class="lineNum">    4521 </span>            : 
-<span class="lineNum">    4522 </span><span class="lineCov">         76 :    IF (wan_mode=='library') ALLOCATE(eigval(num_bands,iknum))</span>
+<span class="lineNum">    4522 </span><span class="lineCov">        196 :    IF (wan_mode=='library') ALLOCATE(eigval(num_bands,iknum))</span>
 <span class="lineNum">    4523 </span>            : 
-<span class="lineNum">    4524 </span><span class="lineCov">        808 :    DO ik=ikstart,ikstop</span>
-<span class="lineNum">    4525 </span><span class="lineCov">        732 :       ikevc = ik - ikstart + 1</span>
-<span class="lineNum">    4526 </span><span class="lineCov">        732 :       ibnd1=0</span>
-<span class="lineNum">    4527 </span><span class="lineCov">      12912 :       DO ibnd=1,nbnd</span>
-<span class="lineNum">    4528 </span><span class="lineCov">      12104 :          IF (excluded_band(ibnd)) CYCLE</span>
-<span class="lineNum">    4529 </span><span class="lineCov">       8728 :          ibnd1=ibnd1 + 1</span>
-<span class="lineNum">    4530 </span><span class="lineCov">       9460 :          IF (wan_mode=='standalone') THEN</span>
-<span class="lineNum">    4531 </span><span class="lineCov">       8728 :             IF (ionode) WRITE (iun_band,'(2i5,f18.12)') ibnd1, ikevc, et(ibnd,ik)*rytoev</span>
+<span class="lineNum">    4524 </span><span class="lineCov">       1888 :    DO ik=ikstart,ikstop</span>
+<span class="lineNum">    4525 </span><span class="lineCov">       1692 :       ikevc = ik - ikstart + 1</span>
+<span class="lineNum">    4526 </span><span class="lineCov">       1692 :       ibnd1=0</span>
+<span class="lineNum">    4527 </span><span class="lineCov">      30504 :       DO ibnd=1,nbnd</span>
+<span class="lineNum">    4528 </span><span class="lineCov">      28616 :          IF (excluded_band(ibnd)) CYCLE</span>
+<span class="lineNum">    4529 </span><span class="lineCov">      13720 :          ibnd1=ibnd1 + 1</span>
+<span class="lineNum">    4530 </span><span class="lineCov">      15412 :          IF (wan_mode=='standalone') THEN</span>
+<span class="lineNum">    4531 </span><span class="lineCov">      13720 :             IF (ionode) WRITE (iun_band,'(2i5,f18.12)') ibnd1, ikevc, et(ibnd,ik)*rytoev</span>
 <span class="lineNum">    4532 </span><span class="lineNoCov">          0 :          ELSEIF (wan_mode=='library') THEN</span>
 <span class="lineNum">    4533 </span><span class="lineNoCov">          0 :             eigval(ibnd1,ikevc) = et(ibnd,ik)*rytoev</span>
 <span class="lineNum">    4534 </span>            :          ELSE
@@ -4599,14 +4599,14 @@
 <span class="lineNum">    4537 </span>            :       ENDDO
 <span class="lineNum">    4538 </span>            :    ENDDO
 <span class="lineNum">    4539 </span>            : 
-<span class="lineNum">    4540 </span><span class="lineCov">         76 :    IF (wan_mode=='standalone') THEN</span>
-<span class="lineNum">    4541 </span><span class="lineCov">         76 :        IF (ionode) CLOSE (unit=iun_band)</span>
+<span class="lineNum">    4540 </span><span class="lineCov">        196 :    IF (wan_mode=='standalone') THEN</span>
+<span class="lineNum">    4541 </span><span class="lineCov">        196 :        IF (ionode) CLOSE (unit=iun_band)</span>
 <span class="lineNum">    4542 </span>            :    ENDIF
 <span class="lineNum">    4543 </span>            : 
-<span class="lineNum">    4544 </span><span class="lineCov">         76 :    RETURN</span>
+<span class="lineNum">    4544 </span><span class="lineCov">        196 :    RETURN</span>
 <a name="4545"><span class="lineNum">    4545 </span>            : END SUBROUTINE write_band</a>
 <span class="lineNum">    4546 </span>            : 
-<span class="lineNum">    4547 </span><span class="lineCov">         16 : SUBROUTINE write_plot</span>
+<span class="lineNum">    4547 </span><span class="lineCov">        136 : SUBROUTINE write_plot</span>
 <span class="lineNum">    4548 </span>            :    USE io_global,  ONLY : stdout, ionode
 <span class="lineNum">    4549 </span>            :    USE wvfct, ONLY : nbnd, npwx
 <span class="lineNum">    4550 </span>            :    USE gvecw, ONLY : gcutw
@@ -4630,158 +4630,158 @@
 <span class="lineNum">    4568 </span>            : 
 <span class="lineNum">    4569 </span>            :    ! aam: 1/5/06: for writing smaller unk files
 <span class="lineNum">    4570 </span>            :    INTEGER :: n1by2,n2by2,n3by2,i,k,idx,pos
-<span class="lineNum">    4571 </span><span class="lineCov">         16 :    COMPLEX(DP),ALLOCATABLE :: psic_small(:), psic_nc_small(:,:)</span>
+<span class="lineNum">    4571 </span><span class="lineCov">        136 :    COMPLEX(DP),ALLOCATABLE :: psic_small(:), psic_nc_small(:,:)</span>
 <span class="lineNum">    4572 </span>            : 
 <span class="lineNum">    4573 </span>            :    INTEGER ipol
 <span class="lineNum">    4574 </span>            :    !-------------------------------------------!
 <span class="lineNum">    4575 </span>            : 
 <span class="lineNum">    4576 </span>            : #if defined(__MPI)
 <span class="lineNum">    4577 </span>            :    INTEGER nxxs
-<span class="lineNum">    4578 </span><span class="lineCov">         16 :    COMPLEX(DP),ALLOCATABLE :: psic_all(:), psic_nc_all(:,:)</span>
-<span class="lineNum">    4579 </span><span class="lineCov">         16 :    nxxs = dffts%nr1x * dffts%nr2x * dffts%nr3x</span>
-<span class="lineNum">    4580 </span><span class="lineCov">         16 :    IF (.NOT.noncolin) THEN</span>
-<span class="lineNum">    4581 </span><span class="lineCov">         16 :       ALLOCATE(psic_all(nxxs) )</span>
+<span class="lineNum">    4578 </span><span class="lineCov">        136 :    COMPLEX(DP),ALLOCATABLE :: psic_all(:), psic_nc_all(:,:)</span>
+<span class="lineNum">    4579 </span><span class="lineCov">        136 :    nxxs = dffts%nr1x * dffts%nr2x * dffts%nr3x</span>
+<span class="lineNum">    4580 </span><span class="lineCov">        136 :    IF (.NOT.noncolin) THEN</span>
+<span class="lineNum">    4581 </span><span class="lineCov">         56 :       ALLOCATE(psic_all(nxxs) )</span>
 <span class="lineNum">    4582 </span>            :    ELSE
-<span class="lineNum">    4583 </span><span class="lineNoCov">          0 :       ALLOCATE(psic_nc_all(nxxs,npol) )</span>
+<span class="lineNum">    4583 </span><span class="lineCov">         80 :       ALLOCATE(psic_nc_all(nxxs,npol) )</span>
 <span class="lineNum">    4584 </span>            :    ENDIF
 <span class="lineNum">    4585 </span>            : #endif
 <span class="lineNum">    4586 </span>            : 
-<span class="lineNum">    4587 </span><span class="lineCov">         16 :    CALL start_clock( 'write_unk' )</span>
+<span class="lineNum">    4587 </span><span class="lineCov">        136 :    CALL start_clock( 'write_unk' )</span>
 <span class="lineNum">    4588 </span>            : 
-<span class="lineNum">    4589 </span><span class="lineCov">         16 :    IF (reduce_unk) THEN</span>
-<span class="lineNum">    4590 </span><span class="lineCov">          8 :       WRITE(stdout,'(3(a,i5))') 'nr1s =',dffts%nr1,'nr2s=',dffts%nr2,'nr3s=',dffts%nr3</span>
-<span class="lineNum">    4591 </span><span class="lineCov">          8 :       n1by2=(dffts%nr1+1)/2</span>
-<span class="lineNum">    4592 </span><span class="lineCov">          8 :       n2by2=(dffts%nr2+1)/2</span>
-<span class="lineNum">    4593 </span><span class="lineCov">          8 :       n3by2=(dffts%nr3+1)/2</span>
-<span class="lineNum">    4594 </span><span class="lineCov">          8 :       WRITE(stdout,'(3(a,i5))') 'n1by2=',n1by2,'n2by2=',n2by2,'n3by2=',n3by2</span>
-<span class="lineNum">    4595 </span><span class="lineCov">          8 :       IF (.NOT.noncolin) THEN</span>
-<span class="lineNum">    4596 </span><span class="lineCov">          8 :          ALLOCATE(psic_small(n1by2*n2by2*n3by2))</span>
-<span class="lineNum">    4597 </span><span class="lineCov">       4104 :          psic_small = (0.0_DP, 0.0_DP)</span>
+<span class="lineNum">    4589 </span><span class="lineCov">        136 :    IF (reduce_unk) THEN</span>
+<span class="lineNum">    4590 </span><span class="lineCov">         56 :       WRITE(stdout,'(3(a,i5))') 'nr1s =',dffts%nr1,'nr2s=',dffts%nr2,'nr3s=',dffts%nr3</span>
+<span class="lineNum">    4591 </span><span class="lineCov">         56 :       n1by2=(dffts%nr1+1)/2</span>
+<span class="lineNum">    4592 </span><span class="lineCov">         56 :       n2by2=(dffts%nr2+1)/2</span>
+<span class="lineNum">    4593 </span><span class="lineCov">         56 :       n3by2=(dffts%nr3+1)/2</span>
+<span class="lineNum">    4594 </span><span class="lineCov">         56 :       WRITE(stdout,'(3(a,i5))') 'n1by2=',n1by2,'n2by2=',n2by2,'n3by2=',n3by2</span>
+<span class="lineNum">    4595 </span><span class="lineCov">         56 :       IF (.NOT.noncolin) THEN</span>
+<span class="lineNum">    4596 </span><span class="lineCov">         16 :          ALLOCATE(psic_small(n1by2*n2by2*n3by2))</span>
+<span class="lineNum">    4597 </span><span class="lineCov">       8208 :          psic_small = (0.0_DP, 0.0_DP)</span>
 <span class="lineNum">    4598 </span>            :       ELSE
-<span class="lineNum">    4599 </span><span class="lineNoCov">          0 :          ALLOCATE(psic_nc_small(n1by2*n2by2*n3by2,npol))</span>
-<span class="lineNum">    4600 </span><span class="lineNoCov">          0 :          psic_nc_small = (0.0_DP, 0.0_DP)</span>
+<span class="lineNum">    4599 </span><span class="lineCov">         40 :          ALLOCATE(psic_nc_small(n1by2*n2by2*n3by2,npol))</span>
+<span class="lineNum">    4600 </span><span class="lineCov">        120 :          psic_nc_small = (0.0_DP, 0.0_DP)</span>
 <span class="lineNum">    4601 </span>            :       ENDIF
 <span class="lineNum">    4602 </span>            :    ENDIF
 <span class="lineNum">    4603 </span>            : 
-<span class="lineNum">    4604 </span><span class="lineCov">         16 :    WRITE(stdout,'(a,i8)') ' UNK: iknum = ',iknum</span>
+<span class="lineNum">    4604 </span><span class="lineCov">        136 :    WRITE(stdout,'(a,i8)') ' UNK: iknum = ',iknum</span>
 <span class="lineNum">    4605 </span>            : 
-<span class="lineNum">    4606 </span><span class="lineCov">        144 :    DO ik=ikstart,ikstop</span>
+<span class="lineNum">    4606 </span><span class="lineCov">       1224 :    DO ik=ikstart,ikstop</span>
 <span class="lineNum">    4607 </span>            : 
-<span class="lineNum">    4608 </span><span class="lineCov">        128 :       WRITE (stdout,'(i8)',advance='no') ik</span>
-<span class="lineNum">    4609 </span><span class="lineCov">        128 :       IF( MOD(ik,10) == 0 ) WRITE (stdout,*)</span>
-<span class="lineNum">    4610 </span><span class="lineCov">        128 :       FLUSH(stdout)</span>
+<span class="lineNum">    4608 </span><span class="lineCov">       1088 :       WRITE (stdout,'(i8)',advance='no') ik</span>
+<span class="lineNum">    4609 </span><span class="lineCov">       1088 :       IF( MOD(ik,10) == 0 ) WRITE (stdout,*)</span>
+<span class="lineNum">    4610 </span><span class="lineCov">       1088 :       FLUSH(stdout)</span>
 <span class="lineNum">    4611 </span>            : 
-<span class="lineNum">    4612 </span><span class="lineCov">        128 :       ikevc = ik - ikstart + 1</span>
+<span class="lineNum">    4612 </span><span class="lineCov">       1088 :       ikevc = ik - ikstart + 1</span>
 <span class="lineNum">    4613 </span>            : 
-<span class="lineNum">    4614 </span><span class="lineCov">        128 :       iun_plot = find_free_unit()</span>
+<span class="lineNum">    4614 </span><span class="lineCov">       1088 :       iun_plot = find_free_unit()</span>
 <span class="lineNum">    4615 </span>            :       !write(wfnname,200) p,spin
-<span class="lineNum">    4616 </span><span class="lineCov">        128 :       spin=ispinw</span>
-<span class="lineNum">    4617 </span><span class="lineCov">        128 :       IF(ispinw==0) spin=1</span>
-<span class="lineNum">    4618 </span><span class="lineCov">        128 :       IF (.NOT.noncolin) THEN</span>
-<span class="lineNum">    4619 </span><span class="lineCov">        128 :          WRITE(wfnname,200) ikevc, spin</span>
+<span class="lineNum">    4616 </span><span class="lineCov">       1088 :       spin=ispinw</span>
+<span class="lineNum">    4617 </span><span class="lineCov">       1088 :       IF(ispinw==0) spin=1</span>
+<span class="lineNum">    4618 </span><span class="lineCov">       1088 :       IF (.NOT.noncolin) THEN</span>
+<span class="lineNum">    4619 </span><span class="lineCov">        448 :          WRITE(wfnname,200) ikevc, spin</span>
 <span class="lineNum">    4620 </span>            :       ELSE
-<span class="lineNum">    4621 </span><span class="lineNoCov">          0 :          WRITE(wfnname,201) ikevc</span>
+<span class="lineNum">    4621 </span><span class="lineCov">        640 :          WRITE(wfnname,201) ikevc</span>
 <span class="lineNum">    4622 </span>            :       ENDIF
 <span class="lineNum">    4623 </span>            : 201   FORMAT ('UNK',i5.5,'.','NC')
 <span class="lineNum">    4624 </span>            : 200   FORMAT ('UNK',i5.5,'.',i1)
 <span class="lineNum">    4625 </span>            : 
-<span class="lineNum">    4626 </span><span class="lineCov">        128 :    IF (ionode) THEN</span>
-<span class="lineNum">    4627 </span><span class="lineCov">         32 :       IF(wvfn_formatted) THEN</span>
-<span class="lineNum">    4628 </span><span class="lineCov">         16 :          OPEN (unit=iun_plot, file=wfnname,form='formatted')</span>
-<span class="lineNum">    4629 </span><span class="lineCov">         16 :          IF (reduce_unk) THEN</span>
-<span class="lineNum">    4630 </span><span class="lineCov">          8 :             WRITE(iun_plot,*)  n1by2,n2by2,n3by2, ikevc, nbnd-nexband</span>
+<span class="lineNum">    4626 </span><span class="lineCov">       1088 :    IF (ionode) THEN</span>
+<span class="lineNum">    4627 </span><span class="lineCov">        272 :       IF(wvfn_formatted) THEN</span>
+<span class="lineNum">    4628 </span><span class="lineCov">        112 :          OPEN (unit=iun_plot, file=wfnname,form='formatted')</span>
+<span class="lineNum">    4629 </span><span class="lineCov">        112 :          IF (reduce_unk) THEN</span>
+<span class="lineNum">    4630 </span><span class="lineCov">         56 :             WRITE(iun_plot,*)  n1by2,n2by2,n3by2, ikevc, nbnd-nexband</span>
 <span class="lineNum">    4631 </span>            :          ELSE
-<span class="lineNum">    4632 </span><span class="lineCov">          8 :             WRITE(iun_plot,*)  dffts%nr1,dffts%nr2,dffts%nr3,ikevc,nbnd-nexband</span>
+<span class="lineNum">    4632 </span><span class="lineCov">         56 :             WRITE(iun_plot,*)  dffts%nr1,dffts%nr2,dffts%nr3,ikevc,nbnd-nexband</span>
 <span class="lineNum">    4633 </span>            :          ENDIF
 <span class="lineNum">    4634 </span>            :       ELSE
-<span class="lineNum">    4635 </span><span class="lineCov">         16 :          OPEN (unit=iun_plot, file=wfnname,form='unformatted')</span>
-<span class="lineNum">    4636 </span><span class="lineCov">         16 :          IF (reduce_unk) THEN</span>
-<span class="lineNum">    4637 </span><span class="lineCov">          8 :             WRITE(iun_plot)  n1by2,n2by2,n3by2, ikevc, nbnd-nexband</span>
+<span class="lineNum">    4635 </span><span class="lineCov">        160 :          OPEN (unit=iun_plot, file=wfnname,form='unformatted')</span>
+<span class="lineNum">    4636 </span><span class="lineCov">        160 :          IF (reduce_unk) THEN</span>
+<span class="lineNum">    4637 </span><span class="lineCov">         56 :             WRITE(iun_plot)  n1by2,n2by2,n3by2, ikevc, nbnd-nexband</span>
 <span class="lineNum">    4638 </span>            :          ELSE
-<span class="lineNum">    4639 </span><span class="lineCov">          8 :             WRITE(iun_plot)  dffts%nr1,dffts%nr2,dffts%nr3,ikevc,nbnd-nexband</span>
+<span class="lineNum">    4639 </span><span class="lineCov">        104 :             WRITE(iun_plot)  dffts%nr1,dffts%nr2,dffts%nr3,ikevc,nbnd-nexband</span>
 <span class="lineNum">    4640 </span>            :          ENDIF
 <span class="lineNum">    4641 </span>            :       ENDIF
 <span class="lineNum">    4642 </span>            :    ENDIF
 <span class="lineNum">    4643 </span>            : 
-<span class="lineNum">    4644 </span><span class="lineCov">        128 :       CALL davcio (evc, 2*nwordwfc, iunwfc, ik, -1 )</span>
+<span class="lineNum">    4644 </span><span class="lineCov">       1088 :       CALL davcio (evc, 2*nwordwfc, iunwfc, ik, -1 )</span>
 <span class="lineNum">    4645 </span>            : 
-<span class="lineNum">    4646 </span><span class="lineCov">        128 :       npw = ngk(ik)</span>
-<span class="lineNum">    4647 </span><span class="lineCov">        128 :       ibnd1 = 0</span>
-<span class="lineNum">    4648 </span><span class="lineCov">        896 :       DO ibnd=1,nbnd</span>
-<span class="lineNum">    4649 </span><span class="lineCov">        768 :          IF (excluded_band(ibnd)) CYCLE</span>
-<span class="lineNum">    4650 </span><span class="lineCov">        384 :          ibnd1=ibnd1 + 1</span>
-<span class="lineNum">    4651 </span><span class="lineCov">        384 :          IF (.NOT.noncolin) THEN</span>
-<span class="lineNum">    4652 </span><span class="lineCov">        384 :             psic(:) = (0.d0, 0.d0)</span>
-<span class="lineNum">    4653 </span><span class="lineCov">        384 :             psic(dffts%nl (igk_k (1:npw,ik) ) ) = evc (1:npw, ibnd)</span>
-<span class="lineNum">    4654 </span><span class="lineCov">        384 :             IF (gamma_only)  psic(dffts%nlm(igk_k(1:npw,ik))) = conjg(evc (1:npw, ibnd))</span>
-<span class="lineNum">    4655 </span><span class="lineCov">        384 :             CALL invfft ('Wave', psic, dffts)</span>
+<span class="lineNum">    4646 </span><span class="lineCov">       1088 :       npw = ngk(ik)</span>
+<span class="lineNum">    4647 </span><span class="lineCov">       1088 :       ibnd1 = 0</span>
+<span class="lineNum">    4648 </span><span class="lineCov">      18368 :       DO ibnd=1,nbnd</span>
+<span class="lineNum">    4649 </span><span class="lineCov">      17280 :          IF (excluded_band(ibnd)) CYCLE</span>
+<span class="lineNum">    4650 </span><span class="lineCov">       5376 :          ibnd1=ibnd1 + 1</span>
+<span class="lineNum">    4651 </span><span class="lineCov">       5376 :          IF (.NOT.noncolin) THEN</span>
+<span class="lineNum">    4652 </span><span class="lineCov">       1536 :             psic(:) = (0.d0, 0.d0)</span>
+<span class="lineNum">    4653 </span><span class="lineCov">       1536 :             psic(dffts%nl (igk_k (1:npw,ik) ) ) = evc (1:npw, ibnd)</span>
+<span class="lineNum">    4654 </span><span class="lineCov">       1536 :             IF (gamma_only)  psic(dffts%nlm(igk_k(1:npw,ik))) = conjg(evc (1:npw, ibnd))</span>
+<span class="lineNum">    4655 </span><span class="lineCov">       1536 :             CALL invfft ('Wave', psic, dffts)</span>
 <span class="lineNum">    4656 </span>            :          ELSE
-<span class="lineNum">    4657 </span><span class="lineNoCov">          0 :             psic_nc(:,:) = (0.d0, 0.d0)</span>
-<span class="lineNum">    4658 </span><span class="lineNoCov">          0 :             DO ipol = 1, npol</span>
-<span class="lineNum">    4659 </span><span class="lineNoCov">          0 :                psic_nc(dffts%nl (igk_k (1:npw,ik) ), ipol) = evc (1+npwx*(ipol-1):npw+npwx*(ipol-1), ibnd)</span>
-<span class="lineNum">    4660 </span><span class="lineNoCov">          0 :                CALL invfft ('Wave', psic_nc(:,ipol), dffts)</span>
+<span class="lineNum">    4657 </span><span class="lineCov">       3840 :             psic_nc(:,:) = (0.d0, 0.d0)</span>
+<span class="lineNum">    4658 </span><span class="lineCov">      11520 :             DO ipol = 1, npol</span>
+<span class="lineNum">    4659 </span><span class="lineCov">       7680 :                psic_nc(dffts%nl (igk_k (1:npw,ik) ), ipol) = evc (1+npwx*(ipol-1):npw+npwx*(ipol-1), ibnd)</span>
+<span class="lineNum">    4660 </span><span class="lineCov">      11520 :                CALL invfft ('Wave', psic_nc(:,ipol), dffts)</span>
 <span class="lineNum">    4661 </span>            :             ENDDO
 <span class="lineNum">    4662 </span>            :          ENDIF
-<span class="lineNum">    4663 </span><span class="lineCov">        384 :          IF (reduce_unk) pos=0</span>
+<span class="lineNum">    4663 </span><span class="lineCov">       5376 :          IF (reduce_unk) pos=0</span>
 <span class="lineNum">    4664 </span>            : #if defined(__MPI)
-<span class="lineNum">    4665 </span><span class="lineCov">        384 :          IF (.NOT.noncolin) THEN</span>
-<span class="lineNum">    4666 </span><span class="lineCov">        384 :             CALL gather_grid(dffts,psic,psic_all)</span>
+<span class="lineNum">    4665 </span><span class="lineCov">       5376 :          IF (.NOT.noncolin) THEN</span>
+<span class="lineNum">    4666 </span><span class="lineCov">       1536 :             CALL gather_grid(dffts,psic,psic_all)</span>
 <span class="lineNum">    4667 </span>            :          ELSE
-<span class="lineNum">    4668 </span><span class="lineNoCov">          0 :             DO ipol = 1, npol</span>
-<span class="lineNum">    4669 </span><span class="lineNoCov">          0 :                CALL gather_grid(dffts,psic_nc(:,ipol),psic_nc_all(:,ipol))</span>
+<span class="lineNum">    4668 </span><span class="lineCov">      11520 :             DO ipol = 1, npol</span>
+<span class="lineNum">    4669 </span><span class="lineCov">      11520 :                CALL gather_grid(dffts,psic_nc(:,ipol),psic_nc_all(:,ipol))</span>
 <span class="lineNum">    4670 </span>            :             ENDDO
 <span class="lineNum">    4671 </span>            :          ENDIF
-<span class="lineNum">    4672 </span><span class="lineCov">        384 :          IF (reduce_unk) THEN</span>
-<span class="lineNum">    4673 </span><span class="lineCov">       1728 :             DO k=1,dffts%nr3,2</span>
-<span class="lineNum">    4674 </span><span class="lineCov">      14016 :                DO j=1,dffts%nr2,2</span>
-<span class="lineNum">    4675 </span><span class="lineCov">     112128 :                   DO i=1,dffts%nr1,2</span>
-<span class="lineNum">    4676 </span><span class="lineCov">      98304 :                      idx = (k-1)*dffts%nr2*dffts%nr1 + (j-1)*dffts%nr1 + i</span>
-<span class="lineNum">    4677 </span><span class="lineCov">      98304 :                      pos=pos+1</span>
-<span class="lineNum">    4678 </span><span class="lineCov">     110592 :                      IF (.NOT.noncolin) THEN</span>
-<span class="lineNum">    4679 </span><span class="lineCov">      98304 :                         psic_small(pos) = psic_all(idx)</span>
+<span class="lineNum">    4672 </span><span class="lineCov">       5376 :          IF (reduce_unk) THEN</span>
+<span class="lineNum">    4673 </span><span class="lineCov">      27392 :             DO k=1,dffts%nr3,2</span>
+<span class="lineNum">    4674 </span><span class="lineCov">     307968 :                DO j=1,dffts%nr2,2</span>
+<span class="lineNum">    4675 </span><span class="lineCov">    3508736 :                   DO i=1,dffts%nr1,2</span>
+<span class="lineNum">    4676 </span><span class="lineCov">    3203072 :                      idx = (k-1)*dffts%nr2*dffts%nr1 + (j-1)*dffts%nr1 + i</span>
+<span class="lineNum">    4677 </span><span class="lineCov">    3203072 :                      pos=pos+1</span>
+<span class="lineNum">    4678 </span><span class="lineCov">    3483648 :                      IF (.NOT.noncolin) THEN</span>
+<span class="lineNum">    4679 </span><span class="lineCov">     196608 :                         psic_small(pos) = psic_all(idx)</span>
 <span class="lineNum">    4680 </span>            :                      ELSE
-<span class="lineNum">    4681 </span><span class="lineNoCov">          0 :                         DO ipol = 1, npol</span>
-<span class="lineNum">    4682 </span><span class="lineNoCov">          0 :                            psic_nc_small(pos,ipol) = psic_nc_all(idx,ipol)</span>
+<span class="lineNum">    4681 </span><span class="lineCov">    9019392 :                         DO ipol = 1, npol</span>
+<span class="lineNum">    4682 </span><span class="lineCov">    9019392 :                            psic_nc_small(pos,ipol) = psic_nc_all(idx,ipol)</span>
 <span class="lineNum">    4683 </span>            :                         ENDDO
 <span class="lineNum">    4684 </span>            :                      ENDIF
 <span class="lineNum">    4685 </span>            :                   ENDDO
 <span class="lineNum">    4686 </span>            :                ENDDO
 <span class="lineNum">    4687 </span>            :             ENDDO
 <span class="lineNum">    4688 </span>            :          ENDIF
-<span class="lineNum">    4689 </span><span class="lineCov">        512 :       IF (ionode) THEN</span>
-<span class="lineNum">    4690 </span><span class="lineCov">         96 :          IF(wvfn_formatted) THEN</span>
-<span class="lineNum">    4691 </span><span class="lineCov">         48 :             IF (reduce_unk) THEN</span>
-<span class="lineNum">    4692 </span><span class="lineCov">         24 :                IF (.NOT.noncolin) THEN</span>
-<span class="lineNum">    4693 </span><span class="lineCov">         24 :                   WRITE (iun_plot,'(2ES20.10)') (psic_small(j),j=1,n1by2*n2by2*n3by2)</span>
+<span class="lineNum">    4689 </span><span class="lineCov">       6464 :       IF (ionode) THEN</span>
+<span class="lineNum">    4690 </span><span class="lineCov">       1344 :          IF(wvfn_formatted) THEN</span>
+<span class="lineNum">    4691 </span><span class="lineCov">        576 :             IF (reduce_unk) THEN</span>
+<span class="lineNum">    4692 </span><span class="lineCov">        288 :                IF (.NOT.noncolin) THEN</span>
+<span class="lineNum">    4693 </span><span class="lineCov">         48 :                   WRITE (iun_plot,'(2ES20.10)') (psic_small(j),j=1,n1by2*n2by2*n3by2)</span>
 <span class="lineNum">    4694 </span>            :                ELSE
-<span class="lineNum">    4695 </span><span class="lineNoCov">          0 :                   DO ipol = 1, npol</span>
-<span class="lineNum">    4696 </span><span class="lineNoCov">          0 :                      WRITE (iun_plot,'(2ES20.10)') (psic_nc_small(j,ipol),j=1,n1by2*n2by2*n3by2)</span>
+<span class="lineNum">    4695 </span><span class="lineCov">        720 :                   DO ipol = 1, npol</span>
+<span class="lineNum">    4696 </span><span class="lineCov">        720 :                      WRITE (iun_plot,'(2ES20.10)') (psic_nc_small(j,ipol),j=1,n1by2*n2by2*n3by2)</span>
 <span class="lineNum">    4697 </span>            :                   ENDDO
 <span class="lineNum">    4698 </span>            :                ENDIF
 <span class="lineNum">    4699 </span>            :             ELSE
-<span class="lineNum">    4700 </span><span class="lineCov">         24 :                IF (.NOT.noncolin) THEN</span>
-<span class="lineNum">    4701 </span><span class="lineCov">         24 :                   WRITE (iun_plot,'(2ES20.10)') (psic_all(j),j=1,dffts%nr1*dffts%nr2*dffts%nr3)</span>
+<span class="lineNum">    4700 </span><span class="lineCov">        288 :                IF (.NOT.noncolin) THEN</span>
+<span class="lineNum">    4701 </span><span class="lineCov">         48 :                   WRITE (iun_plot,'(2ES20.10)') (psic_all(j),j=1,dffts%nr1*dffts%nr2*dffts%nr3)</span>
 <span class="lineNum">    4702 </span>            :                ELSE
-<span class="lineNum">    4703 </span><span class="lineNoCov">          0 :                   DO ipol = 1, npol</span>
-<span class="lineNum">    4704 </span><span class="lineNoCov">          0 :                      WRITE (iun_plot,'(2ES20.10)') (psic_nc_all(j,ipol),j=1,dffts%nr1*dffts%nr2*dffts%nr3)</span>
+<span class="lineNum">    4703 </span><span class="lineCov">        720 :                   DO ipol = 1, npol</span>
+<span class="lineNum">    4704 </span><span class="lineCov">        240 :                      WRITE (iun_plot,'(2ES20.10)') (psic_nc_all(j,ipol),j=1,dffts%nr1*dffts%nr2*dffts%nr3)</span>
 <span class="lineNum">    4705 </span>            :                   ENDDO
 <span class="lineNum">    4706 </span>            :                ENDIF
 <span class="lineNum">    4707 </span>            :             ENDIF
 <span class="lineNum">    4708 </span>            :          ELSE
-<span class="lineNum">    4709 </span><span class="lineCov">         48 :             IF (reduce_unk) THEN</span>
-<span class="lineNum">    4710 </span><span class="lineCov">         24 :                IF (.NOT.noncolin) THEN</span>
-<span class="lineNum">    4711 </span><span class="lineCov">         24 :                   WRITE (iun_plot) (psic_small(j),j=1,n1by2*n2by2*n3by2)</span>
+<span class="lineNum">    4709 </span><span class="lineCov">        768 :             IF (reduce_unk) THEN</span>
+<span class="lineNum">    4710 </span><span class="lineCov">        288 :                IF (.NOT.noncolin) THEN</span>
+<span class="lineNum">    4711 </span><span class="lineCov">         48 :                   WRITE (iun_plot) (psic_small(j),j=1,n1by2*n2by2*n3by2)</span>
 <span class="lineNum">    4712 </span>            :                ELSE
-<span class="lineNum">    4713 </span><span class="lineNoCov">          0 :                   DO ipol = 1, npol</span>
-<span class="lineNum">    4714 </span><span class="lineNoCov">          0 :                      WRITE (iun_plot) (psic_nc_small(j,ipol),j=1,n1by2*n2by2*n3by2)</span>
+<span class="lineNum">    4713 </span><span class="lineCov">        720 :                   DO ipol = 1, npol</span>
+<span class="lineNum">    4714 </span><span class="lineCov">        240 :                      WRITE (iun_plot) (psic_nc_small(j,ipol),j=1,n1by2*n2by2*n3by2)</span>
 <span class="lineNum">    4715 </span>            :                   ENDDO
 <span class="lineNum">    4716 </span>            :                ENDIF
 <span class="lineNum">    4717 </span>            :             ELSE
-<span class="lineNum">    4718 </span><span class="lineCov">         24 :                IF (.NOT.noncolin) THEN</span>
-<span class="lineNum">    4719 </span><span class="lineCov">         24 :                   WRITE (iun_plot) (psic_all(j),j=1,dffts%nr1*dffts%nr2*dffts%nr3)</span>
+<span class="lineNum">    4718 </span><span class="lineCov">        480 :                IF (.NOT.noncolin) THEN</span>
+<span class="lineNum">    4719 </span><span class="lineCov">        240 :                   WRITE (iun_plot) (psic_all(j),j=1,dffts%nr1*dffts%nr2*dffts%nr3)</span>
 <span class="lineNum">    4720 </span>            :                ELSE
-<span class="lineNum">    4721 </span><span class="lineNoCov">          0 :                   DO ipol = 1, npol</span>
-<span class="lineNum">    4722 </span><span class="lineNoCov">          0 :                      WRITE (iun_plot) (psic_nc_all(j,ipol),j=1,dffts%nr1*dffts%nr2*dffts%nr3)</span>
+<span class="lineNum">    4721 </span><span class="lineCov">        720 :                   DO ipol = 1, npol</span>
+<span class="lineNum">    4722 </span><span class="lineCov">        240 :                      WRITE (iun_plot) (psic_nc_all(j,ipol),j=1,dffts%nr1*dffts%nr2*dffts%nr3)</span>
 <span class="lineNum">    4723 </span>            :                   ENDDO
 <span class="lineNum">    4724 </span>            :                ENDIF
 <span class="lineNum">    4725 </span>            :             ENDIF
@@ -4841,33 +4841,33 @@
 <span class="lineNum">    4779 </span>            : #endif
 <span class="lineNum">    4780 </span>            :       ENDDO !ibnd
 <span class="lineNum">    4781 </span>            : 
-<span class="lineNum">    4782 </span><span class="lineCov">        144 :       IF(ionode) CLOSE (unit=iun_plot)</span>
+<span class="lineNum">    4782 </span><span class="lineCov">       1224 :       IF(ionode) CLOSE (unit=iun_plot)</span>
 <span class="lineNum">    4783 </span>            : 
 <span class="lineNum">    4784 </span>            :    ENDDO  !ik
 <span class="lineNum">    4785 </span>            : 
-<span class="lineNum">    4786 </span><span class="lineCov">         16 :    IF (reduce_unk) THEN</span>
-<span class="lineNum">    4787 </span><span class="lineCov">          8 :       IF (.NOT.noncolin) THEN</span>
-<span class="lineNum">    4788 </span><span class="lineCov">          8 :          DEALLOCATE(psic_small)</span>
+<span class="lineNum">    4786 </span><span class="lineCov">        136 :    IF (reduce_unk) THEN</span>
+<span class="lineNum">    4787 </span><span class="lineCov">         56 :       IF (.NOT.noncolin) THEN</span>
+<span class="lineNum">    4788 </span><span class="lineCov">         16 :          DEALLOCATE(psic_small)</span>
 <span class="lineNum">    4789 </span>            :       ELSE
-<span class="lineNum">    4790 </span><span class="lineNoCov">          0 :          DEALLOCATE(psic_nc_small)</span>
+<span class="lineNum">    4790 </span><span class="lineCov">         40 :          DEALLOCATE(psic_nc_small)</span>
 <span class="lineNum">    4791 </span>            :       ENDIF
 <span class="lineNum">    4792 </span>            :    ENDIF
 <span class="lineNum">    4793 </span>            : 
 <span class="lineNum">    4794 </span>            : #if defined(__MPI)
-<span class="lineNum">    4795 </span><span class="lineCov">         16 :    IF (.NOT.noncolin) THEN</span>
-<span class="lineNum">    4796 </span><span class="lineCov">         16 :       DEALLOCATE( psic_all )</span>
+<span class="lineNum">    4795 </span><span class="lineCov">        136 :    IF (.NOT.noncolin) THEN</span>
+<span class="lineNum">    4796 </span><span class="lineCov">         56 :       DEALLOCATE( psic_all )</span>
 <span class="lineNum">    4797 </span>            :    ELSE
-<span class="lineNum">    4798 </span><span class="lineNoCov">          0 :       DEALLOCATE( psic_nc_all )</span>
+<span class="lineNum">    4798 </span><span class="lineCov">         80 :       DEALLOCATE( psic_nc_all )</span>
 <span class="lineNum">    4799 </span>            :    ENDIF
 <span class="lineNum">    4800 </span>            : #endif
 <span class="lineNum">    4801 </span>            : 
-<span class="lineNum">    4802 </span><span class="lineCov">         16 :    WRITE(stdout,'(/)')</span>
-<span class="lineNum">    4803 </span><span class="lineCov">         16 :    WRITE(stdout,*) ' UNK written'</span>
+<span class="lineNum">    4802 </span><span class="lineCov">        136 :    WRITE(stdout,'(/)')</span>
+<span class="lineNum">    4803 </span><span class="lineCov">        136 :    WRITE(stdout,*) ' UNK written'</span>
 <span class="lineNum">    4804 </span>            : 
-<span class="lineNum">    4805 </span><span class="lineCov">         16 :    CALL stop_clock( 'write_unk' )</span>
+<span class="lineNum">    4805 </span><span class="lineCov">        136 :    CALL stop_clock( 'write_unk' )</span>
 <span class="lineNum">    4806 </span>            : 
-<span class="lineNum">    4807 </span><span class="lineCov">         16 :    RETURN</span>
-<a name="4808"><span class="lineNum">    4808 </span><span class="lineCov">         16 : END SUBROUTINE write_plot</span></a>
+<span class="lineNum">    4807 </span><span class="lineCov">        136 :    RETURN</span>
+<a name="4808"><span class="lineNum">    4808 </span><span class="lineCov">        136 : END SUBROUTINE write_plot</span></a>
 <span class="lineNum">    4809 </span>            : 
 <span class="lineNum">    4810 </span><span class="lineCov">         16 : SUBROUTINE write_parity</span>
 <span class="lineNum">    4811 </span>            : 
@@ -5338,7 +5338,7 @@
 <span class="lineNum">    5276 </span>            :   !
 <a name="5277"><span class="lineNum">    5277 </span><span class="lineNoCov">          0 : END SUBROUTINE wan2sic</span></a>
 <span class="lineNum">    5278 </span>            : 
-<span class="lineNum">    5279 </span><span class="lineCov">         84 : SUBROUTINE ylm_expansion</span>
+<span class="lineNum">    5279 </span><span class="lineCov">        204 : SUBROUTINE ylm_expansion</span>
 <span class="lineNum">    5280 </span>            :    USE io_global,  ONLY : stdout
 <span class="lineNum">    5281 </span>            :    USE kinds, ONLY :  DP
 <span class="lineNum">    5282 </span>            :    USE random_numbers,  ONLY : randy
@@ -5348,36 +5348,36 @@
 <span class="lineNum">    5286 </span>            :    ! local variables
 <span class="lineNum">    5287 </span>            :    INTEGER, PARAMETER :: lmax2=16
 <span class="lineNum">    5288 </span>            :    INTEGER ::  lm, i, ir, iw, m
-<span class="lineNum">    5289 </span><span class="lineCov">         84 :    real(DP), ALLOCATABLE :: r(:,:), rr(:), rp(:,:), ylm_w(:), ylm(:,:), mly(:,:)</span>
+<span class="lineNum">    5289 </span><span class="lineCov">        204 :    real(DP), ALLOCATABLE :: r(:,:), rr(:), rp(:,:), ylm_w(:), ylm(:,:), mly(:,:)</span>
 <span class="lineNum">    5290 </span>            :    real(DP) :: u(3,3)
 <span class="lineNum">    5291 </span>            : 
-<span class="lineNum">    5292 </span><span class="lineCov">         84 :    ALLOCATE (r(3,lmax2), rp(3,lmax2), rr(lmax2), ylm_w(lmax2))</span>
-<span class="lineNum">    5293 </span><span class="lineCov">         84 :    ALLOCATE (ylm(lmax2,lmax2), mly(lmax2,lmax2) )</span>
+<span class="lineNum">    5292 </span><span class="lineCov">        204 :    ALLOCATE (r(3,lmax2), rp(3,lmax2), rr(lmax2), ylm_w(lmax2))</span>
+<span class="lineNum">    5293 </span><span class="lineCov">        204 :    ALLOCATE (ylm(lmax2,lmax2), mly(lmax2,lmax2) )</span>
 <span class="lineNum">    5294 </span>            : 
 <span class="lineNum">    5295 </span>            :    ! generate a set of nr=lmax2 random vectors
-<span class="lineNum">    5296 </span><span class="lineCov">       2772 :    DO ir=1,lmax2</span>
-<span class="lineNum">    5297 </span><span class="lineCov">       4116 :       DO i=1,3</span>
-<span class="lineNum">    5298 </span><span class="lineCov">       5376 :          r(i,ir) = randy() -0.5d0</span>
+<span class="lineNum">    5296 </span><span class="lineCov">       6732 :    DO ir=1,lmax2</span>
+<span class="lineNum">    5297 </span><span class="lineCov">       9996 :       DO i=1,3</span>
+<span class="lineNum">    5298 </span><span class="lineCov">      13056 :          r(i,ir) = randy() -0.5d0</span>
 <span class="lineNum">    5299 </span>            :       ENDDO
 <span class="lineNum">    5300 </span>            :    ENDDO
-<span class="lineNum">    5301 </span><span class="lineCov">       1428 :    rr(:) = r(1,:)*r(1,:) + r(2,:)*r(2,:) + r(3,:)*r(3,:)</span>
+<span class="lineNum">    5301 </span><span class="lineCov">       3468 :    rr(:) = r(1,:)*r(1,:) + r(2,:)*r(2,:) + r(3,:)*r(3,:)</span>
 <span class="lineNum">    5302 </span>            :    !- compute ylm(ir,lm)
-<span class="lineNum">    5303 </span><span class="lineCov">         84 :    CALL ylmr2(lmax2, lmax2, r, rr, ylm)</span>
+<span class="lineNum">    5303 </span><span class="lineCov">        204 :    CALL ylmr2(lmax2, lmax2, r, rr, ylm)</span>
 <span class="lineNum">    5304 </span>            :    !- store the inverse of ylm(ir,lm) in mly(lm,ir)
-<span class="lineNum">    5305 </span><span class="lineCov">         84 :    CALL invmat(lmax2, ylm, mly)</span>
+<span class="lineNum">    5305 </span><span class="lineCov">        204 :    CALL invmat(lmax2, ylm, mly)</span>
 <span class="lineNum">    5306 </span>            :    !- check that r points are independent
-<span class="lineNum">    5307 </span><span class="lineCov">         84 :    CALL check_inverse(lmax2, ylm, mly)</span>
+<span class="lineNum">    5307 </span><span class="lineCov">        204 :    CALL check_inverse(lmax2, ylm, mly)</span>
 <span class="lineNum">    5308 </span>            : 
-<span class="lineNum">    5309 </span><span class="lineCov">        828 :    DO iw=1, n_proj</span>
+<span class="lineNum">    5309 </span><span class="lineCov">       1644 :    DO iw=1, n_proj</span>
 <span class="lineNum">    5310 </span>            : 
 <span class="lineNum">    5311 </span>            :       !- define the u matrix that rotate the reference frame
-<span class="lineNum">    5312 </span><span class="lineCov">        744 :       CALL set_u_matrix (xaxis(:,iw),zaxis(:,iw),u)</span>
+<span class="lineNum">    5312 </span><span class="lineCov">       1440 :       CALL set_u_matrix (xaxis(:,iw),zaxis(:,iw),u)</span>
 <span class="lineNum">    5313 </span>            :       !- find rotated r-vectors
-<span class="lineNum">    5314 </span><span class="lineCov">        744 :       rp(:,:) = matmul ( u(:,:) , r(:,:) )</span>
+<span class="lineNum">    5314 </span><span class="lineCov">       1440 :       rp(:,:) = matmul ( u(:,:) , r(:,:) )</span>
 <span class="lineNum">    5315 </span>            :       !- set ylm funtion according to wannier90 (l,mr) indexing in the rotaterd points
-<span class="lineNum">    5316 </span><span class="lineCov">        744 :       CALL ylm_wannier(ylm_w,l_w(iw),mr_w(iw),rp,lmax2)</span>
+<span class="lineNum">    5316 </span><span class="lineCov">       1440 :       CALL ylm_wannier(ylm_w,l_w(iw),mr_w(iw),rp,lmax2)</span>
 <span class="lineNum">    5317 </span>            : 
-<span class="lineNum">    5318 </span><span class="lineCov">        828 :       csph(:,iw) = matmul (mly(:,:), ylm_w(:))</span>
+<span class="lineNum">    5318 </span><span class="lineCov">       1644 :       csph(:,iw) = matmul (mly(:,:), ylm_w(:))</span>
 <span class="lineNum">    5319 </span>            : 
 <span class="lineNum">    5320 </span>            : !      write (stdout,*)
 <span class="lineNum">    5321 </span>            : !      write (stdout,'(2i4,2(2x,3f6.3))') l_w(iw), mr_w(iw), xaxis(:,iw), zaxis(:,iw)
@@ -5385,38 +5385,38 @@
 <span class="lineNum">    5323 </span>            : !      write (stdout,'(16f6.3)') (csph(lm,iw), lm=1,lmax2)
 <span class="lineNum">    5324 </span>            : 
 <span class="lineNum">    5325 </span>            :    ENDDO
-<span class="lineNum">    5326 </span><span class="lineCov">         84 :    DEALLOCATE (r, rp, rr, ylm_w, ylm, mly )</span>
+<span class="lineNum">    5326 </span><span class="lineCov">        204 :    DEALLOCATE (r, rp, rr, ylm_w, ylm, mly )</span>
 <span class="lineNum">    5327 </span>            : 
-<span class="lineNum">    5328 </span><span class="lineCov">         84 :    RETURN</span>
+<span class="lineNum">    5328 </span><span class="lineCov">        204 :    RETURN</span>
 <a name="5329"><span class="lineNum">    5329 </span>            : END SUBROUTINE ylm_expansion</a>
 <span class="lineNum">    5330 </span>            : 
-<span class="lineNum">    5331 </span><span class="lineCov">         84 : SUBROUTINE check_inverse(lmax2, ylm, mly)</span>
-<span class="lineNum">    5332 </span><span class="lineCov">       2631 :    USE kinds, ONLY :  DP</span>
+<span class="lineNum">    5331 </span><span class="lineCov">        204 : SUBROUTINE check_inverse(lmax2, ylm, mly)</span>
+<span class="lineNum">    5332 </span><span class="lineCov">       6443 :    USE kinds, ONLY :  DP</span>
 <span class="lineNum">    5333 </span>            :    USE constants, ONLY :  eps8
 <span class="lineNum">    5334 </span>            :    IMPLICIT NONE
 <span class="lineNum">    5335 </span>            :    ! I/O variables
 <span class="lineNum">    5336 </span>            :    INTEGER :: lmax2
 <span class="lineNum">    5337 </span>            :    real(DP) :: ylm(lmax2,lmax2), mly(lmax2,lmax2)
 <span class="lineNum">    5338 </span>            :    ! local variables
-<span class="lineNum">    5339 </span><span class="lineCov">         84 :    real(DP), ALLOCATABLE :: uno(:,:)</span>
+<span class="lineNum">    5339 </span><span class="lineCov">        204 :    real(DP), ALLOCATABLE :: uno(:,:)</span>
 <span class="lineNum">    5340 </span>            :    real(DP) :: capel
 <span class="lineNum">    5341 </span>            :    INTEGER :: lm
 <span class="lineNum">    5342 </span>            :    !
-<span class="lineNum">    5343 </span><span class="lineCov">         84 :    ALLOCATE (uno(lmax2,lmax2) )</span>
-<span class="lineNum">    5344 </span><span class="lineCov">         84 :    uno = matmul(mly, ylm)</span>
-<span class="lineNum">    5345 </span><span class="lineCov">         84 :    capel = 0.d0</span>
-<span class="lineNum">    5346 </span><span class="lineCov">       1428 :    DO lm = 1, lmax2</span>
-<span class="lineNum">    5347 </span><span class="lineCov">       1428 :       uno(lm,lm) = uno(lm,lm) - 1.d0</span>
+<span class="lineNum">    5343 </span><span class="lineCov">        204 :    ALLOCATE (uno(lmax2,lmax2) )</span>
+<span class="lineNum">    5344 </span><span class="lineCov">        204 :    uno = matmul(mly, ylm)</span>
+<span class="lineNum">    5345 </span><span class="lineCov">        204 :    capel = 0.d0</span>
+<span class="lineNum">    5346 </span><span class="lineCov">       3468 :    DO lm = 1, lmax2</span>
+<span class="lineNum">    5347 </span><span class="lineCov">       3468 :       uno(lm,lm) = uno(lm,lm) - 1.d0</span>
 <span class="lineNum">    5348 </span>            :    ENDDO
-<span class="lineNum">    5349 </span><span class="lineCov">         84 :    capel = capel + sum ( abs(uno(1:lmax2,1:lmax2) ) )</span>
+<span class="lineNum">    5349 </span><span class="lineCov">        204 :    capel = capel + sum ( abs(uno(1:lmax2,1:lmax2) ) )</span>
 <span class="lineNum">    5350 </span>            : !   write (stdout,*) &quot;capel = &quot;, capel
-<span class="lineNum">    5351 </span><span class="lineCov">         84 :    IF (capel &gt; eps8) CALL errore('ylm_expansion', &amp;</span>
+<span class="lineNum">    5351 </span><span class="lineCov">        204 :    IF (capel &gt; eps8) CALL errore('ylm_expansion', &amp;</span>
 <span class="lineNum">    5352 </span><span class="lineNoCov">          0 :                     ' inversion failed: r(*,1:nr) are not all independent !!',1)</span>
-<span class="lineNum">    5353 </span><span class="lineCov">         84 :    DEALLOCATE (uno)</span>
-<span class="lineNum">    5354 </span><span class="lineCov">         84 :    RETURN</span>
+<span class="lineNum">    5353 </span><span class="lineCov">        204 :    DEALLOCATE (uno)</span>
+<span class="lineNum">    5354 </span><span class="lineCov">        204 :    RETURN</span>
 <a name="5355"><span class="lineNum">    5355 </span>            : END SUBROUTINE check_inverse</a>
 <span class="lineNum">    5356 </span>            : 
-<span class="lineNum">    5357 </span><span class="lineCov">        824 : SUBROUTINE set_u_matrix(x,z,u)</span>
+<span class="lineNum">    5357 </span><span class="lineCov">       1520 : SUBROUTINE set_u_matrix(x,z,u)</span>
 <span class="lineNum">    5358 </span>            :    USE kinds, ONLY :  DP
 <span class="lineNum">    5359 </span>            :    USE constants, ONLY : eps6
 <span class="lineNum">    5360 </span>            :    IMPLICIT NONE
@@ -5425,31 +5425,31 @@
 <span class="lineNum">    5363 </span>            :    ! local variables
 <span class="lineNum">    5364 </span>            :    real(DP) :: xx, zz, y(3), coseno
 <span class="lineNum">    5365 </span>            : 
-<span class="lineNum">    5366 </span><span class="lineCov">        824 :    xx = sqrt(x(1)*x(1) + x(2)*x(2) + x(3)*x(3))</span>
-<span class="lineNum">    5367 </span><span class="lineCov">        824 :    IF (xx &lt; eps6) CALL errore ('set_u_matrix',' |xaxis| &lt; eps ',1)</span>
+<span class="lineNum">    5366 </span><span class="lineCov">       1520 :    xx = sqrt(x(1)*x(1) + x(2)*x(2) + x(3)*x(3))</span>
+<span class="lineNum">    5367 </span><span class="lineCov">       1520 :    IF (xx &lt; eps6) CALL errore ('set_u_matrix',' |xaxis| &lt; eps ',1)</span>
 <span class="lineNum">    5368 </span>            : !   x(:) = x(:)/xx
-<span class="lineNum">    5369 </span><span class="lineCov">        824 :    zz = sqrt(z(1)*z(1) + z(2)*z(2) + z(3)*z(3))</span>
-<span class="lineNum">    5370 </span><span class="lineCov">        824 :    IF (zz &lt; eps6) CALL errore ('set_u_matrix',' |zaxis| &lt; eps ',1)</span>
+<span class="lineNum">    5369 </span><span class="lineCov">       1520 :    zz = sqrt(z(1)*z(1) + z(2)*z(2) + z(3)*z(3))</span>
+<span class="lineNum">    5370 </span><span class="lineCov">       1520 :    IF (zz &lt; eps6) CALL errore ('set_u_matrix',' |zaxis| &lt; eps ',1)</span>
 <span class="lineNum">    5371 </span>            : !   z(:) = z(:)/zz
 <span class="lineNum">    5372 </span>            : 
-<span class="lineNum">    5373 </span><span class="lineCov">        824 :    coseno = (x(1)*z(1) + x(2)*z(2) + x(3)*z(3))/xx/zz</span>
-<span class="lineNum">    5374 </span><span class="lineCov">        824 :    IF (abs(coseno) &gt; eps6) CALL errore('set_u_matrix',' xaxis and zaxis are not orthogonal !',1)</span>
+<span class="lineNum">    5373 </span><span class="lineCov">       1520 :    coseno = (x(1)*z(1) + x(2)*z(2) + x(3)*z(3))/xx/zz</span>
+<span class="lineNum">    5374 </span><span class="lineCov">       1520 :    IF (abs(coseno) &gt; eps6) CALL errore('set_u_matrix',' xaxis and zaxis are not orthogonal !',1)</span>
 <span class="lineNum">    5375 </span>            : 
-<span class="lineNum">    5376 </span><span class="lineCov">        824 :    y(1) = (z(2)*x(3) - x(2)*z(3))/xx/zz</span>
-<span class="lineNum">    5377 </span><span class="lineCov">        824 :    y(2) = (z(3)*x(1) - x(3)*z(1))/xx/zz</span>
-<span class="lineNum">    5378 </span><span class="lineCov">        824 :    y(3) = (z(1)*x(2) - x(1)*z(2))/xx/zz</span>
+<span class="lineNum">    5376 </span><span class="lineCov">       1520 :    y(1) = (z(2)*x(3) - x(2)*z(3))/xx/zz</span>
+<span class="lineNum">    5377 </span><span class="lineCov">       1520 :    y(2) = (z(3)*x(1) - x(3)*z(1))/xx/zz</span>
+<span class="lineNum">    5378 </span><span class="lineCov">       1520 :    y(3) = (z(1)*x(2) - x(1)*z(2))/xx/zz</span>
 <span class="lineNum">    5379 </span>            : 
-<span class="lineNum">    5380 </span><span class="lineCov">       3296 :    u(1,:) = x(:)/xx</span>
-<span class="lineNum">    5381 </span><span class="lineCov">       3296 :    u(2,:) = y(:)</span>
-<span class="lineNum">    5382 </span><span class="lineCov">       3296 :    u(3,:) = z(:)/zz</span>
+<span class="lineNum">    5380 </span><span class="lineCov">       6080 :    u(1,:) = x(:)/xx</span>
+<span class="lineNum">    5381 </span><span class="lineCov">       6080 :    u(2,:) = y(:)</span>
+<span class="lineNum">    5382 </span><span class="lineCov">       6080 :    u(3,:) = z(:)/zz</span>
 <span class="lineNum">    5383 </span>            : 
 <span class="lineNum">    5384 </span>            : !   write (stdout,'(3f10.7)') u(:,:)
 <span class="lineNum">    5385 </span>            : 
-<span class="lineNum">    5386 </span><span class="lineCov">        824 :    RETURN</span>
+<span class="lineNum">    5386 </span><span class="lineCov">       1520 :    RETURN</span>
 <span class="lineNum">    5387 </span>            : 
 <a name="5388"><span class="lineNum">    5388 </span>            : END SUBROUTINE set_u_matrix</a>
 <span class="lineNum">    5389 </span>            : 
-<span class="lineNum">    5390 </span><span class="lineCov">      13840 : SUBROUTINE ylm_wannier(ylm,l,mr,r,nr)</span>
+<span class="lineNum">    5390 </span><span class="lineCov">      14536 : SUBROUTINE ylm_wannier(ylm,l,mr,r,nr)</span>
 <span class="lineNum">    5391 </span>            : !
 <span class="lineNum">    5392 </span>            : ! this routine returns in ylm(r) the values at the nr points r(1:3,1:nr)
 <span class="lineNum">    5393 </span>            : ! of the spherical harmonic identified  by indices (l,mr)
@@ -5476,51 +5476,51 @@
 <span class="lineNum">    5414 </span>            :    real(DP) :: rr, cost, phi
 <span class="lineNum">    5415 </span>            :    INTEGER :: ir
 <span class="lineNum">    5416 </span>            :    real(DP) :: bs2, bs3, bs6, bs12
-<span class="lineNum">    5417 </span><span class="lineCov">      13840 :    bs2 = 1.d0/sqrt(2.d0)</span>
-<span class="lineNum">    5418 </span><span class="lineCov">      13840 :    bs3=1.d0/sqrt(3.d0)</span>
-<span class="lineNum">    5419 </span><span class="lineCov">      13840 :    bs6 = 1.d0/sqrt(6.d0)</span>
-<span class="lineNum">    5420 </span><span class="lineCov">      13840 :    bs12 = 1.d0/sqrt(12.d0)</span>
+<span class="lineNum">    5417 </span><span class="lineCov">      14536 :    bs2 = 1.d0/sqrt(2.d0)</span>
+<span class="lineNum">    5418 </span><span class="lineCov">      14536 :    bs3=1.d0/sqrt(3.d0)</span>
+<span class="lineNum">    5419 </span><span class="lineCov">      14536 :    bs6 = 1.d0/sqrt(6.d0)</span>
+<span class="lineNum">    5420 </span><span class="lineCov">      14536 :    bs12 = 1.d0/sqrt(12.d0)</span>
 <span class="lineNum">    5421 </span>            : !
-<span class="lineNum">    5422 </span><span class="lineCov">      13840 :    IF (l &gt; 3 .or. l &lt; -5 ) CALL errore('ylm_wannier',' l out of range ', 1)</span>
-<span class="lineNum">    5423 </span><span class="lineCov">      13840 :    IF (l&gt;=0) THEN</span>
-<span class="lineNum">    5424 </span><span class="lineCov">       2000 :       IF (mr &lt; 1 .or. mr &gt; 2*l+1) CALL errore('ylm_wannier','mr out of range' ,1)</span>
+<span class="lineNum">    5422 </span><span class="lineCov">      14536 :    IF (l &gt; 3 .or. l &lt; -5 ) CALL errore('ylm_wannier',' l out of range ', 1)</span>
+<span class="lineNum">    5423 </span><span class="lineCov">      14536 :    IF (l&gt;=0) THEN</span>
+<span class="lineNum">    5424 </span><span class="lineCov">       2184 :       IF (mr &lt; 1 .or. mr &gt; 2*l+1) CALL errore('ylm_wannier','mr out of range' ,1)</span>
 <span class="lineNum">    5425 </span>            :    ELSE
-<span class="lineNum">    5426 </span><span class="lineCov">      11840 :       IF (mr &lt; 1 .or. mr &gt; abs(l)+1 ) CALL errore('ylm_wannier','mr out of range',1)</span>
+<span class="lineNum">    5426 </span><span class="lineCov">      12352 :       IF (mr &lt; 1 .or. mr &gt; abs(l)+1 ) CALL errore('ylm_wannier','mr out of range',1)</span>
 <span class="lineNum">    5427 </span>            :    ENDIF
 <span class="lineNum">    5428 </span>            : 
-<span class="lineNum">    5429 </span><span class="lineCov">     444816 :    DO ir=1, nr</span>
-<span class="lineNum">    5430 </span><span class="lineCov">     430976 :       rr = sqrt( r(1,ir)*r(1,ir) +  r(2,ir)*r(2,ir) + r(3,ir)*r(3,ir) )</span>
-<span class="lineNum">    5431 </span><span class="lineCov">     430976 :       IF (rr &lt; eps8) CALL errore('ylm_wannier',' rr too small ',1)</span>
+<span class="lineNum">    5429 </span><span class="lineCov">     456648 :    DO ir=1, nr</span>
+<span class="lineNum">    5430 </span><span class="lineCov">     442112 :       rr = sqrt( r(1,ir)*r(1,ir) +  r(2,ir)*r(2,ir) + r(3,ir)*r(3,ir) )</span>
+<span class="lineNum">    5431 </span><span class="lineCov">     442112 :       IF (rr &lt; eps8) CALL errore('ylm_wannier',' rr too small ',1)</span>
 <span class="lineNum">    5432 </span>            : 
-<span class="lineNum">    5433 </span><span class="lineCov">     430976 :       cost =  r(3,ir) / rr</span>
+<span class="lineNum">    5433 </span><span class="lineCov">     442112 :       cost =  r(3,ir) / rr</span>
 <span class="lineNum">    5434 </span>            :       !
 <span class="lineNum">    5435 </span>            :       !  beware the arc tan, it is defined modulo pi
 <span class="lineNum">    5436 </span>            :       !
-<span class="lineNum">    5437 </span><span class="lineCov">     430976 :       IF (r(1,ir) &gt; eps8) THEN</span>
-<span class="lineNum">    5438 </span><span class="lineCov">     193904 :          phi = atan( r(2,ir)/r(1,ir) )</span>
-<span class="lineNum">    5439 </span><span class="lineCov">     237072 :       ELSEIF (r(1,ir) &lt; -eps8 ) THEN</span>
-<span class="lineNum">    5440 </span><span class="lineCov">     197568 :          phi = atan( r(2,ir)/r(1,ir) ) + pi</span>
+<span class="lineNum">    5437 </span><span class="lineCov">     442112 :       IF (r(1,ir) &gt; eps8) THEN</span>
+<span class="lineNum">    5438 </span><span class="lineCov">     198344 :          phi = atan( r(2,ir)/r(1,ir) )</span>
+<span class="lineNum">    5439 </span><span class="lineCov">     243768 :       ELSEIF (r(1,ir) &lt; -eps8 ) THEN</span>
+<span class="lineNum">    5440 </span><span class="lineCov">     204264 :          phi = atan( r(2,ir)/r(1,ir) ) + pi</span>
 <span class="lineNum">    5441 </span>            :       ELSE
 <span class="lineNum">    5442 </span><span class="lineCov">      39504 :          phi = sign( pi/2.d0,r(2,ir) )</span>
 <span class="lineNum">    5443 </span>            :       ENDIF
 <span class="lineNum">    5444 </span>            : 
 <span class="lineNum">    5445 </span>            : 
-<span class="lineNum">    5446 </span><span class="lineCov">     430976 :       IF (l==0) THEN   ! s orbital</span>
-<span class="lineNum">    5447 </span><span class="lineCov">     102912 :                     ylm(ir) = s(cost,phi)</span>
+<span class="lineNum">    5446 </span><span class="lineCov">     442112 :       IF (l==0) THEN   ! s orbital</span>
+<span class="lineNum">    5447 </span><span class="lineCov">     108800 :                     ylm(ir) = s(cost,phi)</span>
 <span class="lineNum">    5448 </span>            :       ENDIF
-<span class="lineNum">    5449 </span><span class="lineCov">     430976 :       IF (l==1) THEN   ! p orbitals</span>
+<span class="lineNum">    5449 </span><span class="lineCov">     442112 :       IF (l==1) THEN   ! p orbitals</span>
 <span class="lineNum">    5450 </span><span class="lineCov">       2816 :          IF (mr==1) ylm(ir) = p_z(cost,phi)</span>
 <span class="lineNum">    5451 </span><span class="lineCov">       1920 :          IF (mr==2) ylm(ir) = px(cost,phi)</span>
 <span class="lineNum">    5452 </span><span class="lineCov">       1920 :          IF (mr==3) ylm(ir) = py(cost,phi)</span>
 <span class="lineNum">    5453 </span>            :       ENDIF
-<span class="lineNum">    5454 </span><span class="lineCov">     430976 :       IF (l==2) THEN   ! d orbitals</span>
+<span class="lineNum">    5454 </span><span class="lineCov">     442112 :       IF (l==2) THEN   ! d orbitals</span>
 <span class="lineNum">    5455 </span><span class="lineCov">       4608 :          IF (mr==1) ylm(ir) = dz2(cost,phi)</span>
 <span class="lineNum">    5456 </span><span class="lineCov">       3840 :          IF (mr==2) ylm(ir) = dxz(cost,phi)</span>
 <span class="lineNum">    5457 </span><span class="lineCov">       3840 :          IF (mr==3) ylm(ir) = dyz(cost,phi)</span>
 <span class="lineNum">    5458 </span><span class="lineCov">       3840 :          IF (mr==4) ylm(ir) = dx2my2(cost,phi)</span>
 <span class="lineNum">    5459 </span><span class="lineCov">       3840 :          IF (mr==5) ylm(ir) = dxy(cost,phi)</span>
 <span class="lineNum">    5460 </span>            :       ENDIF
-<span class="lineNum">    5461 </span><span class="lineCov">     430976 :       IF (l==3) THEN   ! f orbitals</span>
+<span class="lineNum">    5461 </span><span class="lineCov">     442112 :       IF (l==3) THEN   ! f orbitals</span>
 <span class="lineNum">    5462 </span><span class="lineNoCov">          0 :          IF (mr==1) ylm(ir) = fz3(cost,phi)</span>
 <span class="lineNum">    5463 </span><span class="lineNoCov">          0 :          IF (mr==2) ylm(ir) = fxz2(cost,phi)</span>
 <span class="lineNum">    5464 </span><span class="lineNoCov">          0 :          IF (mr==3) ylm(ir) = fyz2(cost,phi)</span>
@@ -5529,29 +5529,29 @@
 <span class="lineNum">    5467 </span><span class="lineNoCov">          0 :          IF (mr==6) ylm(ir) = fxx2m3y2(cost,phi)</span>
 <span class="lineNum">    5468 </span><span class="lineNoCov">          0 :          IF (mr==7) ylm(ir) = fy3x2my2(cost,phi)</span>
 <span class="lineNum">    5469 </span>            :       ENDIF
-<span class="lineNum">    5470 </span><span class="lineCov">     430976 :       IF (l==-1) THEN  !  sp hybrids</span>
+<span class="lineNum">    5470 </span><span class="lineCov">     442112 :       IF (l==-1) THEN  !  sp hybrids</span>
 <span class="lineNum">    5471 </span><span class="lineNoCov">          0 :          IF (mr==1) ylm(ir) = bs2 * ( s(cost,phi) + px(cost,phi) )</span>
 <span class="lineNum">    5472 </span><span class="lineNoCov">          0 :          IF (mr==2) ylm(ir) = bs2 * ( s(cost,phi) - px(cost,phi) )</span>
 <span class="lineNum">    5473 </span>            :       ENDIF
-<span class="lineNum">    5474 </span><span class="lineCov">     430976 :       IF (l==-2) THEN  !  sp2 hybrids</span>
+<span class="lineNum">    5474 </span><span class="lineCov">     442112 :       IF (l==-2) THEN  !  sp2 hybrids</span>
 <span class="lineNum">    5475 </span><span class="lineNoCov">          0 :          IF (mr==1) ylm(ir) = bs3*s(cost,phi)-bs6*px(cost,phi)+bs2*py(cost,phi)</span>
 <span class="lineNum">    5476 </span><span class="lineNoCov">          0 :          IF (mr==2) ylm(ir) = bs3*s(cost,phi)-bs6*px(cost,phi)-bs2*py(cost,phi)</span>
 <span class="lineNum">    5477 </span><span class="lineNoCov">          0 :          IF (mr==3) ylm(ir) = bs3*s(cost,phi) +2.d0*bs6*px(cost,phi)</span>
 <span class="lineNum">    5478 </span>            :       ENDIF
-<span class="lineNum">    5479 </span><span class="lineCov">     430976 :       IF (l==-3) THEN  !  sp3 hybrids</span>
-<span class="lineNum">    5480 </span><span class="lineCov">     560640 :          IF (mr==1) ylm(ir) = 0.5d0*(s(cost,phi)+px(cost,phi)+py(cost,phi)+p_z(cost,phi))</span>
-<span class="lineNum">    5481 </span><span class="lineCov">     560640 :          IF (mr==2) ylm(ir) = 0.5d0*(s(cost,phi)+px(cost,phi)-py(cost,phi)-p_z(cost,phi))</span>
-<span class="lineNum">    5482 </span><span class="lineCov">     560640 :          IF (mr==3) ylm(ir) = 0.5d0*(s(cost,phi)-px(cost,phi)+py(cost,phi)-p_z(cost,phi))</span>
-<span class="lineNum">    5483 </span><span class="lineCov">     560640 :          IF (mr==4) ylm(ir) = 0.5d0*(s(cost,phi)-px(cost,phi)-py(cost,phi)+p_z(cost,phi))</span>
+<span class="lineNum">    5479 </span><span class="lineCov">     442112 :       IF (l==-3) THEN  !  sp3 hybrids</span>
+<span class="lineNum">    5480 </span><span class="lineCov">     572928 :          IF (mr==1) ylm(ir) = 0.5d0*(s(cost,phi)+px(cost,phi)+py(cost,phi)+p_z(cost,phi))</span>
+<span class="lineNum">    5481 </span><span class="lineCov">     572928 :          IF (mr==2) ylm(ir) = 0.5d0*(s(cost,phi)+px(cost,phi)-py(cost,phi)-p_z(cost,phi))</span>
+<span class="lineNum">    5482 </span><span class="lineCov">     572928 :          IF (mr==3) ylm(ir) = 0.5d0*(s(cost,phi)-px(cost,phi)+py(cost,phi)-p_z(cost,phi))</span>
+<span class="lineNum">    5483 </span><span class="lineCov">     572928 :          IF (mr==4) ylm(ir) = 0.5d0*(s(cost,phi)-px(cost,phi)-py(cost,phi)+p_z(cost,phi))</span>
 <span class="lineNum">    5484 </span>            :       ENDIF
-<span class="lineNum">    5485 </span><span class="lineCov">     430976 :       IF (l==-4) THEN  !  sp3d hybrids</span>
+<span class="lineNum">    5485 </span><span class="lineCov">     442112 :       IF (l==-4) THEN  !  sp3d hybrids</span>
 <span class="lineNum">    5486 </span><span class="lineNoCov">          0 :          IF (mr==1) ylm(ir) = bs3*s(cost,phi)-bs6*px(cost,phi)+bs2*py(cost,phi)</span>
 <span class="lineNum">    5487 </span><span class="lineNoCov">          0 :          IF (mr==2) ylm(ir) = bs3*s(cost,phi)-bs6*px(cost,phi)-bs2*py(cost,phi)</span>
 <span class="lineNum">    5488 </span><span class="lineNoCov">          0 :          IF (mr==3) ylm(ir) = bs3*s(cost,phi) +2.d0*bs6*px(cost,phi)</span>
 <span class="lineNum">    5489 </span><span class="lineNoCov">          0 :          IF (mr==4) ylm(ir) = bs2*p_z(cost,phi)+bs2*dz2(cost,phi)</span>
 <span class="lineNum">    5490 </span><span class="lineNoCov">          0 :          IF (mr==5) ylm(ir) =-bs2*p_z(cost,phi)+bs2*dz2(cost,phi)</span>
 <span class="lineNum">    5491 </span>            :       ENDIF
-<span class="lineNum">    5492 </span><span class="lineCov">     444816 :       IF (l==-5) THEN  ! sp3d2 hybrids</span>
+<span class="lineNum">    5492 </span><span class="lineCov">     456648 :       IF (l==-5) THEN  ! sp3d2 hybrids</span>
 <span class="lineNum">    5493 </span><span class="lineNoCov">          0 :          IF (mr==1) ylm(ir) = bs6*s(cost,phi)-bs2*px(cost,phi)-bs12*dz2(cost,phi)+.5d0*dx2my2(cost,phi)</span>
 <span class="lineNum">    5494 </span><span class="lineNoCov">          0 :          IF (mr==2) ylm(ir) = bs6*s(cost,phi)+bs2*px(cost,phi)-bs12*dz2(cost,phi)+.5d0*dx2my2(cost,phi)</span>
 <span class="lineNum">    5495 </span><span class="lineNoCov">          0 :          IF (mr==3) ylm(ir) = bs6*s(cost,phi)-bs2*py(cost,phi)-bs12*dz2(cost,phi)-.5d0*dx2my2(cost,phi)</span>
@@ -5562,7 +5562,7 @@
 <span class="lineNum">    5500 </span>            : 
 <span class="lineNum">    5501 </span>            :    ENDDO
 <span class="lineNum">    5502 </span>            : 
-<span class="lineNum">    5503 </span><span class="lineCov">      13840 :    RETURN</span>
+<span class="lineNum">    5503 </span><span class="lineCov">      14536 :    RETURN</span>
 <span class="lineNum">    5504 </span>            : 
 <span class="lineNum">    5505 </span>            : END SUBROUTINE ylm_wannier
 <a name="5506"><span class="lineNum">    5506 </span>            : </a>
@@ -5572,7 +5572,7 @@
 <span class="lineNum">    5510 </span>            :    USE constants, ONLY : fpi
 <span class="lineNum">    5511 </span>            :    IMPLICIT NONE
 <span class="lineNum">    5512 </span>            :    real(DP) :: s, cost,phi
-<span class="lineNum">    5513 </span><span class="lineCov">     425216 :    s = 1.d0/ sqrt(fpi)</span>
+<span class="lineNum">    5513 </span><span class="lineCov">     436352 :    s = 1.d0/ sqrt(fpi)</span>
 <span class="lineNum">    5514 </span>            :    RETURN
 <a name="5515"><span class="lineNum">    5515 </span>            : END FUNCTION s</a>
 <span class="lineNum">    5516 </span>            : !======== l = 1 =====================================================================
@@ -5581,25 +5581,25 @@
 <span class="lineNum">    5519 </span>            :    USE constants, ONLY : fpi
 <span class="lineNum">    5520 </span>            :    IMPLICIT NONE
 <span class="lineNum">    5521 </span>            :    real(DP) ::p_z, cost,phi
-<span class="lineNum">    5522 </span><span class="lineCov">     374656 :    p_z =  sqrt(3.d0/fpi) * cost</span>
+<span class="lineNum">    5522 </span><span class="lineCov">     382848 :    p_z =  sqrt(3.d0/fpi) * cost</span>
 <a name="5523"><span class="lineNum">    5523 </span>            :    RETURN</a>
 <span class="lineNum">    5524 </span>            : END FUNCTION p_z
-<span class="lineNum">    5525 </span><span class="lineCov">     374272 : FUNCTION px(cost,phi)</span>
+<span class="lineNum">    5525 </span><span class="lineCov">     382464 : FUNCTION px(cost,phi)</span>
 <span class="lineNum">    5526 </span>            :    USE kinds, ONLY :  DP
 <span class="lineNum">    5527 </span>            :    USE constants, ONLY : fpi
 <span class="lineNum">    5528 </span>            :    IMPLICIT NONE
 <span class="lineNum">    5529 </span>            :    real(DP) ::px, cost, phi, sint
-<span class="lineNum">    5530 </span><span class="lineCov">     374272 :    sint = sqrt(abs(1.d0 - cost*cost))</span>
-<span class="lineNum">    5531 </span><span class="lineCov">     374272 :    px =  sqrt(3.d0/fpi) * sint * cos(phi)</span>
+<span class="lineNum">    5530 </span><span class="lineCov">     382464 :    sint = sqrt(abs(1.d0 - cost*cost))</span>
+<span class="lineNum">    5531 </span><span class="lineCov">     382464 :    px =  sqrt(3.d0/fpi) * sint * cos(phi)</span>
 <a name="5532"><span class="lineNum">    5532 </span>            :    RETURN</a>
 <span class="lineNum">    5533 </span>            : END FUNCTION px
-<span class="lineNum">    5534 </span><span class="lineCov">     374272 : FUNCTION py(cost,phi)</span>
+<span class="lineNum">    5534 </span><span class="lineCov">     382464 : FUNCTION py(cost,phi)</span>
 <span class="lineNum">    5535 </span>            :    USE kinds, ONLY :  DP
 <span class="lineNum">    5536 </span>            :    USE constants, ONLY : fpi
 <span class="lineNum">    5537 </span>            :    IMPLICIT NONE
 <span class="lineNum">    5538 </span>            :    real(DP) ::py, cost, phi, sint
-<span class="lineNum">    5539 </span><span class="lineCov">     374272 :    sint = sqrt(abs(1.d0 - cost*cost))</span>
-<span class="lineNum">    5540 </span><span class="lineCov">     374272 :    py =  sqrt(3.d0/fpi) * sint * sin(phi)</span>
+<span class="lineNum">    5539 </span><span class="lineCov">     382464 :    sint = sqrt(abs(1.d0 - cost*cost))</span>
+<span class="lineNum">    5540 </span><span class="lineCov">     382464 :    py =  sqrt(3.d0/fpi) * sint * sin(phi)</span>
 <span class="lineNum">    5541 </span>            :    RETURN
 <a name="5542"><span class="lineNum">    5542 </span>            : END FUNCTION py</a>
 <span class="lineNum">    5543 </span>            : !======== l = 2 =====================================================================
