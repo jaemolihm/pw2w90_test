@@ -8,4 +8,5 @@
   write_uIu  =  .true.
   write_unkg =  .true.
   write_dmn  =  .true.
+  write_spn  =  .true. ! would fail, just to test printing
 /
