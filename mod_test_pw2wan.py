@@ -287,19 +287,20 @@ def test_pw2wan(prefix, tag_list, verbose=False, amn_scdm=False):
 
 
 def read_unk(filename, formatted, noncolin):
-    if noncolin:
-        raise NotImplementedError
+    npol = 2 if noncolin else 1
+
     if formatted:
         with open(filename, "r") as f:
             nr1, nr2, nr3, ik, nbnd = read_ints(f)
-        data = np.loadtxt(filename, skiprows=1).reshape(nbnd, nr1*nr2*nr3, 2)
+        data = np.loadtxt(filename, skiprows=1).reshape(nbnd, npol, nr1*nr2*nr3, 2)
         unk = data[:, :, 0] + 1j * data[:, :, 1]
     else:
         f = FortranFile(filename, mode='r', auto_endian=True, check_file=True)
         nr1, nr2, nr3, ik, nbnd = f.read_record(dtype=np.int32)
-        unk = np.zeros((nbnd, nr1*nr2*nr3), dtype=np.complex128)
+        unk = np.zeros((nbnd, npol, nr1*nr2*nr3), dtype=np.complex128)
         for ib in range(nbnd):
-            unk[ib, :] = f.read_record(dtype=np.complex128)
+            for ipol in range(npol):
+                unk[ib, ipol, :] = f.read_record(dtype=np.complex128)
     return unk, ik
 
 def test_unk(nk, lsda, formatted, noncolin, verbose=False, folder="."):
@@ -307,10 +308,14 @@ def test_unk(nk, lsda, formatted, noncolin, verbose=False, folder="."):
         if lsda:
             raise NotImplementedError
         else:
-            ref, ik_ = read_unk(f"reference/{folder}/UNK{ik:05d}.1", formatted, noncolin)
+            if noncolin:
+                filename = f"UNK{ik:05d}.NC"
+            else:
+                filename = f"UNK{ik:05d}.1"
+            ref, ik_ = read_unk(f"reference/{folder}/{filename}", formatted, noncolin)
             assert ik_ == ik, f"UNK: wrong ik for ref data. need {ik}, got {ik_}"
 
-            new, ik_ = read_unk(f"{folder}/UNK{ik:05d}.1", formatted, noncolin)
+            new, ik_ = read_unk(f"{folder}/{filename}", formatted, noncolin)
             assert ik_ == ik, f"UNK: wrong ik for new data. need {ik}, got {ik_}"
 
         if verbose:
