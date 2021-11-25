@@ -303,20 +303,22 @@ def read_unk(filename, formatted, noncolin):
                 unk[ib, ipol, :] = f.read_record(dtype=np.complex128)
     return unk, ik
 
-def test_unk(nk, lsda, formatted, noncolin, verbose=False, folder="."):
+def test_unk(nk, formatted, lsda_ispin=None, noncolin=False, verbose=False, folder="."):
     for ik in range(1, nk+1):
-        if lsda:
-            raise NotImplementedError
+        if noncolin:
+            filename = f"UNK{ik:05d}.NC"
         else:
-            if noncolin:
-                filename = f"UNK{ik:05d}.NC"
-            else:
+            if lsda_ispin in [None, 1]:
                 filename = f"UNK{ik:05d}.1"
-            ref, ik_ = read_unk(f"reference/{folder}/{filename}", formatted, noncolin)
-            assert ik_ == ik, f"UNK: wrong ik for ref data. need {ik}, got {ik_}"
+            elif lsda_ispin == 2:
+                filename = f"UNK{ik:05d}.2"
+            else:
+                raise ValueError(f"Wrong lsda_ispin {lsda_ispin}")
+        ref, ik_ = read_unk(f"reference/{folder}/{filename}", formatted, noncolin)
+        assert ik_ == ik, f"UNK: wrong ik for ref data. need {ik}, got {ik_}"
 
-            new, ik_ = read_unk(f"{folder}/{filename}", formatted, noncolin)
-            assert ik_ == ik, f"UNK: wrong ik for new data. need {ik}, got {ik_}"
+        new, ik_ = read_unk(f"{folder}/{filename}", formatted, noncolin)
+        assert ik_ == ik, f"UNK: wrong ik for new data. need {ik}, got {ik_}"
 
         if verbose:
             print(f"UNK, {folder}, ik = {ik}")

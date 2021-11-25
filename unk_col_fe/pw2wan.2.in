@@ -1,0 +1,9 @@
+&inputpp
+   outdir = './temp'
+   prefix = 'Fe'
+   seedname = 'collinear_Fe'
+   spin_component = 'down'
+   write_mmn = .false.
+   write_amn = .false.
+   write_unk = .true.
+/
