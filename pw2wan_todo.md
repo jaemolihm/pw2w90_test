@@ -3,7 +3,7 @@
   - [x] write_unkg
   - [x] write_dmn
   - [ ] write_unk
-- [ ] Modularize progress
+- [x] Modularize progress
 - [x] merge scdm colin and noncolin
 - [ ] remove unused variables
 - [ ] complete coverage
