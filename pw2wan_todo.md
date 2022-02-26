@@ -5,7 +5,7 @@
   - [x] write_unk
 - [x] Modularize progress
 - [x] merge scdm colin and noncolin
-- [ ] Remove find_free_unit
+- [x] Remove find_free_unit
 - [ ] remove unused variables
 - [ ] complete coverage
   - [x] dmn
