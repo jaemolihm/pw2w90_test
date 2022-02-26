@@ -29,9 +29,7 @@ for imode in 1 2 3 4; do
 done
 ./test.py
 
-exit 0;
-
-rm -f unk_*
+rm -rf unk_*
 echo "Test $PREFIX with pools"
 for imode in 1 2 3 4; do
     $RUN_PREFIX $QE_TEST/pw2wannier90.x $RUN_SUFFIX_POOL -in pw2wan.$imode.in > pw2wan.$imode.pool.out
@@ -39,6 +37,3 @@ for imode in 1 2 3 4; do
     mv UNK* unk_$imode/
 done
 ./test.py
-
-
-
