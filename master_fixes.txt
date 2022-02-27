@@ -1,5 +1,13 @@
 Fixes done on upstream QE to make it run
 
+# compute_mmn
+* Bug introduced in commit 6bde39407
+mmn should be symmetric in the gamma_only case (see Sec. 3.3 of Mostofi et al 2008),
+but symmetrization is not done for the uspp part.
+
+
+# write_parity
+
 diff --git a/PP/src/pw2wannier90.f90 b/PP/src/pw2wannier90.f90
 index 46d35a34f..9e170f770 100644
 --- a/PP/src/pw2wannier90.f90
