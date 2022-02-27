@@ -15,6 +15,6 @@
   - [ ] read_sym for dmn
   - [ ] mixing uspp and ncpp
   - [ ] noncolin but not soc
+  - [x] without MPI compilation
 - [ ] rebase to master
 - [ ] Mention change header ("Jae-Mo Lihm - k-point (pool) parallelization, refactoring")
-- [ ] Test without MPI compilation

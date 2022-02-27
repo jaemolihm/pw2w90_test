@@ -30,6 +30,7 @@ Test suite for pw2wannier90.x program of Quantum ESPRESSO.
 * Code coverage for my refactoring of pw2wannier90.x (https://gitlab.com/jmlihm/q-e/-/tree/pw2wan) is available here.
   * [ref QE](https://raw.githack.com/jaemolihm/pw2w90_test/master/coverage/output_ref/src/pw2wannier90.f90.gcov.html) (QE develop branch as of 2021.11.23)
   * [new QE](https://raw.githack.com/jaemolihm/pw2w90_test/master/coverage/output/src/pw2wannier90.f90.gcov.html) (my refactoring of pw2wannier90.x (https://gitlab.com/jmlihm/q-e/-/tree/pw2wan))
+  * [new QE serial](https://raw.githack.com/jaemolihm/pw2w90_test/master/coverage/output_serial/src/pw2wannier90.f90.gcov.html) (my refactoring of pw2wannier90.x compiled without MPI (https://gitlab.com/jmlihm/q-e/-/tree/pw2wan))
   * The source HTML file is `coverage/output/index.html` and `coverage/output_ref/index.html`.
 
 
