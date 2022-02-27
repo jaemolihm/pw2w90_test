@@ -1,0 +1,16 @@
+&inputpp
+  outdir = 'temp',
+  prefix = 'mn3ir'
+  seedname = 'mn3ir'
+
+  write_amn = .true.
+  write_mmn = .true.
+  write_spn = .true.
+
+  ! SCDM keywords
+  scdm_proj         = true
+  scdm_entanglement = erfc
+  scdm_mu           = 40.0
+  scdm_sigma        =  5.0
+/
+
