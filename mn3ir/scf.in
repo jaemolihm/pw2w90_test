@@ -1,0 +1,46 @@
+ &control
+    calculation = 'scf'
+    restart_mode='from_scratch',
+    prefix='mn3ir',
+    pseudo_dir = '../pseudo/',
+    outdir='./temp/'
+ /
+ &system    
+    ibrav = 1,
+    celldm(1) = 7.1526,
+    nat      = 4,
+    ntyp     = 4,
+    ecutwfc  = 30.0,
+    ecutrho  = 180.0,
+    noncolin =.TRUE.,
+    lspinorb =.FALSE.,
+    occupations='smearing',
+    smearing='m-v',
+    degauss=0.02,
+    starting_magnetization(1) = 0.6,
+    angle1(1) = 35.26,
+    angle2(1) = 225,
+    starting_magnetization(2) = 0.6,
+    angle1(2) = 114.09,
+    angle2(2) = 116.56,
+    starting_magnetization(3) = 0.6,
+    angle1(3) = 114.09,
+    angle2(3) = -26.56,
+    starting_magnetization(4) = 0.0,
+ /
+ &electrons
+    mixing_beta = 0.7
+    conv_thr =  1.0d-6
+ /
+ATOMIC_SPECIES
+Mn1  54.938 Mn.pbe-spn-rrkjus_psl.1.0.0.UPF
+Mn2  54.938 Mn.pbe-spn-rrkjus_psl.1.0.0.UPF
+Mn3  54.938 Mn.pbe-spn-rrkjus_psl.1.0.0.UPF
+Ir  192.217 Ir.dojo.sr.ONCVv0.4.pbe.standard.upf
+ATOMIC_POSITIONS crystal
+ Mn1 0.5 0.5 0.0
+ Mn2 0.5 0.0 0.5
+ Mn3 0.0 0.5 0.5
+ Ir  0.0 0.0 0.0
+K_POINTS automatic
+ 4 4 4 0 0 0

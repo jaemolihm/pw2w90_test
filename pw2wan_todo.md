@@ -1,4 +1,4 @@
-- [ ] systematic exclude_bands
+- [x] systematic exclude_bands
 - [x] complete pool parallelization
   - [x] write_unkg
   - [x] write_dmn
@@ -13,8 +13,8 @@
   - [ ] dmn + LSDA (?)
   - [x] write_unk : noncolin, reduce_unk, wvfn_formatted, LSDA
   - [ ] read_sym for dmn
-  - [ ] mixing uspp and ncpp
-  - [ ] noncolin but not soc
+  - [x] mixing uspp and ncpp
+  - [x] noncolin but not soc
   - [x] without MPI compilation
 - [ ] rebase to master
 - [ ] Mention change header ("Jae-Mo Lihm - k-point (pool) parallelization, refactoring")

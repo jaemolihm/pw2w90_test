@@ -1,0 +1,70 @@
+num_wann = 36
+num_bands = 68
+exclude_bands = 1-32
+
+num_iter = 2000
+conv_window = 5
+conv_tol = 1.0d-7
+
+dis_num_iter = 2000
+dis_froz_max = 34.0469
+dis_froz_min = 9.0469
+dis_win_max = 79.0469
+dis_win_min = 9.0469
+dis_mix_ratio = 0.5
+dis_conv_tol = 1E-10
+
+! Automatic generation of initial projections
+auto_projections = .true.
+
+!begin Projections
+!Mn1:s;p;d
+!Mn2:s;p;d
+!Mn3:s;p;d
+!Ir:s;p;d
+!end Projections
+
+begin unit_cell_cart
+Bohr
+7.1526 0.0000 0.0000
+0.0000 7.1526 0.0000
+0.0000 0.0000 7.1526
+end unit_cell_cart
+
+begin atoms_frac
+ Mn1 0.5 0.5 0.0
+ Mn2 0.5 0.0 0.5
+ Mn3 0.0 0.5 0.5
+ Ir  0.0 0.0 0.0
+end atoms_frac
+spinors = .true.
+
+# post-process
+bands_plot = .true.
+begin kpoint_path
+G 0.00 0.00 0.00 X 0.50 0.00 0.00
+X 0.50 0.00 0.00 M 0.50 0.00 0.50
+M 0.50 0.00 0.50 R 0.50 0.50 0.50
+R 0.50 0.50 0.50 G 0.00 0.00 0.00
+G 0.00 0.00 0.00 M 0.50 0.00 0.50
+M 0.50 0.00 0.50 R 0.50 0.50 0.50
+R 0.50 0.50 0.50 X 0.50 0.00 0.00
+end kpoint_path
+bands_num_points = 100
+bands_plot_format = gnuplot
+bands_plot_mode = s-k
+bands_plot_dim = 3
+
+use_ws_distance = .true.
+
+mp_grid =      2      2      2
+begin kpoints
+  0.000000000000  0.000000000000  0.000000000000
+  0.000000000000  0.000000000000  0.500000000000
+  0.000000000000  0.500000000000  0.000000000000
+  0.000000000000  0.500000000000  0.500000000000
+  0.500000000000  0.000000000000  0.000000000000
+  0.500000000000  0.000000000000  0.500000000000
+  0.500000000000  0.500000000000  0.000000000000
+  0.500000000000  0.500000000000  0.500000000000
+end kpoints

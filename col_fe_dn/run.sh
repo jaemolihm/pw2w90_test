@@ -25,10 +25,20 @@ echo "Test $PREFIX (spin down) without pools"
 $RUN_PREFIX $QE_TEST/pw2wannier90.x $RUN_SUFFIX_NO_POOL -in pw2wan.in > pw2wan.out
 ./test.py
 
+for tag in amn mmn eig spn uHu uIu sHu sIu; do
+    rm -f $PREFIX*.$tag*
+done
+
 echo "Test $PREFIX (spin down) with pools"
 $RUN_PREFIX $QE_TEST/pw2wannier90.x $RUN_SUFFIX_POOL -in pw2wan.in > pw2wan.pool.out
 ./test.py
 
-echo "Test $PREFIX (spin down) with serial compilation"
-$RUN_SERIAL_PREFIX $QE_TEST_SERIAL/pw2wannier90.x $RUN_SERIAL_SUFFIX -in pw2wan.in > pw2wan.out
-./test.py
+for tag in amn mmn eig spn uHu uIu sHu sIu; do
+    rm -f $PREFIX*.$tag*
+done
+
+if [ ! -z "$QE_TEST_SERIAL" ]; then
+    echo "Test $PREFIX (spin down) with serial compilation"
+    $RUN_SERIAL_PREFIX $QE_TEST_SERIAL/pw2wannier90.x $RUN_SERIAL_SUFFIX -in pw2wan.in > pw2wan.out
+    ./test.py
+fi
