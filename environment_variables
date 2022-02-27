@@ -1,6 +1,7 @@
 # Program paths
 export QE_REF="/group2/jmlim/program/qe-dev/bin"          # Path with old (unmodified) QE
 export QE_TEST="/group2/jmlim/dipole/q-e/bin"             # Path with new (modified) QE
+export QE_TEST_SERIAL="/group2/jmlim/dipole/q-e-serial/bin"             # Path with new (modified) QE compiled without MPI
 export WANN="/group2/jmlim/program/wannier90/wannier90.x"
 
 # Run commands for SCF, NSCF, Wannier90

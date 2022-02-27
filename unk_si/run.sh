@@ -37,3 +37,21 @@ for imode in 1 2 3 4; do
    mv UNK* unk_$imode/
 done
 ./test.py
+
+rm -rf unk_*
+echo "Test $PREFIX with serial compilation"
+for imode in 1 2 3 4; do
+    $RUN_PREFIX $QE_TEST/pw2wannier90.x $RUN_SUFFIX_NO_POOL -in pw2wan.$imode.in > pw2wan.$imode.out
+    mkdir -p unk_$imode
+    mv UNK* unk_$imode/
+done
+./test.py
+
+rm -rf unk_*
+echo "Test $PREFIX with pools"
+for imode in 1 2 3 4; do
+    $RUN_SERIAL_PREFIX $QE_TEST_SERIAL/pw2wannier90.x $RUN_SERIAL_SUFFIX -in pw2wan.$imode.in > pw2wan.$imode.pool.out
+    mkdir -p unk_$imode
+    mv UNK* unk_$imode/
+done
+./test.py

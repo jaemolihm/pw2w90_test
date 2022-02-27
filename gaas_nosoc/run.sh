@@ -25,6 +25,11 @@ echo "Test $PREFIX (no SOC) without pools"
 $RUN_PREFIX $QE_TEST/pw2wannier90.x $RUN_SUFFIX_NO_POOL -in pw2wan.in > pw2wan.out
 ./test.py
 
-echo "Test $PREFIX with pools"
+echo "Test $PREFIX (no SOC) with pools"
 $RUN_PREFIX $QE_TEST/pw2wannier90.x $RUN_SUFFIX_POOL -in pw2wan.in > pw2wan.pool.out
 ./test.py
+
+echo "Test $PREFIX (no SOC) with serial compilation"
+$RUN_SERIAL_PREFIX $QE_TEST_SERIAL/pw2wannier90.x $RUN_SERIAL_SUFFIX -in pw2wan.in > pw2wan.out
+./test.py
+

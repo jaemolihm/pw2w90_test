@@ -40,3 +40,11 @@ for tag in spn uHu uIu sHu sIu; do
 done
 $RUN_PREFIX $QE_TEST/pw2wannier90.x $RUN_SUFFIX_POOL -in pw2wan.in > pw2wan.pool.out
 ./test.py
+
+echo "Test $PREFIX with serial compilation"
+$RUN_SERIAL_PREFIX $QE_TEST_SERIAL/pw2wannier90.x $RUN_SERIAL_SUFFIX -in pw2wan.formatted.in > pw2wan.pool.formatted.out
+for tag in spn uHu uIu sHu sIu; do
+    mv $PREFIX.$tag $PREFIX.$tag.formatted
+done
+$RUN_SERIAL_PREFIX $QE_TEST_SERIAL/pw2wannier90.x $RUN_SERIAL_SUFFIX -in pw2wan.in > pw2wan.pool.out
+./test.py
