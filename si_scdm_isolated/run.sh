@@ -29,6 +29,8 @@ echo "Test $PREFIX (SCDM isolated) with pools"
 $RUN_PREFIX $QE_TEST/pw2wannier90.x $RUN_SUFFIX_POOL -in pw2wan.in > pw2wan.pool.out
 ./test.py
 
-echo "Test $PREFIX (SCDM isolated) with serial compilation"
-$RUN_SERIAL_PREFIX $QE_TEST_SERIAL/pw2wannier90.x $RUN_SERIAL_SUFFIX -in pw2wan.in > pw2wan.out
-./test.py
+if [ ! -z "$QE_TEST_SERIAL" ]; then
+    echo "Test $PREFIX (SCDM isolated) with serial compilation"
+    $RUN_SERIAL_PREFIX $QE_TEST_SERIAL/pw2wannier90.x $RUN_SERIAL_SUFFIX -in pw2wan.in > pw2wan.out
+    ./test.py
+fi
