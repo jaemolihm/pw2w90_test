@@ -17,7 +17,7 @@ if [ $GENERATE_REFERENCE == "true" ]; then
     cp $PREFIX.* reference/
 fi
 
-for tag in amn mmn eig spn uHu uIu sHu sIu; do
+for tag in amn mmn eig spn uHu uIu sHu sIu unkg; do
     rm -f $PREFIX*.$tag*
 done
 
@@ -25,7 +25,7 @@ echo "Test $PREFIX without pools"
 $RUN_PREFIX $QE_TEST/pw2wannier90.x $RUN_SUFFIX_NO_POOL -in pw2wan.in > pw2wan.out
 ./test.py
 
-for tag in amn mmn eig spn uHu uIu sHu sIu; do
+for tag in amn mmn eig spn uHu uIu sHu sIu unkg; do
     rm -f $PREFIX*.$tag*
 done
 
