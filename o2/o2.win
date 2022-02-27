@@ -1,0 +1,31 @@
+num_wann        = 8
+num_bands       = 12
+
+num_iter        = 100
+conv_tol        = 1e-10
+conv_window     = 5
+
+mp_grid         : 1 1 1
+gamma_only      = true
+
+begin kpoints
+0.0000  0.0000   0.0000
+end kpoints
+
+begin atoms_cart
+Bohr
+O   0.0  0.0  0.0
+O   0.0  0.0  2.2
+end atoms_cart
+
+begin projections
+Bohr
+O:s,p
+end projections
+
+begin unit_cell_cart
+bohr
+  20.000   0.0000000   0.000
+   0.000  20.0000000   0.000
+   0.000   0.0000000  20.000
+end_unit_cell_cart

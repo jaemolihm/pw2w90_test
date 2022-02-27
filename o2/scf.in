@@ -1,0 +1,31 @@
+ &control
+    calculation  = 'scf'
+    restart_mode = 'from_scratch'
+    prefix       = 'o2'
+    pseudo_dir   = '../pseudo/'
+    outdir       = './temp'
+ /
+ &system
+    ibrav     =  1
+    celldm(1) = 20
+    nat       =  2
+    ntyp      =  1
+    ecutwfc   = 20.0
+    ecutrho   = 120.0
+    nspin     = 2
+    starting_magnetization = -1
+    occupations = 'smearing'
+    smearing  = 'cold'
+    degauss   = 0.02
+ /
+ &electrons
+    diagonalization = 'david'
+    mixing_beta     =  0.2
+    conv_thr        =  1.0e-8
+ /
+ATOMIC_SPECIES
+ O   16 O.pbe-rrkjus.UPF
+ATOMIC_POSITIONS {bohr}
+O   0.0  0.0  0.0
+O   0.0  0.0  2.2
+K_POINTS {gamma}
