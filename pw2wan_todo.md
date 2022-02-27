@@ -1,4 +1,4 @@
-- [ ] systematic exclude_bands
+- [x] systematic exclude_bands
 - [x] complete pool parallelization
   - [x] write_unkg
   - [x] write_dmn
