@@ -3,10 +3,6 @@ shc_alpha = 1
 shc_beta = 2
 shc_gamma = 3
 
-berry = true
-berry_task = shc
-berry_kmesh = 100 #250
-
 fermi_energy = 7.9366
 
 kubo_freq_min = 0.0
