@@ -1,0 +1,11 @@
+&inputpp
+   outdir = './temp/'
+   prefix = 'GaAs'
+   seedname = 'GaAs'
+   write_mmn = .false.
+   write_amn = .true.
+   write_spn = .false.
+
+   ! projectability disentanglement
+   atom_proj = .true.
+/
