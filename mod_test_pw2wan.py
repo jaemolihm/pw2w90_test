@@ -72,7 +72,7 @@ def read_mmn(filename):
                 data = list(islice(f, block))
                 inds.append(data[0].split())
                 data_split = [x.split() for x in data[1:]]
-                data_float = np.array(data_split).astype(np.float)
+                data_float = np.array(data_split).astype(float)
                 mmn[ik, inb] = (data_float[:, 0] + 1j * data_float[:, 1]).reshape((nbnd, nbnd))
 
     return mmn, np.array(inds).astype(int)
@@ -95,7 +95,7 @@ def read_spn(filename, formatted):
             data = np.array([f.readline().split() for i in range(3*nbnd*(nbnd+1)//2)], dtype=float)
             spn[ik] = (data[:, 0] + 1j * data[:,1]).reshape(3, -1)
         else:
-            spn[ik] = f.read_record(dtype=np.complex).reshape(3, -1)
+            spn[ik] = f.read_record(dtype=complex).reshape(3, -1)
 
     f.close()
     return spn

@@ -9,7 +9,7 @@ prefix = "si"
 
 tag_list = ["amn", "eig", "mmn", "uHu", "uIu", "unkg", "sym", "dmn"]
 
-test_pw2wan(prefix, tag_list)
+test_pw2wan(prefix, tag_list, verbose=False)
 
 # a = read_mmn("si.mmn")
 # b = read_mmn("reference/si.mmn")
