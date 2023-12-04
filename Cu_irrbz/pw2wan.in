@@ -1,0 +1,6 @@
+&inputpp
+    outdir   = './temp'
+    prefix   = 'Cu'
+    seedname = 'Cu'
+    irr_bz   = .true.
+/

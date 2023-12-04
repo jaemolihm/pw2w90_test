@@ -9,6 +9,11 @@ __pycache__
 */*.spn
 */*.u?u
 */*.s?u
+*/*.iamn
+*/*.ieig
+*/*.immn
+*/*.isym
+*/*_sym.dat
 */*.spn.formatted
 */*.u?u.formatted
 */*.s?u.formatted

@@ -1,0 +1,32 @@
+ &control
+    calculation = 'scf'
+    prefix      = 'Fe'
+    pseudo_dir  = '../pseudo/'
+    outdir      = './temp/'
+    tstress     = .true.
+    tprnfor     = .true.
+ /
+ &system
+    ibrav       = -3
+    celldm(1)   = 5.4
+    nat         = 1
+    ntyp        = 1
+    ecutwfc     = 60.0
+    ecutrho     = 480.0
+    occupations = 'smearing'
+    smearing    = 'm-p'
+    degauss     = 0.02
+    lspinorb    = .true.
+    noncolin    = .true.
+    starting_magnetization(1) = 1.0
+/
+&electrons
+    mixing_beta = 0.7
+    conv_thr    = 1.0d-10
+/
+ATOMIC_SPECIES
+Fe  1.   Fe.rel-pbe-spn-kjpaw_psl.1.0.0.UPF
+ATOMIC_POSITIONS {crystal}
+Fe   0.  0.  0.
+K_POINTS {automatic}
+ 8 8 8 0 0 0

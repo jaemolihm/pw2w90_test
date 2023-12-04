@@ -218,11 +218,11 @@ def read_dmn(filename):
 
 def read_pw2wan_file(filename, tag, amn_scdm=False):
     # TODO: dmn
-    if tag == "amn":
+    if tag == "amn" or tag == "iamn":
         return read_amn(filename, scdm=amn_scdm)
-    elif tag == "eig":
+    elif tag == "eig" or tag == "ieig":
         return read_eig(filename)
-    elif tag == "mmn":
+    elif tag == "mmn" or tag == "immn":
         return read_mmn(filename)
     elif tag == "spn":
         return read_spn(filename, formatted=False)
@@ -252,7 +252,7 @@ def test_pw2wan(prefix, tag_list, verbose=False, amn_scdm=False):
         ref = read_pw2wan_file(f"{prefix_ref}.{tag}", tag, amn_scdm=amn_scdm)
         new = read_pw2wan_file(f"{prefix}.{tag}", tag, amn_scdm=amn_scdm)
 
-        if tag == "mmn":
+        if tag == "mmn" or tag == "immn":
             ref, inds_ref = ref
             new, inds_new = new
 

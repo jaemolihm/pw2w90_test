@@ -4,6 +4,10 @@ export QE_TEST="/group2/jmlim/dipole/q-e/bin"             # Path with new (modif
 export QE_TEST_SERIAL="/group2/jmlim/dipole/q-e_serial/bin"             # Path with new (modified) QE compiled without MPI. Set to "" to skip.
 export WANN="/group2/jmlim/program/wannier90/wannier90.x"
 
+# symWannier path
+SYMWANNIER="/home/jmlim/dipole/irrbz/symWannier/src"
+export PYTHONPATH=$SYMWANNIER
+
 # Run commands for SCF, NSCF, Wannier90
 export RUN_PARA_PREFIX="srun -n 16 --partition=fast"
 export RUN_PARA_SUFFIX_NO_POOL="-nk 1"
